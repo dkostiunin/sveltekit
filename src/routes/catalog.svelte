@@ -1,8 +1,6 @@
-<script>
-    import { onMount } from 'svelte';
-    /**
-* @type {any[]}
-*/
+<script context="module">
+  //  import { onMount } from 'svelte';
+/*   
     let finres = [];
     const QUERY_PRODS = () => `{ 
                         categories{
@@ -18,7 +16,32 @@
       const fin= await res.json()
       finres=fin.data.categories.data
        console.log(finres)
-	});
+	}); */
+
+   // let finres = [];
+    const QUERY_PRODS = () => `{ 
+                        categories{
+                        data{id attributes{name urlimage desc slug
+                        subcats{data{id attributes{name}}} 
+                        }}
+                }
+		}`
+        const options = {  method: "post",headers: {"Content-Type": "application/json"},body: JSON.stringify({query: QUERY_PRODS()})};
+  export async function load() {
+    const res= await fetch(`https://teststrapikost.herokuapp.com/graphql`, options)//https://teststrapikost.herokuapp.com/graphql http://localhost:1337/graphql
+      const fin= await res.json()
+      /* finres=fin.data.categories.data
+       console.log(finres) */
+    return {
+      props: {
+        finres:  fin.data.categories.data
+      }
+    };
+  }
+  </script>
+
+  <script>
+      export let finres;
   </script>
   
   <div class="main">
