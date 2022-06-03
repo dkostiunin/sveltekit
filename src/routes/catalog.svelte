@@ -73,23 +73,28 @@
         box-shadow: rgb(0 0 0 / 20%) 0px 7px 8px -4px, rgb(0 0 0 / 14%) 0px 12px 17px 2px, rgb(0 0 0 / 12%) 0px 5px 22px 4px;
         display: flex;
         flex-flow: column nowrap;
-        width: 200px; height: 250px;
-        margin: 16px;
+        width: 120px; height: 144px;
+        margin: 8px;
         place-content: space-evenly;
         -webkit-box-align: center;
         align-items: center;
     }
 
     img{height: 50%;}
-    figcaption{font-size: large;word-break: break-all;
+    figcaption{font-size: smaller;word-break: break-all;
     overflow: overlay;}
 
     @media (max-width: 960px) {
       .main{position: absolute;top:68px;width: 100%;margin: 0;}
   }
-  @media (max-width: 412px) {
+ /*  @media (max-width: 412px) {
       .child{ width: 120px; height: 144px;margin: 8px;}
       figcaption{font-size: smaller;}
+  } */
+
+  @media only screen and (min-width: 600px) {
+    .child{ width: 200px; height: 250px;margin: 16px;}
+      figcaption{font-size: large;}
   }
 
   </style>
