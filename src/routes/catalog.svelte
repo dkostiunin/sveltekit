@@ -27,7 +27,7 @@
                 }
 		}`
         const options = {  method: "post",headers: {"Content-Type": "application/json"},body: JSON.stringify({query: QUERY_PRODS()})};
-  export async function load() {
+  export async function load({ fetch }) {
     const res= await fetch(`https://teststrapikost.herokuapp.com/graphql`, options)//https://teststrapikost.herokuapp.com/graphql http://localhost:1337/graphql
       const fin= await res.json()
       /* finres=fin.data.categories.data
