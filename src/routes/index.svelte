@@ -2,10 +2,6 @@
 	export const prerender = true;
 </script>
 
-<script>
-	import Counter from '$lib/Counter.svelte';
-</script>
-
 <svelte:head>
 	<title>Home</title>
 	<meta name="description" content="Svelte demo app" />
@@ -27,7 +23,7 @@
 		try editing <strong>src/routes/index.svelte</strong>
 	</h2>
 
-	<Counter />
+
 </section>
 
 <style>
