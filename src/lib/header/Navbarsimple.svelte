@@ -1,7 +1,5 @@
 <script>
   import { onMount } from "svelte";
-  /* import Basket from "../pages/Basket.svelte";
-  import Catalog from "../pages/Catalog.svelte"; */
   let showMobileMenu = false;
 
   const handleMobileIconClick = () => (showMobileMenu = !showMobileMenu);
@@ -26,7 +24,7 @@
         
         <div class="parent">
           <a sveltekit:prefetch href="/basket">ГЛАВНАЯ</a>
-          <a sveltekit:prefetch href="/catalog">КАТАЛОГ</a>
+          <a sveltekit:prefetch href="/categories">КАТАЛОГ</a>
         </div>   
       </div>
       <div class="basket">
