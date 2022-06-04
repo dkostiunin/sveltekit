@@ -1,54 +1,63 @@
 <script context="module">
+  import { fields } from '$lib/fields';
 
-  export async function load({ params, fetch}) {
-    console.log(params.slug)
-    const QUERY = `{categories(filters: {slug: { contains:"${params.slug}"} }){
-        data{id attributes{name urlimage desc slug
-         subcats{data{id attributes{name urlimage desc subslug}}}
-       }}
-     
-   }}`
+  export async function load({ params, fetch }) {
+    console.log(params.subslug,params.slug)
+    const f=fields(params.subslug).fields,s=params.subslug+'s'
 
-const options = {  method: "post",headers: {"Content-Type": "application/json"},body: JSON.stringify({query: QUERY})};
+    const QUERY =  `{${s}
+              {data{id attributes{
+                        ${f} link{data{attributes{link}}}
+                    }}
+              }
+            }`
+  /*  {${s}(filters:${filt})
+              {data{id attributes{
+                        ${f} link{data{attributes{link}}}
+                    }}
+              }
+            } */
+
+const options = { method: "post",headers: {"Content-Type": "application/json"},body: JSON.stringify({query: QUERY})};
 
 const res= await fetch(`https://teststrapikost.herokuapp.com/graphql`, options)//https://teststrapikost.herokuapp.com/graphql http://localhost:1337/graphql
       const fin= await res.json()
  return {
       props: {
-        subcats:  fin.data.categories.data[0]
+        products:fin.data[s].data
       }
     };
   }
 </script>
  
  <script>
-      export let subcats;
-      console.log(subcats.attributes)
+      export let products;
+      console.log(products)
   </script>
   
   <div class="main">
 
-    <nav class="nav">
+<!-- <nav class="nav">
       <ol>
         <li><a sveltekit:prefetch href="/categories"><p>Каталог</p></a></li>
         <li><p class="slash">/</p></li>
         <li><p  class="last">{subcats.attributes.name}</p></li>
       </ol>
-    </nav>
+    </nav> -->
 
     <div class="categories">
-      {#each subcats.attributes.subcats.data as el}
-          <a sveltekit:prefetch href={`/categories/${subcats.attributes.slug}/${el.attributes.subslug}`}>
+      {#each products as el}
+         <!--  <a sveltekit:prefetch href={`/categories/${el.attributes.subslug}`}> -->
               <figure class="child">
-                  <img src={el.attributes.urlimage} alt={el.attributes.name}>
+                  <img src="https://res.cloudinary.com/dxzefnveb/image/upload/v1653769068/%D1%80%D1%83%D1%81%D1%82%D0%B0%D0%BC_1_ijtxff.jpg" alt={el.attributes.name}>
                   <figcaption>{el.attributes.name}</figcaption>
               </figure>
-            </a>
+           <!--  </a> -->
       {/each}
   </div>
-          {#each subcats.attributes.subcats.data as el}
+        <!--       {#each subcats.attributes.subcats.data as el}
               <p>{el.attributes.desc}</p>
-          {/each}
+          {/each} -->
 
   </div>
 
