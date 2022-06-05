@@ -48,10 +48,34 @@ const res= await fetch(`https://teststrapikost.herokuapp.com/graphql`, options)/
     <div class="categories">
       {#each products as el}
          <!--  <a sveltekit:prefetch href={`/categories/${el.attributes.subslug}`}> -->
-              <figure class="child">
+          <div class="child">
+            {#if !el.attributes.listimage}
+            <img src="https://res.cloudinary.com/dxzefnveb/image/upload/v1653769068/%D1%80%D1%83%D1%81%D1%82%D0%B0%D0%BC_1_ijtxff.jpg" alt={el.attributes.name}>
+            {:else}
+            <img src={el.attributes.listimage.a} alt={el.attributes.name}>
+            {/if}
+             
+                
+            <div class="nameProd"> <span>{el.attributes.name}</span></div>
+           
+            <div class="priceInstock">
+              <span class="price">{`${el.attributes.price} ₽`}</span>
+              <span class="instock"><span class="instockChild">в наличии:</span>{` ${el.attributes.instock}`}</span>
+            </div>
+            <div class="buttons">
+              <button>В корзину</button>
+              <button class="nowButton">Оформить</button>
+            </div>
+          </div>
+             <!--  <figure class="child">
+                {#if !el.attributes.listimage}
                   <img src="https://res.cloudinary.com/dxzefnveb/image/upload/v1653769068/%D1%80%D1%83%D1%81%D1%82%D0%B0%D0%BC_1_ijtxff.jpg" alt={el.attributes.name}>
+                {:else}
+                <img src={el.attributes.listimage.a} alt={el.attributes.name}>
+                {/if}
+                  
                   <figcaption>{el.attributes.name}</figcaption>
-              </figure>
+              </figure> -->
            <!--  </a> -->
       {/each}
   </div>
@@ -86,16 +110,74 @@ const res= await fetch(`https://teststrapikost.herokuapp.com/graphql`, options)/
         box-shadow: rgb(0 0 0 / 20%) 0px 7px 8px -4px, rgb(0 0 0 / 14%) 0px 12px 17px 2px, rgb(0 0 0 / 12%) 0px 5px 22px 4px;
         display: flex;
         flex-flow: column nowrap;
-        width: 120px; height: 144px;
+        width: 300px; height: 500px;
         margin: 8px;
-        place-content: space-evenly;
+        place-content: space-around;
         -webkit-box-align: center;
         align-items: center;
     }
 
-    img{height: 50%;}
-    figcaption{font-size: smaller;word-break: break-word;
-    overflow: overlay;}
+    .nameProd{ overflow: overlay; width: 90%;height: 13%;text-align: center;}
+    .priceInstock{
+      display: flex; width: 90%;height: 8%;
+      justify-content: space-between;align-items: center;
+      border-top: 1px solid grey; border-bottom: 1px solid grey;
+    }
+    .price{color: #ed0202;font-size: x-large;}
+    .instock{color: #ed0202;font-size: large;}
+    .instockChild{font-size: small;color:grey}
+
+    img{width: 100%;height: 65%;object-fit: contain;}
+   /*  span{word-break: break-word;} */
+
+   button{
+    display: -webkit-inline-box;
+    display: -webkit-inline-flex;
+    display: -ms-inline-flexbox;
+    display: inline-flex;
+    -webkit-align-items: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    -webkit-justify-content: center;
+    justify-content: center;
+    position: relative;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+    background-color: transparent;
+    outline: 0;
+    border: 0;
+    margin: 0;
+    border-radius: 0;
+    padding: 0;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    vertical-align: middle;
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    -webkit-text-decoration: none;
+    text-decoration: none;
+    color: inherit;
+    font-family: "Roboto","Helvetica","Arial",sans-serif;
+    font-weight: 500;
+    font-size: 0.8125rem;
+    line-height: 1.75;
+    letter-spacing: 0.02857em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 4px;
+    -webkit-transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,border-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+    transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,border-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+    color: #fff;
+    background-color: #556cd6;
+   }
+   .buttons{display: flex; width: 90%;height: 8%;justify-content: space-between;align-items: center;}
+   .nowButton{background-color:#2e7d32}
 
     @media (max-width: 960px) {
       .main{position: absolute;top:68px;width: 100%;margin: 0;}
@@ -106,8 +188,8 @@ const res= await fetch(`https://teststrapikost.herokuapp.com/graphql`, options)/
   } */
 
   @media only screen and (min-width: 600px) {
-    .child{ width: 200px; height: 250px;margin: 16px;}
-      figcaption{font-size: large;}
+    /* .child{ width: 200px; height: 250px;margin: 16px;}
+      figcaption{font-size: large;} */
       .nav{display: block;}
   }
 
