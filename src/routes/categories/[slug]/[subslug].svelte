@@ -5,9 +5,13 @@
     console.log(params.subslug,params.slug)
     const f=fields(params.subslug).fields,s=params.subslug+'s'
 
-    const QUERY =  `{${s}
+    const QUERY =  `{
+      categories(filters: {slug: { contains:"${params.slug}"}}){data{attributes{name}}}
+      subcats(filters: {subslug: { contains:"${params.subslug}"}}){data{ attributes{name}}}
+      
+      ${s}
               {data{id attributes{
-                        ${f} link{data{attributes{link}}}
+                        listimage name price instock link{data{attributes{link}}}
                     }}
               }
             }`
@@ -19,70 +23,65 @@
             } */
 
 const options = { method: "post",headers: {"Content-Type": "application/json"},body: JSON.stringify({query: QUERY})};
-
 const res= await fetch(`https://teststrapikost.herokuapp.com/graphql`, options)//https://teststrapikost.herokuapp.com/graphql http://localhost:1337/graphql
-      const fin= await res.json()
+const fin= await res.json()
+
  return {
       props: {
-        products:fin.data[s].data
+        products:fin.data[s].data,
+        catSubcat:[params.slug,params.subslug],
+        namesCats:[fin.data.categories.data[0].attributes.name,fin.data.subcats.data[0].attributes.name]
       }
     };
   }
 </script>
  
  <script>
-      export let products;
-      console.log(products)
+      export let products,catSubcat,namesCats
+      console.log(products,catSubcat,namesCats)
+      const test =()=>console.log('eee')
   </script>
   
   <div class="main">
 
-<!-- <nav class="nav">
+    <nav class="nav">
       <ol>
         <li><a sveltekit:prefetch href="/categories"><p>Каталог</p></a></li>
         <li><p class="slash">/</p></li>
-        <li><p  class="last">{subcats.attributes.name}</p></li>
+        <li> <a sveltekit:prefetch href={`/categories/${catSubcat[0]}`}><p>{namesCats[0]}</p></a></li>
+        <li><p class="slash">/</p></li>
+        <li><p  class="last">{namesCats[1]}</p></li>
       </ol>
-    </nav> -->
+    </nav>
 
     <div class="categories">
       {#each products as el}
-         <!--  <a sveltekit:prefetch href={`/categories/${el.attributes.subslug}`}> -->
           <div class="child">
-            {#if !el.attributes.listimage}
-            <img src="https://res.cloudinary.com/dxzefnveb/image/upload/v1653769068/%D1%80%D1%83%D1%81%D1%82%D0%B0%D0%BC_1_ijtxff.jpg" alt={el.attributes.name}>
-            {:else}
-            <img src={el.attributes.listimage.a} alt={el.attributes.name}>
-            {/if}
-             
-                
-            <div class="nameProd"> <span>{el.attributes.name}</span></div>
-           
-            <div class="priceInstock">
-              <span class="price">{`${el.attributes.price} ₽`}</span>
-              <span class="instock"><span class="instockChild">в наличии:</span>{` ${el.attributes.instock}`}</span>
-            </div>
-            <div class="buttons">
-              <button>В корзину</button>
-              <button class="nowButton">Оформить</button>
-            </div>
-          </div>
-             <!--  <figure class="child">
+
+            <div class="body">
+              <a sveltekit:prefetch href={`/categories/${catSubcat[0]}/${catSubcat[1]}/${el.id}`}>
                 {#if !el.attributes.listimage}
-                  <img src="https://res.cloudinary.com/dxzefnveb/image/upload/v1653769068/%D1%80%D1%83%D1%81%D1%82%D0%B0%D0%BC_1_ijtxff.jpg" alt={el.attributes.name}>
+                <img src="https://res.cloudinary.com/dxzefnveb/image/upload/v1653769068/%D1%80%D1%83%D1%81%D1%82%D0%B0%D0%BC_1_ijtxff.jpg" 
+                  alt={el.attributes.name}>
                 {:else}
                 <img src={el.attributes.listimage.a} alt={el.attributes.name}>
                 {/if}
-                  
-                  <figcaption>{el.attributes.name}</figcaption>
-              </figure> -->
-           <!--  </a> -->
-      {/each}
-  </div>
-        <!--       {#each subcats.attributes.subcats.data as el}
-              <p>{el.attributes.desc}</p>
-          {/each} -->
+                <div class="nameProd"> <span>{el.attributes.name}</span></div>
+                <div class="priceInstock">
+                  <span class="price">{`${el.attributes.price} ₽`}</span>
+                  <span class="instock"><span class="instockChild">в наличии:</span>{` ${el.attributes.instock}`}</span>
+                </div>
+              </a> 
+            </div>
+          
+            <div class="buttons">
+              <button on:click={test}>В корзину</button>
+              <button class="nowButton">Оформить</button>
+            </div>
 
+          </div>
+      {/each}
+    </div>
   </div>
 
   <style>
@@ -117,9 +116,10 @@ const res= await fetch(`https://teststrapikost.herokuapp.com/graphql`, options)/
         align-items: center;
     }
 
-    .nameProd{ overflow: overlay; width: 90%;height: 13%;text-align: center;}
+    .body{width: 100%;height: 92%;}
+    .nameProd{ overflow: overlay; padding: 0 2%;height: 22%;text-align: center;display: flex;align-items: center;justify-content: center;}
     .priceInstock{
-      display: flex; width: 90%;height: 8%;
+      display: flex; padding: 0 2%;height: 8%;
       justify-content: space-between;align-items: center;
       border-top: 1px solid grey; border-bottom: 1px solid grey;
     }
@@ -128,7 +128,6 @@ const res= await fetch(`https://teststrapikost.herokuapp.com/graphql`, options)/
     .instockChild{font-size: small;color:grey}
 
     img{width: 100%;height: 65%;object-fit: contain;}
-   /*  span{word-break: break-word;} */
 
    button{
     display: -webkit-inline-box;

@@ -84,8 +84,8 @@ const res= await fetch(`https://teststrapikost.herokuapp.com/graphql`, options)/
         align-items: center;
     }
 
-    img{width: 100%;}
-    figcaption{font-size: smaller;word-break: break-word;text-align: center;overflow: overlay;}
+    img{width: 70%;}
+    figcaption{font-size: smaller;word-break: break-word;text-align: center;overflow: overlay;width: 95%;}
 
     @media (max-width: 960px) {
       .main{position: absolute;top:68px;width: 100%;margin: 0;}
