@@ -12,22 +12,30 @@
     })
     const test =(e)=>console.log(e.target.clientWidth,size.clientWidth)
   
-    let paginationFactor = 0;
-    let totalPaginationPixels = scrollBy * paginationFactor;
+    $: paginationFactor = 0;
+    $: totalPaginationPixels = scrollBy * paginationFactor;
   
     $: offset = 0;
     $: atStart = offset === 0;
     $: atEnd = offset <= paginationFactor * (items.length - scrollBy) * -1;
   
     const move = direction => {
+      console.log(totalPaginationPixels)
       if (direction > 0 && !atEnd) {
         offset -= totalPaginationPixels;
       } else if (direction < 0 && !atStart) {
         offset += totalPaginationPixels;
       }
     };
+
+    const resize = () => {paginationFactor=size.clientWidth;
+      totalPaginationPixels = scrollBy * paginationFactor;
+      offset=0
+    console.log(size.clientWidth)};
+
   </script>
-  <!-- <svelte:window 	bind:innerWidth/> -->
+
+  <svelte:window on:resize={resize} />
 
   <div bind:this={size} id="divimg">
     <div class="items" style="transform: translateX({offset}px);">
@@ -60,7 +68,7 @@
       transform: translateX(0px);
     }
 
-    img{width: 100%;}
+    img{width: 100%;object-fit: contain;}
   
     .item {
       min-width: 167px;

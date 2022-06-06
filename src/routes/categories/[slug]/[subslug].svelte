@@ -37,9 +37,9 @@ const fin= await res.json()
 </script>
  
  <script>
+   import flash from '$lib/flash.js';
       export let products,catSubcat,namesCats
       console.log(products,catSubcat,namesCats)
-      const test =()=>console.log('eee')
   </script>
   
   <div class="main">
@@ -75,8 +75,8 @@ const fin= await res.json()
             </div>
           
             <div class="buttons">
-              <button on:click={test}>В корзину</button>
-              <button class="nowButton">Оформить</button>
+              <button on:click={flash}>В корзину</button>
+              <button on:click={flash} class="nowButton">Оформить</button>
             </div>
 
           </div>
