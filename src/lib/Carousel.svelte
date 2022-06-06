@@ -2,16 +2,15 @@
     // Props
     export let items, scrollBy = 1;
     import { onMount } from "svelte";
-    let size
-    //let innerWidth = window.innerWidth;
+    let size,srcImage
 
     onMount(async () => {
       console.log(size.clientWidth)
       paginationFactor=size.clientWidth
       totalPaginationPixels = scrollBy * paginationFactor;
     })
-    const test =(e)=>console.log(e.target.clientWidth,size.clientWidth)
-  
+    const test =(e)=>{srcImage=e.target.src;fullImage.style.display="block"}
+    
     $: paginationFactor = 0;
     $: totalPaginationPixels = scrollBy * paginationFactor;
   
@@ -37,6 +36,8 @@
 
   <svelte:window on:resize={resize} />
 
+  <img id="fullImage" on:click={(e) => fullImage.style.display="none"} src={srcImage} alt="e"/> 
+
   <div bind:this={size} id="divimg">
     <div class="items" style="transform: translateX({offset}px);">
       {#each items as item, i}
@@ -44,33 +45,47 @@
      <img on:click={test} src={item} alt="eee">
       {/each}
     </div>
+    <button class="left B" disabled={atStart} on:click="{() => move(-1)}">
+      <span class="b2">&lsaquo;</span><span class="b1">&lsaquo;</span>&lsaquo;
+    </button>
+    <button class="right B" disabled={atEnd} on:click="{() => move(1)}">
+      &rsaquo;<span class="b1">&rsaquo;</span><span class="b2">&rsaquo;</span>
+    </button>
   </div>
   
-  <button disabled={atStart} on:click="{() => move(-1)}">&lsaquo; Prev</button>
-  <button disabled={atEnd} on:click="{() => move(1)}">Next &rsaquo;</button>
-  
-  <div class="details">
+<!--   <div class="details">
     offset: {offset}px<br>
     atStart: {atStart}<br>
     atEnd: {atEnd}
-  <!--   Width: {size.clientWidth} -->
-  </div>
+  </div> -->
   
   <style>
-    #divimg {
-      width:100%;
-      overflow: hidden;
+
+    #divimg {position: relative;width:80%;overflow: hidden;left: 5%;}
+
+    #fullImage{display:none;position:fixed;width:100%;height:100%;z-index:99;background:white;top:0;left: 0;}
+
+    .B{
+      position: absolute;top: 50%;background: none;cursor: pointer;border: 0;font-size: xx-large;font-weight: bolder;
+      -webkit-transform: translate(0, -50%);-moz-transform: translate(0, -50%);-ms-transform: translate(0, -50%);
+      -o-transform: translate(0, -50%);transform: translate(0, -50%);
+    }
+    .b1{color: lightgrey;} .b2{color: white;}
+    .left{left: 0;} 
+    .right{
+      left: 100%;
+      -webkit-transform: translate(-100%, -50%);-moz-transform: translate(-100%, -50%);-ms-transform: translate(-100%, -50%);
+      -o-transform: translate(-100%, -50%);transform: translate(-100%, -50%);
     }
   
-    .items {
-      display: flex;
-      transition: transform 0.4s ease-in-out;
-      transform: translateX(0px);
-    }
+    .items { display: flex;transition: transform 0.4s ease-in-out;transform: translateX(0px)}
 
     img{width: 100%;object-fit: contain;}
+
+   
+
   
-    .item {
+   /*  .item {
       min-width: 167px;
       height: 100px;
       margin: 0 4px;
@@ -93,10 +108,10 @@
     .items .item:last-child {
       margin-right: 0;
     }
-  
-    .details {
+   */
+ /*    .details {
       margin-top: 20px;
       font-style: italic;
       color: #9f9f9f;
-    }
+    } */
   </style>

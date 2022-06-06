@@ -29,6 +29,8 @@
    
    <script>
         import Carousel from "$lib/Carousel.svelte"
+        import Inputnumber from "$lib/Inputnumber.svelte"
+        import flash from '$lib/flash.js';
         export let product,catSubcat,namesCats
         console.log(product,catSubcat,namesCats)
         const items=[
@@ -58,9 +60,12 @@
                 <img src="https://res.cloudinary.com/dxzefnveb/image/upload/v1653769068/%D1%80%D1%83%D1%81%D1%82%D0%B0%D0%BC_1_ijtxff.jpg" 
                   alt={product.name}>
                 {:else}
-              <!--   <img src={product.listimage.a} alt={product.name}> -->
-              <Carousel items={items}/>
+                <Carousel items={items}/>
                 {/if}
+                 <div class="inputs">
+                    <Inputnumber/>
+                    <button on:click={flash}>В корзину</button>
+                 </div>
             </div>
             <div class="descriptions">
                <!--  <Carousel items={items}/> -->
@@ -72,11 +77,12 @@
   
     <style>
 
-        .fotoName{width: 33%;padding-left: 3%;}
+        .fotoName{width: 90%}
         h2{line-height: 2rem;color:#ed0202;}
         img{width: 100%;object-fit: contain;}
+        .inputs{width: 90%;display: flex;justify-content: space-evenly;align-items: center;padding-top: 10px;}
 
-        .descriptions{width: 61%;padding-right: 3%;}
+        .descriptions{width: 90%;}
   
       p{margin: 0 3px;color: grey;}
       .slash{font-size: medium;}
@@ -93,7 +99,7 @@
         }
   
       .main{position: absolute;top:68px;width: 80%;margin: 0 10%;}
-      .categories{display: flex; flex-wrap: wrap; justify-content: center;width: 100%;}
+      .categories{display: flex; flex-wrap: wrap; justify-content: flex-end;width: 100%;}
       a {text-decoration: none;color: black;}
   
     /*   .child{
@@ -181,7 +187,10 @@
     @media only screen and (min-width: 600px) {
       /* .child{ width: 200px; height: 250px;margin: 16px;}
         figcaption{font-size: large;} */
+        .categories{justify-content: center;}
         .nav{display: block;}
+        .fotoName{width: 33%;padding-left: 3%;}
+        .descriptions{width: 61%;padding-right: 3%;}
     }
   
     </style>

@@ -37,9 +37,9 @@ const fin= await res.json()
 </script>
  
  <script>
-   import flash from '$lib/flash.js';
-      export let products,catSubcat,namesCats
-      console.log(products,catSubcat,namesCats)
+    import flash from '$lib/flash.js';
+    export let products,catSubcat,namesCats
+    console.log(products,catSubcat,namesCats)
   </script>
   
   <div class="main">
