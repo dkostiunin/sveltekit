@@ -30,14 +30,11 @@
    <script>
         import Carousel from "$lib/Carousel.svelte"
         import Inputnumber from "$lib/Inputnumber.svelte"
+        import Accordion from "$lib/Accordion.svelte"
         import flash from '$lib/flash.js';
         export let product,catSubcat,namesCats
+        const items=Object.values(product.listimage)
         console.log(product,catSubcat,namesCats)
-        const items=[
-            'https://res.cloudinary.com/dxzefnveb/image/upload/v1653769068/%D1%80%D1%83%D1%81%D1%82%D0%B0%D0%BC_1_ijtxff.jpg',
-            "https://res.cloudinary.com/dxzefnveb/image/upload/v1653761337/1653761299607._fpitvo.jpg",
-            "https://res.cloudinary.com/dxzefnveb/image/upload/v1653761336/1653761266234._fvo6sc.jpg"
-        ];
     </script>
     
     <div class="main">
@@ -68,7 +65,16 @@
                  </div>
             </div>
             <div class="descriptions">
-               <!--  <Carousel items={items}/> -->
+                <Accordion>
+                    <span slot="head">Описание:<span class="desc">{` ${product.shortdesc} (подробнее...)`}</span></span>
+                    <div slot="details">
+                        <p>{product.longdesc}</p>
+                    </div>
+                    <span slot="head2">This is my header2</span>
+                    <div slot="details2">
+                        <p class="longdesc">{product.longdesc}</p>
+                    </div>
+                </Accordion>
             </div>
         </div>
    
@@ -76,6 +82,10 @@
     </div>
   
     <style>
+        
+        span{color: #323232;}
+        .desc{color: dimgray;font-size: smaller;}
+        .longdesc{margin: 0 3px;color: #6b6666;}
 
         .fotoName{width: 90%}
         h2{line-height: 2rem;color:#ed0202;}

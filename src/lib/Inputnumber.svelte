@@ -2,7 +2,7 @@
 	<button class="number-minus" type="button" 
         on:click={(e)=>{
             e.target.nextElementSibling.stepDown()//; e.target.nextElementSibling.onchange()
-            }}>-
+            }}>&ndash;
     </button>
 	<input type="number" min="0" value="1">
 	<button class="number-plus" type="button"
@@ -14,22 +14,15 @@
 
 <style>
     .number {
-        display: inline-block;
-        position: relative;
-        width: 100px;
+        display: inline-block;position: relative; width: 145px;
     }
     .number input[type="number"] {
         display: block;
-        height: 32px;
-        line-height: 32px;
-        width: 100%;
-        padding: 0;
-        margin: 0;
+        height: 32px;line-height: 32px;width: 100%;
+        padding: 0;margin: 0;border: none;
         box-sizing: border-box;
         text-align: center;
-        -moz-appearance: textfield;
-        -webkit-appearance: textfield;
-        appearance: textfield;
+        -moz-appearance: textfield;-webkit-appearance: textfield;appearance: textfield;
     }
     .number input[type="number"]::-webkit-outer-spin-button,
     .number input[type="number"]::-webkit-inner-spin-button {
@@ -37,30 +30,22 @@
     }
     .number-minus {
         position: absolute;
-        top: 1px;
-        left: 1px;
-        bottom: 1px;
-        width: 20px;
+        top: 0;bottom: 0;left: 1px; width: 35px;
         padding: 0;
         display: block;
         text-align: center;
         border: none;
-        border-right: 1px solid #ddd;
         font-size: 16px;
         font-weight: 600;
+        background-color: white;
     }
     .number-plus {
         position: absolute;
-        top: 1px;
-        right: 1px;
-        bottom: 1px;
-        width: 20px;
+        top: 0;bottom: 0;right:1px; width: 35px;
         padding: 0;
         display: block;
         text-align: center;
         border: none;
-        border-left: 1px solid #ddd;
-        font-size: 16px;
-        font-weight: 600;
+        font-size: 16px; font-weight: 600;background-color: white;
     }
 </style>
