@@ -32,6 +32,7 @@
         import Inputnumber from "$lib/Inputnumber.svelte"
         import Accordion from "$lib/Accordion.svelte"
         import flash from '$lib/flash.js';
+        import Lamps from '../../../../products/lamps/Lamps.svelte';
         export let product,catSubcat,namesCats
         const items=Object.values(product.listimage)
         console.log(product,catSubcat,namesCats)
@@ -70,9 +71,9 @@
                     <div slot="details">
                         <p>{product.longdesc}</p>
                     </div>
-                    <span slot="head2">This is my header2</span>
+                    <span slot="head2">Характеристики</span>
                     <div slot="details2">
-                        <p class="longdesc">{product.longdesc}</p>
+                        <Lamps  name={product}></Lamps>
                     </div>
                 </Accordion>
             </div>
@@ -88,13 +89,13 @@
         .longdesc{margin: 0 3px;color: #6b6666;}
 
         .fotoName{width: 90%}
-        h2{line-height: 2rem;color:#ed0202;}
+        h2{line-height: 2rem;color:#ed0202;margin-left: -1rem;}
         img{width: 100%;object-fit: contain;}
         .inputs{width: 90%;display: flex;justify-content: space-evenly;align-items: center;padding-top: 10px;}
 
-        .descriptions{width: 90%;}
+        .descriptions{width: 90%;margin-right: 2rem; margin-left: -2rem;}
   
-      p{margin: 0 3px;color: grey;}
+      p{margin: 0 3px;color: #323232;;}
       .slash{font-size: medium;}
       .last{color: black;}
       .nav{display: none;}
@@ -200,7 +201,12 @@
         .categories{justify-content: center;}
         .nav{display: block;}
         .fotoName{width: 33%;padding-left: 3%;}
-        .descriptions{width: 61%;padding-right: 3%;}
+        .descriptions{width: 61%;padding-right: 3%;margin-right: 0;margin-left: 0;}
+        h2{margin-left: 0;}
     }
   
     </style>
+
+<!-- <svg class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-vubbuv" focusable="false" aria-hidden="true" viewBox="0 0 24 24" data-testid="ExpandMoreIcon"><path d="M16.59 8.59 12 13.17 7.41 8.59 6 10l6 6 6-6z"></path></svg>
+
+<svg class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-vubbuv" focusable="false" aria-hidden="true" viewBox="0 0 24 24" data-testid="ExpandMoreIcon"><path d="M16.59 8.59 12 13.17 7.41 8.59 6 10l6 6 6-6z"></path></svg> -->
