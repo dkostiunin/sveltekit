@@ -56,7 +56,7 @@ const handleUploadInput = e => {
   }
 
   
-const test = ()=>{console.log('')}
+const test = ()=>{console.log(images)}
 
 const handleSubmit = async(e) => {
         let media = [],key='a',listim=''
