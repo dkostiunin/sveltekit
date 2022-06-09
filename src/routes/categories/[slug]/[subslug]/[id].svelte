@@ -76,7 +76,7 @@
                         <p>{product.longdesc}</p>
                     </div>
                     <span slot="head2">Характеристики</span>
-                    <div slot="details2">                       
+                    <div slot="details2">
                        <!--  <Lamp name={product}></Lamp> -->
                        <svelte:component this="{Mycomponent}" name={product}/>
                     </div>

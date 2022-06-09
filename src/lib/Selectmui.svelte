@@ -1,31 +1,31 @@
-<!-- <script context="module">
+<script>
+	export let namesCats
+	let namecat,Mycomponent,link
+	console.log(namesCats)
 
-	export async function load({ params, fetch }) {
-  
-	  const QUERY =  `{
-		subcats{
-		  data{id attributes{name subslug category{data{attributes{slug}}}}}
-		   }
+	async function getLinks(subcat){
+		const QUERY =  `{
+			links(filters:{
+				name:{contains:"${subcat}"}
+				})
+				{ data{id attributes{link}} }
+				subcats(filters:{
+				subslug:{contains:"${subcat}"}
+				})
+				{ data{id}}
 	  }`
   
 		const options = { method: "post",headers: {"Content-Type": "application/json"},body: JSON.stringify({query: QUERY})};
-		const res= await fetch(`https://teststrapikost.herokuapp.com/graphql`, options)//https://teststrapikost.herokuapp.com/graphql http://localhost:1337/graphql
-		const fin= await res.json()
-  
-		return {
-			  props: {
-				fields:fin.data.subcats.data
-			  }
-			};
+		const res= await fetch(`https://teststrapikost.herokuapp.com/graphql`, options)
+		link= await res.json()
 	}
-  </script> -->
 
-
-<script>
-	export let namesCats,namecat
-	console.log(namesCats)
-
-	const test = (e)=>{console.log(e.target.id,e.target.nextElementSibling.textContent);namecat='Upload'+e.target.id}
+	const test = (e)=>{
+		console.log(e.target.id,e.target.nextElementSibling.textContent);namecat='Upload'+e.target.id
+			getLinks(e.target.id).
+				then(()=> import(`../products/${e.target.id}/${namecat}.svelte`)).
+				then(res => Mycomponent = res.default)
+		}
 </script>
 
 <div class="select" tabindex="1">
@@ -37,9 +37,9 @@
       {/each}
 </div>
 
-{#if namecat}
+{#if Mycomponent}
 <div>
-	{namecat}
+	<svelte:component this="{Mycomponent}" links={link}/>
 </div>
 
 {/if}

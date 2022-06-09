@@ -22,7 +22,7 @@
 
 <script>
    import Selectmui from "$lib/Selectmui.svelte"
-   import Uploadlamp from "./../products/lamp/Uploadlamp.svelte";
+  //import Uploadlamp from "./../products/lamp/Uploadlamp.svelte";
   export let subcats
   //console.log(subcats)
   let images
@@ -93,7 +93,12 @@
     images=newArr
   }
   
-const test = ()=>{console.log(images)}
+const test = ()=>{
+ const inputs= document.getElementById('listValues')?.querySelectorAll('input')
+ console.log(inputs)
+ const finInp=Object.entries(inputs).filter(i=>i[1].value!="")
+ console.log(finInp)
+}
 
 const handleSubmit = async(e) => {
         let media = [],key='a',listim=''
@@ -105,6 +110,7 @@ const handleSubmit = async(e) => {
           catch(err) {console.log(432,err)}
 }
 
+//console.log(namecut)
 </script>
 
 <svelte:head>
@@ -113,11 +119,9 @@ const handleSubmit = async(e) => {
 </svelte:head>
   
   <div class="main">
-    <Uploadlamp></Uploadlamp>
     <Selectmui namesCats={subcats}></Selectmui>
     
     <input accept="image/png, image/jpeg" bind:files={images}
-      on:change={test}
       id="avatar" name="avatar" multiple type="file"
     />
  
@@ -133,6 +137,7 @@ const handleSubmit = async(e) => {
     </div>
   {/if}
 
+  <button on:click={test}>Загрузить на сервер</button>
   </div>
 
   <style>
