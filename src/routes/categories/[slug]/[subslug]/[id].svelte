@@ -32,10 +32,14 @@
         import Inputnumber from "$lib/Inputnumber.svelte"
         import Accordion from "$lib/Accordion.svelte"
         import flash from '$lib/flash.js';
-        import Lamps from '../../../../products/lamps/Lamps.svelte';
         export let product,catSubcat,namesCats
+        let Mycomponent
         const items=Object.values(product.listimage)
-        console.log(product,catSubcat,namesCats)
+        const f = catSubcat[1][0].toUpperCase() + catSubcat[1].slice(1)
+        console.log(product,catSubcat[1],f)
+        
+        import(`../../../../products/${catSubcat[1]}/${f}.svelte`).then(res => Mycomponent = res.default)
+        // import Lamp from '../../../../products/lamp/Lamp.svelte';
     </script>
     
     <div class="main">
@@ -72,8 +76,9 @@
                         <p>{product.longdesc}</p>
                     </div>
                     <span slot="head2">Характеристики</span>
-                    <div slot="details2">
-                        <Lamps  name={product}></Lamps>
+                    <div slot="details2">                       
+                       <!--  <Lamp name={product}></Lamp> -->
+                       <svelte:component this="{Mycomponent}" name={product}/>
                     </div>
                 </Accordion>
             </div>

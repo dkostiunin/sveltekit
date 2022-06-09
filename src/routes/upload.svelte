@@ -1,17 +1,36 @@
-<!-- <script context="module">
-  import { browser, dev } from '$app/env';
-	export const hydrate = dev;
-	export const router = browser;
-	export const prerender = true;
-</script> -->
+<script context="module">
+
+  export async function load({ params, fetch }) {
+
+    const QUERY =  `{
+      subcats{
+        data{id attributes{name subslug category{data{attributes{slug}}}}}
+         }
+    }`
+
+      const options = { method: "post",headers: {"Content-Type": "application/json"},body: JSON.stringify({query: QUERY})};
+      const res= await fetch(`https://teststrapikost.herokuapp.com/graphql`, options)//https://teststrapikost.herokuapp.com/graphql http://localhost:1337/graphql
+      const fin= await res.json()
+
+      return {
+            props: {
+              subcats:fin.data.subcats.data
+            }
+          };
+  }
+</script>
 
 <script>
+   import Selectmui from "$lib/Selectmui.svelte"
+   import Uploadlamp from "./../products/lamp/Uploadlamp.svelte";
+  export let subcats
+  //console.log(subcats)
   let images
 
   const imageUpload = async (images) => {
     let imgArr = []
 
-    /* for(const item of images){
+    for(const item of images){
         const formData = new FormData()
         formData.append("file", item)
         formData.append("upload_preset", import.meta.env.VITE_cloud_upload_preset)
@@ -23,9 +42,13 @@
         })
 
         const data = await res.json()
+        deleteImage(0)
         imgArr.push({public_id: data.public_id, url: data.secure_url})
-    } */
-    for(const item of images){
+        if(images.length==imgArr.length) alert("все загружено")
+    }
+    //
+        
+    /* for(const item of images){
         const formData = new FormData()
         formData.append("file", item)
         formData.append("upload_preset", "myuploads")
@@ -38,12 +61,12 @@
 
         const data = await res.json()
         imgArr.push({public_id: data.public_id, url: data.secure_url})
-    }
+    } */
 
     return imgArr;
 }
 
-const handleUploadInput = e => {
+  const handleUploadInput = e => {
     console.log(38,e.target.files)
     let newImages = []
     let num = 0
@@ -69,7 +92,6 @@ const handleUploadInput = e => {
     newArr.splice(index, 1)
     images=newArr
   }
-
   
 const test = ()=>{console.log(images)}
 
@@ -91,12 +113,13 @@ const handleSubmit = async(e) => {
 </svelte:head>
   
   <div class="main">
+    <Uploadlamp></Uploadlamp>
+    <Selectmui namesCats={subcats}></Selectmui>
     
     <input accept="image/png, image/jpeg" bind:files={images}
       on:change={test}
       id="avatar" name="avatar" multiple type="file"
     />
-  
  
   {#if images}
     <button on:click={handleSubmit}>Upload</button>
@@ -118,4 +141,6 @@ const handleSubmit = async(e) => {
     span{ position: absolute;right:0; font-size: xx-large;color: red;cursor: pointer;}
     .parentImg{display: flex;flex-wrap: wrap;gap: 10px;margin-left: 10px;margin-top: 10px;}
     .childImg{position: relative;}
+    button{cursor: pointer;}
+    button:active {color: red;}
   </style>
