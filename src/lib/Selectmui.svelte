@@ -1,38 +1,64 @@
 <script>
 	export let namesCats
-	let namecat,Mycomponent,link
+	let namecat,idCat,Mycomponent,link
 	console.log(namesCats)
 
 	async function getLinks(subcat){
 		const QUERY =  `{
-			links(filters:{
-				name:{contains:"${subcat}"}
-				})
-				{ data{id attributes{link}} }
-				subcats(filters:{
-				subslug:{contains:"${subcat}"}
-				})
-				{ data{id}}
-	  }`
-  
+			links(filters:{name:{contains:"${subcat}"}}){ data{id attributes{link}} }
+			subcats(filters:{subslug:{contains:"${subcat}"}}){ data{id}}
+	  }`  
 		const options = { method: "post",headers: {"Content-Type": "application/json"},body: JSON.stringify({query: QUERY})};
-		const res= await fetch(`https://teststrapikost.herokuapp.com/graphql`, options)
+		const res= await fetch(import.meta.env.VITE_strapiURL, options)
 		link= await res.json()
 	}
 
-	const test = (e)=>{
-		console.log(e.target.id,e.target.nextElementSibling.textContent);namecat='Upload'+e.target.id
+	async function postToStrapi(subcat,fields){
+		const QUERY =  `mutation{
+          ${subcat}(data:{${fields}
+           
+          })
+          {data{attributes{name}} } 
+         
+        }`
+		console.log(QUERY)
+		const options = { method: "post",headers: {"Content-Type": "application/json"},body: JSON.stringify({query: QUERY})};
+		const res= await fetch(import.meta.env.VITE_strapiURL, options)
+		const finres= await res.json()
+		console.log(finres)
+	}
+
+	const changeCategory = (e)=>{
+		console.log(e.target.id,e.target.nextElementSibling.textContent);idCat=e.target.id;namecat='Upload'+idCat
 			getLinks(e.target.id).
 				then(()=> import(`../products/${e.target.id}/${namecat}.svelte`)).
 				then(res => Mycomponent = res.default)
 		}
-</script>
+	const loadToStrapi = (e)=>{
+		if(document.getElementById('article').value==''||document.getElementById('name').value==''){alert('Нужно заполнить название и артикул')}
+		else {
+			const inputs= document.getElementById('listValues')?.querySelectorAll('textarea,input')
+			let fileds=''
+			const finInp=Object.entries(inputs).filter(i=>i[1].value!="")
+			finInp.forEach(j => {console.log(j[1].id,j[1].value)
+				//if((j[1].id=='article'||j[1].id=='name')&&j[1].value==""){alert('Нужно заполнить название и артикул')}
+				if(j[1].type=='textarea'){fileds=fileds+j[1].id+':'+'"'+j[1].value+'" '}
+				else if(j[1].type=='text'||j[1].type=='number'){fileds=fileds+j[1].id+':'+j[1].value+' '}
+				})
+			fileds=fileds+'subcat:'+link.data.subcats.data[0].id+' '+'link:'+link.data.links.data[0].id
+			const s='create'+idCat[0].toUpperCase() + idCat.slice(1)//createLamp
+			console.log(s,fileds)
+			postToStrapi(s,fileds)
+		}
+		//
+	}
+ </script>
 
 <div class="select" tabindex="1">
 	<input class="selectopt" name="test" type="radio" id="opt1" checked>
 	<label for="opt1" class="option">Выберите категорию</label>
 	{#each namesCats as el}
-	 <input class="selectopt" name="test" type="radio" id={el.attributes.subslug}  on:change={test}>
+	 <input class="selectopt" name="test" type="radio" id={el.attributes.subslug}  on:change={changeCategory}>
 	<label for={el.attributes.subslug} class="option">{el.attributes.name}</label>
       {/each}
 </div>
@@ -41,16 +67,12 @@
 <div>
 	<svelte:component this="{Mycomponent}" links={link}/>
 </div>
-
+<button on:click={loadToStrapi}>Загрузить на сервер</button>
 {/if}
 
 <style>
 	.select {
-	  display:flex;
-	  flex-direction: column;
-	  position:relative;
-	  width:250px;
-	  height:40px;
+	  display:flex;flex-direction: column;position:relative;width:250px;height:40px;margin: 10px;
 	}
 	
 	.option {
@@ -74,7 +96,7 @@
 	}
 	
 	.option:hover {
-	  background:#666;
+	  background:#e3e0e0;
 	}
 	
 	.select:focus .option {

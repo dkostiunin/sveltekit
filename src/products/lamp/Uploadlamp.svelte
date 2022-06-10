@@ -1,10 +1,12 @@
 <script>
 	export let links
 	let l=links.data.links.data[0].attributes.link
-	console.log(l,Object.entries(l.brand))
 	 const checkInt = (e) => {e.target.value=e.target.value.replace(/[^0-9]/gi,'')},
         //checkDec = (e) => {e.target.value=e.target.value.replace(/[^0-9,]/gi,'')},
-        checkText=(e) =>{e.target.value=e.target.value.replace(/[^a-zа-яё0-9 +-.,:;]/gi, '')},
+        checkText=(e) =>{
+			e.target.value=e.target.value.replace(/[^a-zа-яё0-9 +-.,:;]/gi, '');
+			e.target.rows=Math.ceil(e.target.value.length/e.target.cols)
+		},
         around = (e) => {if(e.target.value!='') e.target.value=(+e.target.value).toFixed(2)},
 		checkList = (e) => {
 			let v= Array.from(e.target.list.options).map(i=>i.value)
@@ -54,17 +56,16 @@
 		{/each}
 	</datalist>
 
+	<textarea rows="1" cols="39" id="name" placeholder="Название"   on:input={checkText}/>
+	<textarea id="article" placeholder="Артикул"  rows="1" cols="25" on:input={checkText}/>
+	<textarea id="countryorigin" placeholder="Страна происхождения"  rows="1" cols="25" on:input={checkText}/>
+	<textarea id="peculiarities" placeholder="Особенности"  rows="1" cols="25" on:input={checkText}/>
+	<textarea id="warranty" placeholder="Гарантия"  rows="1" cols="25" on:input={checkText}/>
+	<textarea id="shortdesc" placeholder="Краткое описание" rows="1" cols="25" on:input={checkText}/>
+	<textarea id="longdesc" placeholder="Полное описание" rows="1" cols="25" on:input={checkText}/>
 
-	<input id="name" placeholder="Название"   on:input={checkText} type="text"/>
-	<input id="article" placeholder="Артикул"   on:input={checkText} type="text"/>
 	<input id="price" placeholder="Цена" on:blur={around} type="number" step="0.01" min="0"/>
 	<input id="instock" placeholder="Количество" inputmode="numeric" on:input={checkInt} type="number"/>
-	<input id="countryorigin" placeholder="Страна происхождения"   on:input={checkText} type="text"/>
-	<input id="peculiarities" placeholder="Особенности"   on:input={checkText} type="text"/>
-	<input id="warranty" placeholder="Гарантия"   on:input={checkText} type="text"/>
-	<input id="shortdesc" placeholder="Краткое описание" on:input={checkText}   type="text"/>
-	<input id="longdesc" placeholder="Полное описание" on:input={checkText}   type="text"/>
-
 	<input id="Wattage" placeholder="Мощность"   on:input={checkInt} type="number"/>
 	<input id="Lifetime" placeholder="Срок службы"   on:input={checkInt} type="number"/>
 	<input id="luminous" placeholder="Яркость"   on:input={checkInt} type="number"/>
@@ -73,7 +74,12 @@
 	<input id="width" placeholder="Толщина(см)"   on:input={checkInt} type="number"/>
 	<input id="length" placeholder="Длина(см)"   on:input={checkInt} type="number"/>
 	<input id="weight" placeholder="Вес(кг)"   on:blur={around} type="number" step="0.01" min="0"/>
-	
 
 </div>
+
+<style>
+	#listValues{display: flex;flex-wrap: wrap;justify-content: space-around;gap: 10px;margin-bottom: 10px;}
+	textarea{width: 340px;font-size: larger;}
+	input{width: 150px;}
+</style>
 

@@ -12,14 +12,14 @@
 
 	const options = {  method: "post",headers: {"Content-Type": "application/json"},body: JSON.stringify({query: QUERY_PRODS()})};
  /*     onMount(async () => {//https://res.cloudinary.com/dxzefnveb/image/upload/v1653578851/jorql5rgzxlrilrlx0sy.svg
-		const res= await fetch(`https://teststrapikost.herokuapp.com/graphql`, options)//https://teststrapikost.herokuapp.com/graphql http://localhost:1337/graphql
+		const res= await fetch(`https://teststrapikost.herokuapp.com/graphql`, options)//http://localhost:1337/graphql
       const fin= await res.json()
       finres=fin.data.categories.data
        console.log(finres)
 	}); */
 
   export async function load({ fetch }) {
-    const res= await fetch(`https://teststrapikost.herokuapp.com/graphql`, options)//https://teststrapikost.herokuapp.com/graphql http://localhost:1337/graphql
+    const res= await fetch(import.meta.env.VITE_strapiURL, options)//http://localhost:1337/graphql
       const fin= await res.json()
       
     return {

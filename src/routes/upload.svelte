@@ -9,7 +9,7 @@
     }`
 
       const options = { method: "post",headers: {"Content-Type": "application/json"},body: JSON.stringify({query: QUERY})};
-      const res= await fetch(`https://teststrapikost.herokuapp.com/graphql`, options)//https://teststrapikost.herokuapp.com/graphql http://localhost:1337/graphql
+      const res= await fetch(import.meta.env.VITE_strapiURL, options)//
       const fin= await res.json()
 
       return {
@@ -24,7 +24,7 @@
    import Selectmui from "$lib/Selectmui.svelte"
   //import Uploadlamp from "./../products/lamp/Uploadlamp.svelte";
   export let subcats
-  //console.log(subcats)
+  console.log(subcats)
   let images
 
   const imageUpload = async (images) => {
@@ -93,13 +93,6 @@
     images=newArr
   }
   
-const test = ()=>{
- const inputs= document.getElementById('listValues')?.querySelectorAll('input')
- console.log(inputs)
- const finInp=Object.entries(inputs).filter(i=>i[1].value!="")
- console.log(finInp)
-}
-
 const handleSubmit = async(e) => {
         let media = [],key='a',listim=''
         const imgNewURL = Array.from(images).filter(img => !img.url)
@@ -137,7 +130,7 @@ const handleSubmit = async(e) => {
     </div>
   {/if}
 
-  <button on:click={test}>Загрузить на сервер</button>
+ 
   </div>
 
   <style>
