@@ -41,7 +41,7 @@
 <style>
   nav {
     background-color: #556cd6; font-family: "Roboto","Helvetica","Arial",sans-serif;
-    height: 68px; position: fixed;top: 0; left: 0; width: 100%;z-index: 2;
+    height: 68px; position: fixed;top: 0; left: 0; width: 100%;z-index: 5;
   }
 
   a{color: white; text-decoration: none;}

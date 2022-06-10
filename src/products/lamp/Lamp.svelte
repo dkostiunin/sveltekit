@@ -46,11 +46,15 @@
     <span>Цветовая температура</span>
     <span>{name.link.data.attributes.link.color[name.color]}</span>
 </div>
-
     
 <div>
     <span>Световой поток (Lm)</span>
     <span>{name.luminous}</span>
+</div>
+
+<div>
+    <span>Срок службы (час)</span>
+    <span>{name.Lifetime}</span>
 </div>
 
 <div>

@@ -18,8 +18,7 @@
     $: atStart = offset === 0;
     $: atEnd = offset <= paginationFactor * (items.length - scrollBy) * -1;
   
-    const move = direction => {
-      console.log(totalPaginationPixels)
+    const move = direction => {//console.log(totalPaginationPixels)
       if (direction > 0 && !atEnd) {
         offset -= totalPaginationPixels;
       } else if (direction < 0 && !atStart) {
