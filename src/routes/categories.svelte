@@ -19,7 +19,7 @@
 	}); */
 
   export async function load({ fetch }) {
-    const res= await fetch(import.meta.env.VITE_strapiLocal, options)//http://localhost:1337/graphql
+    const res= await fetch(import.meta.env.VITE_strapiURL, options)//http://localhost:1337/graphql
       const fin= await res.json()
       
     return {

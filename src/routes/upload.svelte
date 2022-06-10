@@ -6,7 +6,7 @@
     }`
 
       const options = { method: "post",headers: {"Content-Type": "application/json"},body: JSON.stringify({query: QUERY})};
-      const res= await fetch(import.meta.env.VITE_strapiLocal, options)//
+      const res= await fetch(import.meta.env.VITE_strapiURL, options)//
       const fin= await res.json()
 
       return {

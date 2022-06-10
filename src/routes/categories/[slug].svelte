@@ -11,7 +11,7 @@
 
 const options = {  method: "post",headers: {"Content-Type": "application/json"},body: JSON.stringify({query: QUERY})};
 
-const res= await fetch(import.meta.env.VITE_strapiLocal, options)//http://localhost:1337/graphql
+const res= await fetch(import.meta.env.VITE_strapiURL, options)//http://localhost:1337/graphql
       const fin= await res.json()
  return {
       props: {

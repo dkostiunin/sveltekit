@@ -9,7 +9,7 @@
 			subcats(filters:{subslug:{contains:"${subcat}"}}){ data{id}}
 	  }`  
 		const options = { method: "post",headers: {"Content-Type": "application/json"},body: JSON.stringify({query: QUERY})};
-		const res= await fetch(import.meta.env.VITE_strapiLocal, options)
+		const res= await fetch(import.meta.env.VITE_strapiURL, options)
 		link= await res.json()
 	}
 
@@ -19,7 +19,7 @@
           {data {attributes{name}} }
 		}`
 		const options = { method: "post",headers: {"Content-Type": "application/json"},body: JSON.stringify({query: QUERY})};
-		const res= await fetch(import.meta.env.VITE_strapiLocal, options)
+		const res= await fetch(import.meta.env.VITE_strapiURL, options)
 		const finres= await res.json()
 		console.log(finres)
 		
