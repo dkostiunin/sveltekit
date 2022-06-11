@@ -37,27 +37,21 @@ const fin= await res.json()
 </script>
  
  <script>
+    import Sidebar from '$lib/Sidebar.svelte';
+    let sidebar_show = false;
+
     import flash from '$lib/flash.js';
     import InfiniteScroll from "svelte-infinite-scroll";
     export let products,catSubcat,namesCats
     console.log(products,catSubcat,namesCats)
 
-    let page = 0;
-    let size = 5;
-    let elementsVisible = [];
-
+    let page = 0, size = 5, elementsVisible = [];
     $: elementsVisible = [
       ...elementsVisible,
       ...products.slice(size * page, size * (page + 1))
     ];
     $: hasMore = elementsVisible.length < products.length;
     
-    const changeStyle = (e) => {console.log(e,)}
-
-    function handleKeydown(event) {
-      console.log(333333)
-	}
-  let current = 'foo';
   </script>
 
 <svelte:head>
@@ -65,14 +59,9 @@ const fin= await res.json()
 	<meta name="description" content="Каталог"/>
 </svelte:head>
 
-<svelte:body class:selected="{current === 'foo'}"
-	on:load={changeStyle}
-
-/>
-<svelte:window on:load="{()=>handleKeydown()}"/>
-  
 <div class="main">
-
+  <button class="sidebar" on:click={() => sidebar_show = !sidebar_show}>Toggle Sidebar</button>
+  <Sidebar bind:show={sidebar_show} />
   <nav class="nav">
     <ol>
       <li><a sveltekit:prefetch href="/categories"><p>Каталог</p></a></li>
@@ -207,6 +196,7 @@ const fin= await res.json()
   }
   .buttons{display: flex; width: 90%;height: 8%;justify-content: space-between;align-items: center;}
   .nowButton{background-color:#2e7d32}
+  .sidebar{position: fixed;top: 75px;right: 0;}
 
   @media only screen and (min-width: 600px) {
       .nav{display: block;margin-top: 65px;width: 100%;}
