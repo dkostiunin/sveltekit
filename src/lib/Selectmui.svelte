@@ -23,14 +23,23 @@
 		const finres= await res.json()
 		console.log(finres)
 		
-		if(finres.errors){alert('Что то пошло не так, возможно наименование или артикул не уникальны (уже существуют)')}
-		else{Mycomponent=null;alert('Успешно загружено')}		
+		if(finres.errors){console.log(finres.errors[0].message)
+			if(finres.errors[0].message=='Internal Server Error') alert('Что то пошло не так: возможно наименование или артикул не уникальны(уже существуют)')
+			else alert('Что то пошло не так:'+finres.errors[0].message)
+		}
+		else{
+			Mycomponent=null;
+			changeCategory()
+			//
+			alert('Успешно загружено')
+		}		
 	}
 
 	const changeCategory = (e)=>{
-		console.log(e.target.id,e.target.nextElementSibling.textContent);idCat=e.target.id;namecat='Upload'+idCat
-			getLinks(e.target.id).
-				then(()=> import(`../products/${e.target.id}/${namecat}.svelte`)).
+		//console.log(e.target.id,e.target.nextElementSibling.textContent);
+		if(e) idCat=e.target.id;namecat='Upload'+idCat
+			getLinks(idCat).
+				then(()=> import(`../products/${idCat}/${namecat}.svelte`)).
 				then(res => Mycomponent = res.default)
 		}
 	const loadToStrapi = async (e)=>{
