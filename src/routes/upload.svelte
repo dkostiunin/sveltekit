@@ -16,7 +16,7 @@
 </script>
 
 <script>
-  import Selectmui from "$lib/Selectmui.svelte"  //import Uploadlamp from "./../products/lamp/Uploadlamp.svelte";
+  import Selectmui from "$lib/Selectmui.svelte"
   export let subcats
   console.log(subcats)
 

@@ -29,7 +29,8 @@
     const resize = () => {paginationFactor=size.clientWidth;
       totalPaginationPixels = scrollBy * paginationFactor;
       offset=0
-    console.log(size.clientWidth)};
+   // console.log(size.clientWidth)
+  };
 
   </script>
 

@@ -51,9 +51,9 @@ const res= await fetch(import.meta.env.VITE_strapiURL, options)//http://localhos
             </a>
       {/each}
   </div>
-          {#each subcats.attributes.subcats.data as el}
+         <!--  {#each subcats.attributes.subcats.data as el}
               <p>{el.attributes.desc}</p>
-          {/each}
+          {/each} -->
 
   </div>
 

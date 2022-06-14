@@ -2,7 +2,7 @@
   import { fields } from '$lib/fields';
 
   export async function load({ params, fetch }) {
-   // console.log(params.subslug,params.slug)
+    console.log(params.subslug,params.slug)
     const f=fields(params.subslug).fields,s=params.subslug+'s'//,filt=fields(params.subslug).filters
 
     const QUERY =  `{
