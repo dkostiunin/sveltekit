@@ -8,6 +8,11 @@
 			e.target.rows=Math.ceil(e.target.value.length/e.target.cols)
 		},
         around = (e) => {if(e.target.value!='') e.target.value=(+e.target.value).toFixed(2)},
+		around2 = (e) => {
+			if(e.target.value!='') e.target.value=(+e.target.value).toFixed(1);
+			console.log(e.target.value.length,e.target.value.slice(0, -2))
+			if(e.target.value.length>=3&&e.target.value[e.target.value.length-1]==0) e.target.value=e.target.value.slice(0, -2)
+		},
 		checkList = (e) => {
 			let v= Array.from(e.target.list.options).map(i=>i.value)
 			if(!v.includes(e.target.value))e.target.value=''
@@ -66,7 +71,7 @@
 
 	<input id="price" placeholder="Цена" on:blur={around} type="number" step="0.01" min="0"/>
 	<input id="instock" placeholder="Количество" inputmode="numeric" on:input={checkInt} type="number"/>
-	<input id="Wattage" placeholder="Мощность"   on:input={checkInt} type="number"/>
+	<input id="Wattage" placeholder="Мощность" on:blur={around2} type="number" step="0.1" min="0"/>
 	<input id="Lifetime" placeholder="Срок службы"   on:input={checkInt} type="number"/>
 	<input id="luminous" placeholder="Яркость"   on:input={checkInt} type="number"/>
 	<input id="EAN13" placeholder="Штрихкод"   on:input={checkInt} type="number"/>

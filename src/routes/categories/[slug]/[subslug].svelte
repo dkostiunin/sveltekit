@@ -3,15 +3,13 @@
 
   export async function load({ params, fetch }) {
    // console.log(params.subslug,params.slug)
-    const f=fields(params.subslug).fields,s=params.subslug+'s'
+    const f=fields(params.subslug).fields,s=params.subslug+'s'//,filt=fields(params.subslug).filters
 
     const QUERY =  `{
       categories(filters: {slug: { contains:"${params.slug}"}}){data{attributes{name}}}
       subcats(filters: {subslug: { contains:"${params.subslug}"}}){data{ attributes{name}}}
-      
       ${s}
-              {data{id attributes{
-                        listimage name price instock link{data{attributes{link}}}
+              {data{id attributes{ ${f} link{data {attributes{link}} }
                     }}
               }
             }`
@@ -30,7 +28,8 @@ const fin= await res.json()
       props: {
         products:fin.data[s].data,
         catSubcat:[params.slug,params.subslug],
-        namesCats:[fin.data.categories.data[0].attributes.name,fin.data.subcats.data[0].attributes.name]
+        namesCats:[fin.data.categories.data[0].attributes.name,fin.data.subcats.data[0].attributes.name],
+       // filters:filt
       }
     };
   }
@@ -38,7 +37,7 @@ const fin= await res.json()
  
  <script>
     import Sidebar from '$lib/Sidebar.svelte';
-    let sidebar_show = false;
+    let sidebar_show = false
 
     import flash from '$lib/flash.js';
     import InfiniteScroll from "svelte-infinite-scroll";
@@ -50,15 +49,19 @@ const fin= await res.json()
     })
 
     export let products,catSubcat,namesCats
-   // console.log(products,catSubcat,namesCats)
+    let filtersData=products
+    console.log(catSubcat[1],products)
 
-    let page = 0, size = 5, elementsVisible = [];
+    $: productsFilter=products.filter(i=>(console.log(filtersData)
+      ))
+
+    let page = 0, size = 5, elementsVisible = []   
     $: elementsVisible = [
       ...elementsVisible,
-      ...products.slice(size * page, size * (page + 1))
+      ...filtersData.slice(size * page, size * (page + 1))
     ];
-    $: hasMore = elementsVisible.length < products.length;
-    
+    $: hasMore = elementsVisible.length < filtersData.length;
+
   </script>
 
 <svelte:head>
@@ -66,7 +69,7 @@ const fin= await res.json()
 	<meta name="description" content="Каталог"/>
 </svelte:head>
 
-<div class="main">
+<div class="main"> 
   <button class="sidebar">
     <svg viewBox="0 0 24 24" on:click={() => {sidebar_show = !sidebar_show
       }}
@@ -74,8 +77,7 @@ const fin= await res.json()
       <path fill="white" fill-rule="evenodd" d="M19,7.17070571 C20.1651924,7.58254212 21,8.69378117 21,10 C21,11.3062188 20.1651924,12.4174579 19,12.8292943 L19,19 C19,19.5522847 18.5522847,20 18,20 C17.4477153,20 17,19.5522847 17,19 L17,12.8292943 C15.8348076,12.4174579 15,11.3062188 15,10 C15,8.69378117 15.8348076,7.58254212 17,7.17070571 L17,5 C17,4.44771525 17.4477153,4 18,4 C18.5522847,4 19,4.44771525 19,5 L19,7.17070571 Z M15,15 C15,16.3062188 14.1651924,17.4174579 13,17.8292943 L13,19 C13,19.5522847 12.5522847,20 12,20 C11.4477153,20 11,19.5522847 11,19 L11,17.8292943 C9.83480763,17.4174579 9,16.3062188 9,15 C9,13.6937812 9.83480763,12.5825421 11,12.1707057 L11,5 C11,4.44771525 11.4477153,4 12,4 C12.5522847,4 13,4.44771525 13,5 L13,12.1707057 C14.1651924,12.5825421 15,13.6937812 15,15 Z M7,7.17070571 C8.16519237,7.58254212 9,8.69378117 9,10 C9,11.3062188 8.16519237,12.4174579 7,12.8292943 L7,19 C7,19.5522847 6.55228475,20 6,20 C5.44771525,20 5,19.5522847 5,19 L5,12.8292943 C3.83480763,12.4174579 3,11.3062188 3,10 C3,8.69378117 3.83480763,7.58254212 5,7.17070571 L5,5 C5,4.44771525 5.44771525,4 6,4 C6.55228475,4 7,4.44771525 7,5 L7,7.17070571 Z"/>
     </svg>
   </button>
-  <Sidebar bind:show={sidebar_show} 
-  dataGoods={products} subcat={catSubcat[1]}/>
+  <Sidebar bind:show={sidebar_show} bind:filtersData dataGoods={products} subcat={catSubcat[1]}/>
   <nav class="nav">
     <ol>
       <li><a sveltekit:prefetch href="/categories"><p>Каталог</p></a></li>
@@ -86,7 +88,8 @@ const fin= await res.json()
     </ol>
   </nav>
   <div class="nav2"></div>
-  {#each elementsVisible as el}
+  
+  {#each filtersData as el}
     <div class="child">
 
       <div class="body">
@@ -112,7 +115,9 @@ const fin= await res.json()
 
     </div>
   {/each}
-  <InfiniteScroll {hasMore} threshold={1000} on:loadMore={() => page++}/>
+  
+  <InfiniteScroll {hasMore} threshold={100} on:loadMore={() =>{ console.log(elementsVisible,)
+    page++}}/>
 </div>
 
 <style>

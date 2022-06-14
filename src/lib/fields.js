@@ -65,7 +65,7 @@ export function fields(subcat,queries){
       if(ff.length>0)ff.forEach(el => {filtr=filtr+el});
       filtr=filtr+']}' */
       return ({fields:'createdAt lampholder color brand type Wattage Voltage Lifetime luminous name price shortdesc longdesc listimage instock  sold rating ratecount article EAN13 countryorigin warranty flaskshape function',
-              //filters:filtr
+             // filters:['brand','color','lampholder','type','Voltage','function','flaskshape','Lifetime','luminous','price','Wattage','rating']
               })
     }
   }
