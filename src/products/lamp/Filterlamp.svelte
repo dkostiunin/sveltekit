@@ -2,6 +2,8 @@
     export let prods,filtersData=[]
    // console.log(prods)
     import Doublerange from "$lib/doublerange/Doublerange.svelte";
+    import Multiselect from "$lib/Multiselect.svelte";
+
     
     let price=prods.map(i=>i.attributes.price).sort(function (a, b) {
           if (a > b) {return 1}
@@ -34,6 +36,9 @@
     filtersData=filtersData.filter(i=>(i.attributes.Lifetime>=range3[0]&&i.attributes.Lifetime<=range3[1]))
     filtersData=filtersData.filter(i=>(i.attributes.luminous>=range4[0]&&i.attributes.luminous<=range4[1]))
    }
+
+   function handleMessage(e) {console.log(e.detail);}
+   let number = [{'value':'333', 'name':'eee'},{'value':'444', 'name':'fffff'}]
    
 </script>
 
@@ -63,6 +68,11 @@
     <input type="number" bind:value={range4[0]} on:change={filtering}/>
     <Doublerange min={lm[0]} max={lm[lm.length-1]} step="100" bind:value={range4} range order on:input={filtering}/>
     <input type="number" bind:value={range4[1]} on:change={filtering}/>
+</div>
+
+<div class="slider slider2">
+    <p>Multiselect</p>
+    <Multiselect list ={number} on:message={handleMessage}></Multiselect>
 </div>
 
 <style>
