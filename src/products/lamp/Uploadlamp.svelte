@@ -11,7 +11,7 @@
 		around2 = (e) => {
 			if(e.target.value!='') e.target.value=(+e.target.value).toFixed(1);
 			console.log(e.target.value.length,e.target.value.slice(0, -2))
-			if(e.target.value.length>=3&&e.target.value[e.target.value.length-1]==0) e.target.value=e.target.value.slice(0, -2)
+			if(e.target.value.length>=3&&e.target.value[e.target.value.length-1]==0) e.target.value=(+e.target.value.slice(0, -2))
 		},
 		checkList = (e) => {
 			let v= Array.from(e.target.list.options).map(i=>i.value)
