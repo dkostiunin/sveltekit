@@ -52,8 +52,7 @@ const fin= await res.json()
     let filtersData=products
     console.log(catSubcat[1],products)
 
-    $: productsFilter=products.filter(i=>(console.log(filtersData)
-      ))
+   // $: productsFilter=products.filter(i=>(console.log(filtersData)))
 
     let page = 0, size = 5, elementsVisible = []   
     $: elementsVisible = [

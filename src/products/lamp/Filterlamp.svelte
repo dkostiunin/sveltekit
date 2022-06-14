@@ -1,6 +1,6 @@
 <script>
     export let prods,filtersData=[]
-   // console.log(prods)
+    console.log(prods)
     import Doublerange from "$lib/doublerange/Doublerange.svelte";
     import Multiselect from "$lib/Multiselect.svelte";
 
@@ -25,7 +25,13 @@
           if (a > b) {return 1}
           if (a < b) {return -1}
           return 0;
-        })
+        }),
+        brand=[], color=[], flaskshape=[], lampholder=[], type=[], func=[], Voltage=[]
+
+    prods.forEach(i => {
+        brand.push({'value':i.attributes.brand, 'name':i.attributes.link.data.attributes.link.brand[i.attributes.brand]})
+    });
+        console.log(brand)
 
     let range1 = [price[0], price[price.length-1]],range2 = [watt[0], watt[watt.length-1]],
         range3 = [lt[0], lt[lt.length-1]],range4 = [lm[0], lm[lm.length-1]]
@@ -71,8 +77,8 @@
 </div>
 
 <div class="slider slider2">
-    <p>Multiselect</p>
-    <Multiselect list ={number} on:message={handleMessage}></Multiselect>
+    <p>Бренд</p>
+    <Multiselect list ={brand} on:message={handleMessage}></Multiselect>
 </div>
 
 <style>
