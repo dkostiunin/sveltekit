@@ -42,6 +42,7 @@
   nav {
     background-color: #556cd6; font-family: "Roboto","Helvetica","Arial",sans-serif;
     height: 68px; position: fixed;top: 0; left: 0; width: 100%;z-index: 5;
+    box-shadow: rgb(0 0 0 / 20%) 0px 2px 4px -1px, rgb(0 0 0 / 14%) 0px 4px 5px 0px, rgb(0 0 0 / 12%) 0px 1px 10px 0px;
   }
 
   a{color: white; text-decoration: none;}

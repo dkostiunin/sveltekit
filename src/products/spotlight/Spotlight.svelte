@@ -44,17 +44,17 @@
 </div>
 
 <div>
-   <span class="span1">Размеры (ширина х длина или диаметр) (см)</span>
+   <span class="span1">Размеры (ширина х длина или диаметр) (мм)</span>
    <span class="span2">{name.length}х{name.width}</span>
 </div>
 
 <div>
-   <span class="span1">Толщина (высота) (см)</span>
+   <span class="span1">Толщина (высота) (мм)</span>
    <span class="span2">{name.height}</span>
 </div>
 
 <div>
-   <span class="span1">D врезного отверстия (см)</span>
+   <span class="span1">D врезного отверстия (мм)</span>
    <span class="span2">{name.mortisediam}</span>
 </div>
 

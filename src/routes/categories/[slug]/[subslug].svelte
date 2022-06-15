@@ -38,6 +38,8 @@ const fin= await res.json()
  <script>
     import Sidebar from '$lib/Sidebar.svelte';
     let sidebar_show = false
+    import Modal from '$lib/Modal.svelte';
+    let modal_show = false,svgPict
 
     import flash from '$lib/flash.js';
     import InfiniteScroll from "svelte-infinite-scroll";
@@ -68,15 +70,23 @@ const fin= await res.json()
 	<meta name="description" content="Каталог"/>
 </svelte:head>
 
+<button class="sidebar2" on:click={() => modal_show = !modal_show}>
+  <svg viewBox="0 0 24 24">
+   <!--  <path  fill="white" d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,4A8,8 0 0,1 20,12A8,8 0 0,1 12,20A8,8 0 0,1 4,12A8,8 0 0,1 12,4M9.75,7.82C8.21,7.82 7,9.03 7,10.57C7,12.46 8.7,14 11.28,16.34L12,17L12.72,16.34C15.3,14 17,12.46 17,10.57C17,9.03 15.79,7.82 14.25,7.82C13.38,7.82 12.55,8.23 12,8.87C11.45,8.23 10.62,7.82 9.75,7.82Z"/> -->
+    <!-- <path fill="white" d="M20 4H4c-1.11 0-1.99.89-1.99 2L2 18c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zM8.5 15H7.3l-2.55-3.5V15H3.5V9h1.25l2.5 3.5V9H8.5v6zm5-4.74H11v1.12h2.5v1.26H11v1.11h2.5V15h-4V9h4v1.26zm7 3.74c0 .55-.45 1-1 1h-4c-.55 0-1-.45-1-1V9h1.25v4.51h1.13V9.99h1.25v3.51h1.12V9h1.25v5z"/> -->
+    
+</svg>
+</button>
+<Modal bind:show={modal_show}/>
+
 <div class="main"> 
   <button class="sidebar">
-    <svg viewBox="0 0 24 24" on:click={() => {sidebar_show = !sidebar_show
-      }}
-     >
+    <svg viewBox="0 0 24 24" on:click={() => sidebar_show = !sidebar_show}>
       <path fill="white" fill-rule="evenodd" d="M19,7.17070571 C20.1651924,7.58254212 21,8.69378117 21,10 C21,11.3062188 20.1651924,12.4174579 19,12.8292943 L19,19 C19,19.5522847 18.5522847,20 18,20 C17.4477153,20 17,19.5522847 17,19 L17,12.8292943 C15.8348076,12.4174579 15,11.3062188 15,10 C15,8.69378117 15.8348076,7.58254212 17,7.17070571 L17,5 C17,4.44771525 17.4477153,4 18,4 C18.5522847,4 19,4.44771525 19,5 L19,7.17070571 Z M15,15 C15,16.3062188 14.1651924,17.4174579 13,17.8292943 L13,19 C13,19.5522847 12.5522847,20 12,20 C11.4477153,20 11,19.5522847 11,19 L11,17.8292943 C9.83480763,17.4174579 9,16.3062188 9,15 C9,13.6937812 9.83480763,12.5825421 11,12.1707057 L11,5 C11,4.44771525 11.4477153,4 12,4 C12.5522847,4 13,4.44771525 13,5 L13,12.1707057 C14.1651924,12.5825421 15,13.6937812 15,15 Z M7,7.17070571 C8.16519237,7.58254212 9,8.69378117 9,10 C9,11.3062188 8.16519237,12.4174579 7,12.8292943 L7,19 C7,19.5522847 6.55228475,20 6,20 C5.44771525,20 5,19.5522847 5,19 L5,12.8292943 C3.83480763,12.4174579 3,11.3062188 3,10 C3,8.69378117 3.83480763,7.58254212 5,7.17070571 L5,5 C5,4.44771525 5.44771525,4 6,4 C6.55228475,4 7,4.44771525 7,5 L7,7.17070571 Z"/>
     </svg>
-  </button>
-  <Sidebar bind:show={sidebar_show} bind:filtersData dataGoods={products} subcat={catSubcat[1]}/>
+  </button> 
+  <Sidebar bind:show={sidebar_show} bind:filtersData dataGoods={products} subcat={catSubcat[1]}/>  
+ 
   <nav class="nav">
     <ol>
       <li><a sveltekit:prefetch href="/categories"><p>Каталог</p></a></li>
@@ -217,12 +227,13 @@ const fin= await res.json()
   .buttons{display: flex; width: 90%;height: 8%;justify-content: space-between;align-items: center;}
   .nowButton{background-color:#2e7d32}
   .sidebar{position: fixed;top: 75px;right: 0px;width: 48px;height: 36px;}
+  .sidebar2{position: fixed;top: 120px;right: 0px;width: 48px;height: 36px;}
   svg{width: 40px;}
 
   @media only screen and (min-width: 600px) {
       .nav{display: block;margin-top: 65px;width: 100%;}
       .nav2{display: none;}
-      .sidebar{right: 24px;}
+      .sidebar,.sidebar2{right: 24px;}
   }
 
 </style>

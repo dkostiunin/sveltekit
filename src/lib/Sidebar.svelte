@@ -36,7 +36,7 @@
         background: rgba(0, 0, 0, 0.5); cursor: default;z-index: 5;
     }
 
-    span{cursor: pointer;font-size: x-large;position: absolute;top: 6px;left: 20px;}
+    span{cursor: pointer;font-size: large;position: absolute;top: 6px;left: 20px;}
     @media only screen and (min-width: 600px) {
       span{left: 10px;font-size: x-large;}
     }
