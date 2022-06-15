@@ -16,7 +16,7 @@
   
         const options = { method: "post",headers: {"Content-Type": "application/json"},body: JSON.stringify({query: QUERY})};
         
-        const res= await fetch(import.meta.env.VITE_strapiURL, options)//http://localhost:1337/graphql
+        const res= await fetch(import.meta.env.VITE_strapiURL, options)
                 const fin= await res.json()
         return {props: {
                 product:fin.data[params.subslug].data.attributes,
@@ -50,11 +50,11 @@
 <div class="main">
     <nav class="nav">
         <ol>
-            <li><a sveltekit:prefetch href="/categories"><p>Каталог</p></a></li>
+            <li><a sveltekit:prefetch href="/categories"><p class="navP">Каталог</p></a></li>
             <li><p class="slash">/</p></li>
-            <li><a sveltekit:prefetch href={`/categories/${catSubcat[0]}`}><p>{namesCats[0]}</p></a></li>
+            <li><a sveltekit:prefetch href={`/categories/${catSubcat[0]}`}><p class="navP">{namesCats[0]}</p></a></li>
             <li><p class="slash">/</p></li>
-            <li><a sveltekit:prefetch href={`/categories/${catSubcat[0]}/${catSubcat[1]}`}><p>{namesCats[1]}</p></a></li>
+            <li><a sveltekit:prefetch href={`/categories/${catSubcat[0]}/${catSubcat[1]}`}><p class="navP">{namesCats[1]}</p></a></li>
             <li><p class="slash">/</p></li>
             <li><p class="last">{product.name}</p></li>
         </ol>
@@ -106,6 +106,7 @@
 
     p{margin: 0 3px;color: #323232;;}
     .slash{font-size: medium;}
+    .navP{color: grey;}
     .last{color: black;}
     .nav{display: none;}
 

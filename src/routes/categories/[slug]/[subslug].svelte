@@ -50,7 +50,7 @@ const fin= await res.json()
 
     export let products,catSubcat,namesCats
     let filtersData=products
-    console.log(catSubcat[1],products)
+   // console.log(catSubcat[1],products)
 
    // $: productsFilter=products.filter(i=>(console.log(filtersData)))
 

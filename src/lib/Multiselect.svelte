@@ -49,32 +49,20 @@
       }
     }
   
-    function handleKeyup(e) {
-      if (e.keyCode === 13) {
-        Object.keys(selected).includes(activeOption.value) ? remove(activeOption.value) : add(activeOption);
-        inputValue = '';
-      }
-      if ([38,40].includes(e.keyCode)) { // up and down arrows
-        const increment = e.keyCode === 38 ? -1 : 1;
-        const calcIndex = filtered.indexOf(activeOption) + increment;
-        activeOption = calcIndex < 0 ? filtered[filtered.length - 1]
-          : calcIndex === filtered.length ? filtered[0]
-          : filtered[calcIndex];
-      }
-    }
-  
     function handleBlur(e) {
       optionsVisibility(false);
-      dispatch('message', selected);
+      dispatch('message', [id,selected]);
     }
   
     function handleTokenClick(e) {
       if (e.target.closest('.token-remove')) {
         e.stopPropagation();
         remove(e.target.closest('.token').dataset.id);
+        dispatch('message', [id,selected])
       } else if (e.target.closest('.remove-all')) {
         selected = [];
         inputValue = '';
+        dispatch('message', [id,selected])
       } else {
         optionsVisibility(true);
       }
@@ -195,7 +183,7 @@
       padding-inline-start: 0;
       position: absolute;
       top: calc(100% + 1px);
-      width: 100%;
+      width: 100%;z-index: 9;
     }
     li {
       background-color: white;
@@ -245,7 +233,7 @@
       {/each}
       <div class="actions">
         {#if !readonly}
-          <input id={id} autocomplete="off" bind:value={inputValue} bind:this={input} on:keyup={handleKeyup} on:blur={handleBlur} placeholder={placeholder}/>
+          <input id={id} autocomplete="off" bind:value={inputValue} bind:this={input} on:blur={handleBlur} placeholder={placeholder}/>
           <div class="remove-all" title="Remove All" class:hidden={!Object.keys(selected).length}>
             <svg class="icon-clear" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24">
               <path d="{iconClearPath}"/>
