@@ -39,7 +39,7 @@ const fin= await res.json()
     import Sidebar from '$lib/Sidebar.svelte';
     let sidebar_show = false
     import Modal from '$lib/Modal.svelte';
-    let modal_show = false,svgPict
+    let modal_show = false,svgImage
 
     import flash from '$lib/flash.js';
     import InfiniteScroll from "svelte-infinite-scroll";
@@ -51,12 +51,13 @@ const fin= await res.json()
     })
 
     export let products,catSubcat,namesCats
+    
     let filtersData=products
    // console.log(catSubcat[1],products)
 
    // $: productsFilter=products.filter(i=>(console.log(filtersData)))
 
-    let page = 0, size = 5, elementsVisible = []   
+    let page = 0, size = 5, elementsVisible = []
     $: elementsVisible = [
       ...elementsVisible,
       ...filtersData.slice(size * page, size * (page + 1))
@@ -72,12 +73,13 @@ const fin= await res.json()
 
 <button class="sidebar2" on:click={() => modal_show = !modal_show}>
   <svg viewBox="0 0 24 24">
+     <path  fill="white" d={svgImage}/>
    <!--  <path  fill="white" d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,4A8,8 0 0,1 20,12A8,8 0 0,1 12,20A8,8 0 0,1 4,12A8,8 0 0,1 12,4M9.75,7.82C8.21,7.82 7,9.03 7,10.57C7,12.46 8.7,14 11.28,16.34L12,17L12.72,16.34C15.3,14 17,12.46 17,10.57C17,9.03 15.79,7.82 14.25,7.82C13.38,7.82 12.55,8.23 12,8.87C11.45,8.23 10.62,7.82 9.75,7.82Z"/> -->
     <!-- <path fill="white" d="M20 4H4c-1.11 0-1.99.89-1.99 2L2 18c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zM8.5 15H7.3l-2.55-3.5V15H3.5V9h1.25l2.5 3.5V9H8.5v6zm5-4.74H11v1.12h2.5v1.26H11v1.11h2.5V15h-4V9h4v1.26zm7 3.74c0 .55-.45 1-1 1h-4c-.55 0-1-.45-1-1V9h1.25v4.51h1.13V9.99h1.25v3.51h1.12V9h1.25v5z"/> -->
     
 </svg>
 </button>
-<Modal bind:show={modal_show}/>
+<Modal bind:show={modal_show} bind:svgImage/>
 
 <div class="main"> 
   <button class="sidebar">
@@ -125,8 +127,7 @@ const fin= await res.json()
     </div>
   {/each}
   
-  <InfiniteScroll {hasMore} threshold={100} on:loadMore={() =>{ console.log(elementsVisible,)
-    page++}}/>
+  <InfiniteScroll {hasMore} threshold={100} on:loadMore={() =>{ console.log(elementsVisible,);page++}}/>
 </div>
 
 <style>

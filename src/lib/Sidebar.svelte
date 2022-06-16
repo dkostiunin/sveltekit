@@ -11,7 +11,7 @@
 {#if show}
         <div class="overlay" on:click={()=> show = false} transition:fade={{duration: 300}}/>
     {/if}
-<nav class:navVisible="{show}" transition:fade={{duration: 300}}>    
+<nav class:navVisible="{show}" transition:fade={{duration: 300}}>
     <span on:click={()=> show = false}>&#10006;</span>
     {#if Mycomponent}
         <svelte:component this="{Mycomponent}" bind:filtersData prods={dataGoods}/>
