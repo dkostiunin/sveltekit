@@ -51,7 +51,7 @@
 
     $: if(yes||!yes)filtering()
 
-   function filtering(e={detail:[]}){
+   function filtering(e={detail:[]}){test(e)
     filtersData=prods.filter(i=>(i.attributes.price>=range1[0]&&i.attributes.price<=range1[1]))
     filtersData=filtersData.filter(i=>(i.attributes.Wattage>=range2[0]&&i.attributes.Wattage<=range2[1]))
     filtersData=filtersData.filter(i=>(i.attributes.luminous>=range3[0]&&i.attributes.luminous<=range3[1]))
@@ -76,23 +76,38 @@
      console.log(filtersData)
    }
 
+   function test(e){
+        if(e.target&&e.target.parentElement.id=='price'){
+            if(range1[0]<price[0]||range1[0]>=range1[1]){range1[0]=price[0]}
+            if(range1[1]> price[price.length-1]||range1[1]<=range1[0]){range1[1]= price[price.length-1]}
+        }
+        else if(e.target&&e.target.parentElement.id=='watt'){
+            if(range2[0]<watt[0]||range2[0]>=range2[1]){range2[0]=watt[0]}
+            if(range2[1]> watt[watt.length-1]||range2[1]<=range2[0]){range2[1]= watt[watt.length-1]}
+        }
+        else if(e.target&&e.target.parentElement.id=='lm'){
+            if(range3[0]<lm[0]||range3[0]>=range3[1]){range3[0]=lm[0]}
+            if(range3[1]> lm[lm.length-1]||range3[1]<=range3[0]){range3[1]= lm[lm.length-1]}
+        }
+    }
+
 </script>
 
-<div class="slider">
+<div id="price" class="slider">
     <p>Цена</p>
     <input type="number" bind:value={range1[0]} on:change={filtering}/>
     <Doublerange min={price[0]} max={price[price.length-1]} step="1" bind:value={range1} range order on:input={filtering}/>
     <input type="number" bind:value={range1[1]} on:change={filtering}/>
 </div>
 
-<div class="slider slider2">
+<div  id="watt" class="slider slider2">
     <p>Мощность (W)</p>
     <input type="number" bind:value={range2[0]} on:change={filtering}/>
     <Doublerange min={watt[0]} max={watt[watt.length-1]} step="1" bind:value={range2} range order on:input={filtering}/>
     <input type="number" bind:value={range2[1]} on:change={filtering}/>
 </div>
 
-<div class="slider slider2">
+<div  id="lm" class="slider slider2">
     <p>Световой поток (люмен)</p>
     <input type="number" bind:value={range3[0]} on:change={filtering}/>
     <Doublerange min={lm[0]} max={lm[lm.length-1]} step="5" bind:value={range3} range order on:input={filtering}/>

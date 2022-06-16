@@ -48,7 +48,12 @@
 
     $: if(yes||!yes)filtering()
 
-   function filtering(e={detail:[]}){console.log(yes)
+   /*  $:{
+        if(range1[0]<price[0]||range1[0]>=range1[1]){range1[0]=price[0]}
+        if(range1[1]> price[price.length-1]||range1[1]<=range1[0]){range1[1]= price[price.length-1]}
+    } */
+
+   function filtering(e={detail:[]}){test(e)
     filtersData=prods.filter(i=>(i.attributes.price>=range1[0]&&i.attributes.price<=range1[1]))
     filtersData=filtersData.filter(i=>(i.attributes.mortisediam>=range2[0]&&i.attributes.mortisediam<=range2[1]))
 
@@ -74,16 +79,27 @@
      console.log(filtersData)
    }
 
+    function test(e){
+        if(e.target&&e.target.parentElement.id=='price'){
+            if(range1[0]<price[0]||range1[0]>=range1[1]){range1[0]=price[0]}
+            if(range1[1]> price[price.length-1]||range1[1]<=range1[0]){range1[1]= price[price.length-1]}
+        }
+        else if(e.target&&e.target.parentElement.id=='md'){
+            if(range2[0]<md[0]||range2[0]>=range2[1]){range2[0]=md[0]}
+            if(range2[1]> md[md.length-1]||range2[1]<=range2[0]){range2[1]= md[md.length-1]}
+        }
+    }
+
 </script>
 
-<div class="slider">
+<div id="price" class="slider">
     <p>Цена</p>
     <input type="number" bind:value={range1[0]} on:change={filtering}/>
     <Doublerange min={price[0]} max={price[price.length-1]} step="1" bind:value={range1} range order on:input={filtering}/>
     <input type="number" bind:value={range1[1]} on:change={filtering}/>
 </div>
 
-<div class="slider slider2">
+<div  id="md" class="slider slider2">
     <p>D врезного отверстия (мм)</p>
     <input type="number" bind:value={range2[0]} on:change={filtering}/>
     <Doublerange min={md[0]} max={md[md.length-1]} step="1" bind:value={range2} range order on:input={filtering}/>
