@@ -1,7 +1,6 @@
 <script>
-    import { fly } from "svelte/transition";
     import { fade } from "svelte/transition";
-    export let show = false,dataGoods,subcat,filtersData
+    export let show = false,dataGoods,subcat,filtersData,instock,page
     let Mycomponent
     const f = 'Filter' + subcat
     import(`../products/${subcat}/${f}.svelte`).then(res => Mycomponent = res.default)
@@ -14,7 +13,7 @@
 <nav class:navVisible="{show}" transition:fade={{duration: 300}}>
     <span on:click={()=> show = false}>&#10006;</span>
     {#if Mycomponent}
-        <svelte:component this="{Mycomponent}" bind:filtersData prods={dataGoods}/>
+        <svelte:component this="{Mycomponent}" bind:filtersData bind:page prods={dataGoods} yes={instock}/>
     {/if}
 </nav>
 

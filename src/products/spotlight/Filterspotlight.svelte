@@ -1,9 +1,8 @@
 <script>
-    export let prods,filtersData=[]
+    export let prods,filtersData=[],yes,page
    // console.log(prods)
     import Doublerange from "$lib/doublerange/Doublerange.svelte";
     import Multiselect from "$lib/Multiselect.svelte";
-
     
     let price=prods.map(i=>i.attributes.price).sort(function (a, b) {
           if (a > b) {return 1}
@@ -47,7 +46,9 @@
         }
     });
 
-   function filtering(e){
+    $: if(yes||!yes)filtering()
+
+   function filtering(e={detail:[]}){console.log(yes)
     filtersData=prods.filter(i=>(i.attributes.price>=range1[0]&&i.attributes.price<=range1[1]))
     filtersData=filtersData.filter(i=>(i.attributes.mortisediam>=range2[0]&&i.attributes.mortisediam<=range2[1]))
 
@@ -68,6 +69,8 @@
     if(fFunc[1]&&fFunc[1].length>0){filtersData=filtersData.filter(i=>(fFunc[1].includes(i.attributes.function)))}
     if(fMaterial[1]&&fMaterial[1].length>0){filtersData=filtersData.filter(i=>(fMaterial[1].includes(i.attributes.material)))}
     if(fIpclass[1]&&fIpclass[1].length>0){filtersData=filtersData.filter(i=>(fIpclass[1].includes(i.attributes.ipclass)))}
+    if(yes) filtersData=filtersData.filter(i=>(i.attributes.instock>0))
+    page=1
      console.log(filtersData)
    }
 

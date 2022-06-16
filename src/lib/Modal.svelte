@@ -4,13 +4,14 @@
     function overlay_click(e) {if ("close" in e.target.dataset) show = false;}
 
     function p_click(e) {
-        console.log(e.target.textContent)
-        if(e.target.textContent=='По популярности') svgImage=svgPopular
-        else if(e.target.textContent=='Сначала новинки') svgImage=svgNew
-        else if(e.target.textContent=='По алфавиту') svgImage=svgAZ
-        else if(e.target.textContent=='Сначала дешевле') svgImage=svgUp
-        else if(e.target.textContent=='Сначала дороже') svgImage=svgDown
-         show = false
+        New=false,AZ=false,Up=false,Down=false,Popular=false
+      
+        if(e.target.textContent=='По популярности'){ svgImage=svgPopular;Popular=true}
+        else if(e.target.textContent=='Сначала новинки') {svgImage=svgNew;New=true}
+        else if(e.target.textContent=='По алфавиту') {svgImage=svgAZ;AZ=true}
+        else if(e.target.textContent=='Сначала дешевле') {svgImage=svgUp;Up=true}
+        else if(e.target.textContent=='Сначала дороже') {svgImage=svgDown;Down=true}
+         show = false;  console.log(New,AZ,Up,Down,Popular)
          }
 
     let svgPopular=`
@@ -26,9 +27,7 @@
         svgDown=`
             m23.707 17.65-4.9999 5.999c-0.0011 0.0015-0.0025 0.0026-0.0037 4e-3q-0.03332 0.03955-0.06952 0.07537c-0.01154 0.01135-0.02368 0.02124-0.03552 0.03186-0.01428 0.01289-0.02832 0.02615-0.04315 0.03809-0.01404 0.01128-0.02857 0.02102-0.04291 0.03127-0.01367 0.0098-0.02698 0.02007-0.04108 0.02908-0.01459 0.0094-0.0296 0.01736-0.0445 0.02578-0.01465 0.0084-0.02911 0.01706-0.04419 0.02461-0.01447 0.0072-0.02924 0.01296-0.04389 0.01926-0.01611 7e-3 -0.03198 0.01435-0.04846 0.02036-0.01471 0.0053-0.0296 0.0092-0.04443 0.0137-0.01678 0.0051-0.03339 0.01069-0.05048 0.01479-0.01727 0.0041-0.03467 0.0065-0.05206 0.0095-0.01483 0.0026-0.02948 0.0059-0.04456 0.0077-0.03277 0.0039-0.06567 6e-3 -0.09863 6e-3s-0.06586-0.0021-0.09869-6e-3c-0.01489-0.0018-0.02942-0.0051-0.04419-0.0076-0.01752-3e-3 -0.03503-0.0055-0.05243-0.0096-0.01691-4e-3 -0.03326-0.0096-0.04987-0.01466-0.01508-0.0045-0.03021-0.0085-0.04511-0.01392-0.01617-0.0059-0.03186-0.01318-0.04767-0.01999-0.01495-0.0065-0.02997-0.0123-0.04468-0.01963-0.01471-0.0073-0.02881-0.0159-0.04315-0.02402-0.01526-0.0086-0.0307-0.01677-0.04565-0.02637-0.01349-0.0087-0.02637-0.0186-0.03949-0.02798-0.01489-0.01069-0.02997-0.0208-0.04443-0.03245-0.01404-0.01128-0.02728-0.02388-0.04077-0.03596-0.01263-0.01135-0.02564-0.0219-0.0379-0.03398-0.02142-0.0211-0.04175-0.04373-0.06164-0.0668-0.0037-0.0044-0.0078-0.0081-0.01141-0.01245l-5-6a1 1.2 0 0 1 1.4142-1.6972l3.2929 3.9515v-11.503a1 1.2 0 0 1 2 0v11.503l3.2929-3.9508a0.99999 1.2 0 1 1 1.4141 1.6972zm-13.707-8.0496h-8.9999a1 1.2 0 0 0 0 2.4h8.9999a1 1.2 0 1 0 0-2.4zm-8.9999-7.2h17a1 1.2 0 0 0 0-2.4h-17a1 1.2 0 1 0 0 2.4zm7 16.8h-7a1 1.2 0 0 0 0 2.4h7a1 1.2 0 0 0 0-2.4z`
 
-    export let show = false,svgImage=svgNew
-
-   
+    export let show = false,svgImage=svgNew,yes=false,New=false,AZ=false,Up=false,Down=false,Popular=false
 
 </script>
 
@@ -43,6 +42,10 @@
     <p class="links" on:click={p_click}>Сначала дешевле</p>
     <p class="links" on:click={p_click}>Сначала дороже</p>
     <p class="links" on:click={p_click}>По популярности</p>
+    <label>
+        <input type=checkbox bind:checked={yes}>
+       Показывать  только то, что в наличии
+    </label>
 </div>
 
 <style>
@@ -70,7 +73,7 @@
         box-shadow: 0 3px 10px #555;
         display: none;
         left: 10%;
-        height: 50%;
+        height: 56%;
         top: 25%;
         border-radius: 4px;
     }

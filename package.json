@@ -22,7 +22,6 @@
 	"type": "module",
 	"dependencies": {
 		"@fontsource/fira-mono": "^4.5.0",
-		"cookie": "^0.4.1",
-		"svelte-infinite-scroll": "^2.0.1"
+		"cookie": "^0.4.1"
 	}
 }

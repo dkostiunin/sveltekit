@@ -1,9 +1,8 @@
 <script>
-    export let prods,filtersData=[]
+    export let prods,filtersData=[],yes,page
     console.log(prods)
     import Doublerange from "$lib/doublerange/Doublerange.svelte";
     import Multiselect from "$lib/Multiselect.svelte";
-
     
     let price=prods.map(i=>i.attributes.price).sort(function (a, b) {
           if (a > b) {return 1}
@@ -50,7 +49,9 @@
 
     let range1 = [price[0], price[price.length-1]],range2 = [watt[0], watt[watt.length-1]],range3 = [lm[0], lm[lm.length-1]]
 
-   function filtering(e){
+    $: if(yes||!yes)filtering()
+
+   function filtering(e={detail:[]}){
     filtersData=prods.filter(i=>(i.attributes.price>=range1[0]&&i.attributes.price<=range1[1]))
     filtersData=filtersData.filter(i=>(i.attributes.Wattage>=range2[0]&&i.attributes.Wattage<=range2[1]))
     filtersData=filtersData.filter(i=>(i.attributes.luminous>=range3[0]&&i.attributes.luminous<=range3[1]))
@@ -70,6 +71,8 @@
     if(fType[1]&&fType[1].length>0){filtersData=filtersData.filter(i=>(fType[1].includes(i.attributes.type)))}
     if(fFunc[1]&&fFunc[1].length>0){filtersData=filtersData.filter(i=>(fFunc[1].includes(i.attributes.function)))}
     if(fVoltage[1]&&fVoltage[1].length>0){filtersData=filtersData.filter(i=>(fVoltage[1].includes(i.attributes.Voltage)))}
+    if(yes) filtersData=filtersData.filter(i=>(i.attributes.instock>0))
+    page=1
      console.log(filtersData)
    }
 
