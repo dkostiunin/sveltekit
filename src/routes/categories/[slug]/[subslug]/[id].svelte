@@ -123,31 +123,6 @@
     .categories{display: flex; flex-wrap: wrap; justify-content: flex-end;width: 100%;}
     a {text-decoration: none;color: black;}
 
-/*   .child{
-        border-radius: 4px;
-        box-shadow: rgb(0 0 0 / 20%) 0px 7px 8px -4px, rgb(0 0 0 / 14%) 0px 12px 17px 2px, rgb(0 0 0 / 12%) 0px 5px 22px 4px;
-        display: flex;
-        flex-flow: column nowrap;
-        width: 300px; height: 500px;
-        margin: 8px;
-        place-content: space-around;
-        -webkit-box-align: center;
-        align-items: center;
-    }
-
-    .nameProd{ overflow: overlay; width: 90%;height: 13%;text-align: center;}
-    .priceInstock{
-    display: flex; width: 90%;height: 8%;
-    justify-content: space-between;align-items: center;
-    border-top: 1px solid grey; border-bottom: 1px solid grey;
-    }
-    .price{color: #ed0202;font-size: x-large;}
-    .instock{color: #ed0202;font-size: large;}
-    .instockChild{font-size: small;color:grey}
-
-    */
-    /*  span{word-break: break-word;} */
-
     button{
         display: -webkit-inline-box;
         display: -webkit-inline-flex;
@@ -200,14 +175,8 @@
         @media (max-width: 960px) {
         .main{position: absolute;top:68px;width: 100%;margin: 0;}
     }
-    /*  @media (max-width: 412px) {
-        .child{ width: 120px; height: 144px;margin: 8px;}
-        figcaption{font-size: smaller;}
-    } */
 
     @media only screen and (min-width: 600px) {
-        /* .child{ width: 200px; height: 250px;margin: 16px;}
-        figcaption{font-size: large;} */
         .categories{justify-content: center;}
         .nav{display: block;}
         .fotoName{width: 33%;padding-left: 3%;}

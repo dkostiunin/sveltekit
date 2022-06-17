@@ -5,7 +5,7 @@
     let size,srcImage
 
     onMount(async () => {
-      console.log(size.clientWidth)
+     // console.log(size.clientWidth)
       paginationFactor=size.clientWidth
       totalPaginationPixels = scrollBy * paginationFactor;
     })

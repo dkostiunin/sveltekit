@@ -1,6 +1,6 @@
 <script>
     export let prods,filtersData=[],yes,page
-    console.log(prods)
+    //console.log(prods)
     import Doublerange from "$lib/doublerange/Doublerange.svelte";
     import Multiselect from "$lib/Multiselect.svelte";
     
@@ -73,7 +73,7 @@
     if(fVoltage[1]&&fVoltage[1].length>0){filtersData=filtersData.filter(i=>(fVoltage[1].includes(i.attributes.Voltage)))}
     if(yes) filtersData=filtersData.filter(i=>(i.attributes.instock>0))
     page=1
-     console.log(filtersData)
+    // console.log(filtersData)
    }
 
    function test(e){

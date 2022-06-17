@@ -29,7 +29,11 @@ const fin= await res.json()
         products:fin.data[s].data,
         catSubcat:[params.slug,params.subslug],
         namesCats:[fin.data.categories.data[0].attributes.name,fin.data.subcats.data[0].attributes.name],
-      }
+      },
+     /*  cache: {
+        "maxage": 120,
+        "private": false
+      } */
     };
   }
 </script>
@@ -42,15 +46,26 @@ const fin= await res.json()
   let modal_show = false,svgImage ,yes,New,AZ,Up,Down,Popular
 
   import flash from '$lib/flash.js';
-
-  let component, elementsVisible = [], page = 1,offset
-  $:if(component) component.addEventListener("scroll", onScroll)
-  const onScroll = e => {offset =  e.target.scrollHeight - e.target.clientHeight - e.target.scrollTop}
-  onDestroy(() => {if (component) {component.removeEventListener("scroll", null)}});
-
+  import { browser } from "$app/env";
   export let products,catSubcat,namesCats
   
   let filtersData=products
+
+  let component, elementsVisible = [], page = 1,offset,idItem,arr,lastItem
+  $:{
+    if(component) component.addEventListener("scroll", onScroll)
+   
+    if (browser&&localStorage.getItem('myBook')){
+      idItem=localStorage.getItem('myBook')
+      localStorage.removeItem('myBook')
+    }
+  }   
+ 
+  const onScroll = e => {
+    offset =  e.target.scrollHeight - e.target.clientHeight - e.target.scrollTop
+  }
+  onDestroy(() => {if (component) {component.removeEventListener("scroll", null)}});
+  
    // console.log(catSubcat[1],products)
 
   $:{
@@ -75,13 +90,6 @@ const fin= await res.json()
         return 0;
       })
     }
-    else if (New){
-      filtersData.sort(function (a, b) {
-        if (+new Date(a.attributes.createdAt) < +new Date(b.attributes.createdAt)) {return 1}
-        if (+new Date(a.attributes.createdAt) >+new Date(b.attributes.createdAt)) {return -1}
-        return 0;
-      })
-    }
     else if (Popular){
       filtersData.sort(function (a, b) {
         if (a.attributes.sold < b.attributes.sold) {return 1}
@@ -89,16 +97,41 @@ const fin= await res.json()
         return 0;
       })
     }
+    else{
+      filtersData.sort(function (a, b) {
+        if (+new Date(a.attributes.createdAt) < +new Date(b.attributes.createdAt)) {return 1}
+        if (+new Date(a.attributes.createdAt) >+new Date(b.attributes.createdAt)) {return -1}
+        return 0;
+      })
+    }
     filtersData=filtersData
     page=1
   }
 
-  $:elementsVisible=filtersData.slice(0, 5)
+   $:{if(idItem){
+      let id=localStorage.getItem('scrollEll')      
+      if(idItem)filtersData=JSON.parse(idItem)
+      if(id){
+        elementsVisible=filtersData.slice(0, +id.split("_")[1]+1)
+        lastItem=document.getElementById(id)
+      }      
+      if(lastItem) {lastItem.scrollIntoView();localStorage.removeItem('scrollEll')}
+    }
+   else elementsVisible=filtersData.slice(0, 5)
+  }
+
+ /*  $:elementsVisible=filtersData.slice(0, 5) */
 
   $:{
-    if(offset<600&&page*5<filtersData.length){
-      elementsVisible = [...elementsVisible,...filtersData.slice(page*5,(page*5)+5)]
-      page++
+    if(offset<600&&page*5<filtersData.length){ 
+      if(elementsVisible.length+5<=filtersData.length){
+        elementsVisible = [...elementsVisible,...filtersData.slice(page*5,(page*5)+5)]
+        page++
+      }
+      else if(elementsVisible.length<filtersData.length&&elementsVisible.length+5>filtersData.length){
+        elementsVisible = [...elementsVisible,...filtersData.slice(page*5,(page*5)+(filtersData.length-elementsVisible.length))]
+        page++
+      }
       console.log(elementsVisible,filtersData)
     }
   }
@@ -110,14 +143,20 @@ const fin= await res.json()
 	<meta name="description" content="Каталог"/>
 </svelte:head>
 
-<button class="sidebar2" on:click={() => modal_show = !modal_show}>
+<button class="sidebar2" on:click={() =>{ 
+  modal_show = !modal_show
+  idItem=undefined
+  }}>
   <svg viewBox="0 0 24 24"><path  fill="white" d={svgImage}/></svg>
 </button>
 <Modal bind:show={modal_show} bind:svgImage bind:yes bind:New bind:AZ bind:Up bind:Down bind:Popular/>
 
 <div bind:this={component} class="main"> 
   <button class="sidebar">
-    <svg viewBox="0 0 24 24" on:click={() => sidebar_show = !sidebar_show}>
+    <svg viewBox="0 0 24 24" on:click={() =>{
+       sidebar_show = !sidebar_show
+       idItem=undefined
+    }}>
       <path fill="white" fill-rule="evenodd" d="M19,7.17070571 C20.1651924,7.58254212 21,8.69378117 21,10 C21,11.3062188 20.1651924,12.4174579 19,12.8292943 L19,19 C19,19.5522847 18.5522847,20 18,20 C17.4477153,20 17,19.5522847 17,19 L17,12.8292943 C15.8348076,12.4174579 15,11.3062188 15,10 C15,8.69378117 15.8348076,7.58254212 17,7.17070571 L17,5 C17,4.44771525 17.4477153,4 18,4 C18.5522847,4 19,4.44771525 19,5 L19,7.17070571 Z M15,15 C15,16.3062188 14.1651924,17.4174579 13,17.8292943 L13,19 C13,19.5522847 12.5522847,20 12,20 C11.4477153,20 11,19.5522847 11,19 L11,17.8292943 C9.83480763,17.4174579 9,16.3062188 9,15 C9,13.6937812 9.83480763,12.5825421 11,12.1707057 L11,5 C11,4.44771525 11.4477153,4 12,4 C12.5522847,4 13,4.44771525 13,5 L13,12.1707057 C14.1651924,12.5825421 15,13.6937812 15,15 Z M7,7.17070571 C8.16519237,7.58254212 9,8.69378117 9,10 C9,11.3062188 8.16519237,12.4174579 7,12.8292943 L7,19 C7,19.5522847 6.55228475,20 6,20 C5.44771525,20 5,19.5522847 5,19 L5,12.8292943 C3.83480763,12.4174579 3,11.3062188 3,10 C3,8.69378117 3.83480763,7.58254212 5,7.17070571 L5,5 C5,4.44771525 5.44771525,4 6,4 C6.55228475,4 7,4.44771525 7,5 L7,7.17070571 Z"/>
     </svg>
   </button> 
@@ -134,11 +173,17 @@ const fin= await res.json()
   </nav>
   <div class="nav2"></div>
   
-  {#each elementsVisible as el}
+  {#each elementsVisible as el,i}
     <div class="child">
 
       <div class="body">
-        <a sveltekit:prefetch href={`/categories/${catSubcat[0]}/${catSubcat[1]}/${el.id}`}>
+        <a id={el.id+'_'+i} sveltekit:prefetch href={`/categories/${catSubcat[0]}/${catSubcat[1]}/${el.id}`} on:click={(e) =>{
+         
+          console.log(e.target.parentElement.id);
+          
+          localStorage.setItem('myBook', JSON.stringify(filtersData ));
+          localStorage.setItem('scrollEll', e.target.parentElement.id);
+        }}>
           {#if !el.attributes.listimage}
           <img src="https://res.cloudinary.com/dxzefnveb/image/upload/v1653769068/%D1%80%D1%83%D1%81%D1%82%D0%B0%D0%BC_1_ijtxff.jpg" 
             alt={el.attributes.name}>
