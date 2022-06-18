@@ -44,30 +44,34 @@ const fin= await res.json()
   let sidebar_show = false
   import Modal from '$lib/Modal.svelte';
   let modal_show = false,svgImage ,yes,New,AZ,Up,Down,Popular
-
+  import addtocart from '$lib/addtocart';
   import flash from '$lib/flash.js';
   import { browser } from "$app/env";
   export let products,catSubcat,namesCats
   
   let filtersData=products
 
-  let component, elementsVisible = [], page = 1,offset,idItem,arr,lastItem
+  let component, elementsVisible = [], page = 1,offset,idItem,idItem2,subcat,lastItem
+  console.log(page)
   $:{
     if(component) component.addEventListener("scroll", onScroll)
    
     if (browser&&localStorage.getItem('myBook')){
       idItem=localStorage.getItem('myBook')
       localStorage.removeItem('myBook')
+      idItem2=localStorage.getItem('myBook2')
+      localStorage.removeItem('myBook2')
+      subcat=localStorage.getItem('subcat')
+      localStorage.removeItem('subcat')
+      lastItem=localStorage.getItem('scrollEll');
+      localStorage.removeItem('scrollEll')
+     // console.log(subcat,catSubcat[1],idItem,idItem2)
     }
-  }   
- 
-  const onScroll = e => {
-    offset =  e.target.scrollHeight - e.target.clientHeight - e.target.scrollTop
   }
+ 
+  const onScroll = e => {offset =  e.target.scrollHeight - e.target.clientHeight - e.target.scrollTop}
   onDestroy(() => {if (component) {component.removeEventListener("scroll", null)}});
   
-   // console.log(catSubcat[1],products)
-
   $:{
     if (Down){
     filtersData.sort(function (a, b) {
@@ -108,16 +112,13 @@ const fin= await res.json()
     page=1
   }
 
-   $:{if(idItem){
-      let id=localStorage.getItem('scrollEll')      
-      if(idItem)filtersData=JSON.parse(idItem)
-      if(id){
-        elementsVisible=filtersData.slice(0, +id.split("_")[1]+1)
-        lastItem=document.getElementById(id)
-      }      
-      if(lastItem) {lastItem.scrollIntoView();localStorage.removeItem('scrollEll')}
+  $:{if(idItem&&subcat==catSubcat[1]){
+      filtersData=JSON.parse(idItem);elementsVisible=JSON.parse(idItem2);
+      page=elementsVisible.length/5
+      let c=document.getElementById('mainDiv')
+      if(c) c.scrollTo(0,lastItem) 
     }
-   else elementsVisible=filtersData.slice(0, 5)
+    else elementsVisible=filtersData.slice(0, 5)
   }
 
  /*  $:elementsVisible=filtersData.slice(0, 5) */
@@ -132,9 +133,16 @@ const fin= await res.json()
         elementsVisible = [...elementsVisible,...filtersData.slice(page*5,(page*5)+(filtersData.length-elementsVisible.length))]
         page++
       }
-      console.log(elementsVisible,filtersData)
+      console.log(elementsVisible,filtersData,page)
     }
   }
+
+  function inBasket(e){
+        flash(e)
+        let cart=[]
+        cart=JSON.parse(localStorage.getItem('cart'))
+        addtocart(cart,1,products[+e.target.id].attributes,catSubcat[1])
+    }
   
 </script>
 
@@ -151,7 +159,7 @@ const fin= await res.json()
 </button>
 <Modal bind:show={modal_show} bind:svgImage bind:yes bind:New bind:AZ bind:Up bind:Down bind:Popular/>
 
-<div bind:this={component} class="main"> 
+<div bind:this={component} class="main" id="mainDiv"> 
   <button class="sidebar">
     <svg viewBox="0 0 24 24" on:click={() =>{
        sidebar_show = !sidebar_show
@@ -161,7 +169,6 @@ const fin= await res.json()
     </svg>
   </button> 
   <Sidebar bind:show={sidebar_show} bind:page bind:filtersData dataGoods={products} subcat={catSubcat[1]} instock={yes}/>  
- 
   <nav class="nav">
     <ol>
       <li><a sveltekit:prefetch href="/categories"><p>Каталог</p></a></li>
@@ -177,12 +184,11 @@ const fin= await res.json()
     <div class="child">
 
       <div class="body">
-        <a id={el.id+'_'+i} sveltekit:prefetch href={`/categories/${catSubcat[0]}/${catSubcat[1]}/${el.id}`} on:click={(e) =>{
-         
-          console.log(e.target.parentElement.id);
-          
+        <a sveltekit:prefetch href={`/categories/${catSubcat[0]}/${catSubcat[1]}/${el.id}`} on:click={(e) =>{
           localStorage.setItem('myBook', JSON.stringify(filtersData ));
-          localStorage.setItem('scrollEll', e.target.parentElement.id);
+          localStorage.setItem('myBook2', JSON.stringify(elementsVisible ));
+          localStorage.setItem('scrollEll',component.scrollTop);
+          localStorage.setItem('subcat', catSubcat[1]);
         }}>
           {#if !el.attributes.listimage}
           <img src="https://res.cloudinary.com/dxzefnveb/image/upload/v1653769068/%D1%80%D1%83%D1%81%D1%82%D0%B0%D0%BC_1_ijtxff.jpg" 
@@ -199,7 +205,7 @@ const fin= await res.json()
       </div>
     
       <div class="buttons">
-        <button on:click={flash}>В корзину</button>
+        <button id={i} on:click={inBasket}>В корзину</button>
         <button on:click={flash} class="nowButton">Оформить</button>
       </div>
 

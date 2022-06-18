@@ -1,13 +1,20 @@
+<script>
+    export let qty=1
+</script>
+
 <div class="number">
 	<button class="number-minus" type="button" 
         on:click={(e)=>{
             e.target.nextElementSibling.stepDown()//; e.target.nextElementSibling.onchange()
+            qty= +e.target.nextElementSibling.value
             }}>&ndash;
     </button>
-	<input type="number" min="0" value="1">
+	<input type="number" min="0" value={qty} on:change={(e)=>   qty= +e.target.value}>
 	<button class="number-plus" type="button"
           on:click={(e)=>{
-             e.target.previousElementSibling.stepUp()//; e.target.previousElementSibling.onchange() 
+            console.log( e.target.previousElementSibling.value)
+            e.target.previousElementSibling.stepUp()
+            qty= +e.target.previousElementSibling.value
         }}>+
     </button>
 </div>

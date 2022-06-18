@@ -18,7 +18,7 @@ export function fields(subcat,queries){
       let filtr='{and:['
       if(ff.length>0)ff.forEach(el => {filtr=filtr+el});
       filtr=filtr+']}' */
-      return ({fields:'createdAt height width mortisediam lampholder color brand material ledbacklight ipclass name price shortdesc longdesc listimage instock sold rating ratecount article EAN13 length countryorigin warranty flaskshape function',
+      return ({fields:'createdAt height width mortisediam lampholder color brand material ledbacklight ipclass name price shortdesc longdesc listimage instock sold rating ratecount article EAN13 length countryorigin warranty flaskshape function type',
              // filters:filtr
               })
     }

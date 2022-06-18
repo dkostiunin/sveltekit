@@ -32,14 +32,23 @@
     import Inputnumber from "$lib/Inputnumber.svelte"
     import Accordion from "$lib/Accordion.svelte"
     import flash from '$lib/flash.js';
+    import addtocart from '$lib/addtocart';
     export let product,catSubcat,namesCats
-    let Mycomponent
+    let Mycomponent,qty
     const items=Object.values(product.listimage)
     const f = catSubcat[1][0].toUpperCase() + catSubcat[1].slice(1)
     console.log(product,catSubcat[1],f)
     
     import(`../../../../products/${catSubcat[1]}/${f}.svelte`).then(res => Mycomponent = res.default)
     // import Lamp from '../../../../products/lamp/Lamp.svelte';
+
+    function inBasket(e){
+        flash(e)
+        let cart=[]
+        cart=JSON.parse(localStorage.getItem('cart'))
+        addtocart(cart,qty,product,catSubcat[0])
+    }
+
 </script>
 
 <svelte:head>
@@ -70,11 +79,18 @@
             <Carousel items={items}/>
             {/if}
                 <div class="inputs">
-                <Inputnumber/>
-                <button on:click={flash}>В корзину</button>
+                <Inputnumber bind:qty/>
+                <button on:click={inBasket}>В корзину</button>
                 </div>
         </div>
         <div class="descriptions">
+            <div>
+                <div class="price">{`${product.price} ₽`}</div>
+                <div class="instock">
+                    <span>{`В наличии ${product.instock}`}</span>
+                    <span>{`Уже купили ${product.sold}`}</span>
+                </div>
+            </div>
             <Accordion>
                 <span slot="head">Описание:<span class="desc">{` ${product.shortdesc} (подробнее...)`}</span></span>
                 <div slot="details">
@@ -95,7 +111,10 @@
     
     span{color: #323232;}
     .desc{color: dimgray;font-size: smaller;}
-    .longdesc{margin: 0 3px;color: #6b6666;}
+
+    .price{color: #ed0202;font-size: xx-large;margin-top: 20px; margin-left: 5%;}
+    .instock{display: flex;justify-content: space-between;margin-top: 10px; margin-left: 5%;}
+    .instock span{color: #ed0202;font-size: large;}
 
     .fotoName{width: 90%}
     h2{line-height: 2rem;color:#ed0202;margin-left: -1rem;}

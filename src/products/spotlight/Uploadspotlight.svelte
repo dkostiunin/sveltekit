@@ -25,6 +25,11 @@
 		{#each Object.entries(l.brand) as i}<option value={i[0]}>
 		{/each}
 	</datalist>
+	<input placeholder="Тип(Врез/Накл)" list="ty" id="type" on:blur={checkList}/>
+	<datalist id="ty">
+		{#each Object.entries(l.type) as i}<option value={i[0]}>
+		{/each}
+	</datalist>
     <input placeholder="LED подсветка" list="le" id="ledbacklight" on:blur={checkList}/>
 	<datalist id="le">
 		{#each Object.entries(l.ledbacklight) as i}<option value={i[0]}>

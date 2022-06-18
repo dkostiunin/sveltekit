@@ -24,6 +24,11 @@
 </div>
 
 <div>
+   <span class="span1">Тип светильника</span>
+   <span class="span2">{name.link.data.attributes.link.type[name.type]}</span>
+</div>
+
+<div>
    <span class="span1">Наличие и мощность LED подсветки</span>
    <span class="span2">{name.link.data.attributes.link.ledbacklight[name.ledbacklight]}</span>
 </div>

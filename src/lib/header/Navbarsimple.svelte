@@ -1,17 +1,21 @@
 <script>
   import { onMount } from "svelte";
+  import {countBasket} from '$lib/stores.js';
   let showMobileMenu = false;
 
   const handleMobileIconClick = () => (showMobileMenu = !showMobileMenu);
 
   const closeMenu =()=> showMobileMenu = false
 
-  const mediaQueryHandler = (/** @type {{ matches: any; }} */ e) => { if (!e.matches) {showMobileMenu = false}}
+  const mediaQueryHandler = (e) => { if (!e.matches) {showMobileMenu = false}}
   onMount(() => {
     const mediaListener = window.matchMedia("(max-width: 767px)");
     mediaListener.addListener(mediaQueryHandler);
+    let len=JSON.parse(localStorage.getItem('cart')).length
+    countBasket.set(len);
+
+console.log(len)
   });
-  
 </script>
 <header>
   <nav>
@@ -32,6 +36,7 @@
       <div class="basket">
         <a sveltekit:prefetch href="/basket" on:click={closeMenu}>
           <svg class="basket-svg" width="24"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"></path></svg>
+          <span class="countBasket">{$countBasket}</span>
         </a>
       </div>
     </div>
@@ -45,7 +50,17 @@
     box-shadow: rgb(0 0 0 / 20%) 0px 2px 4px -1px, rgb(0 0 0 / 14%) 0px 4px 5px 0px, rgb(0 0 0 / 12%) 0px 1px 10px 0px;
   }
 
-  a{color: white; text-decoration: none;}
+ .countBasket { position: absolute;
+    padding: 0px 6px;
+    background: #ed143dc2;
+    border-radius: 7px;
+    top: -23px;
+    left: 10px;
+    color: white;
+    font-size: medium;
+  }
+
+  a{position:relative; color: white; text-decoration: none;}
 
   .parent>a {font-size: 15px; padding-right: 15px;}
 

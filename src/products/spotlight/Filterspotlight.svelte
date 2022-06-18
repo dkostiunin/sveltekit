@@ -16,12 +16,15 @@
         })
     let range1 = [price[0], price[price.length-1]],range2 = [md[0], md[md.length-1]],
 
-        brand=[],color=[],flaskshape=[],lampholder=[],ledbacklight=[],func=[],material=[],ipclass=[],
-        fBrand=[],fColor=[],fFlaskshape=[],fLampholder=[],fLedbacklight=[],fFunc=[],fMaterial=[],fIpclass=[]
+        brand=[],type=[],color=[],flaskshape=[],lampholder=[],ledbacklight=[],func=[],material=[],ipclass=[],
+        fBrand=[],fType=[],fColor=[],fFlaskshape=[],fLampholder=[],fLedbacklight=[],fFunc=[],fMaterial=[],fIpclass=[]
 
         prods.forEach(i => {
         if(!brand.map(i=>i.value).includes(i.attributes.brand)){
             brand.push({'value':i.attributes.brand, 'name':i.attributes.link.data.attributes.link.brand[i.attributes.brand]})
+        }
+        if(!type.map(i=>i.value).includes(i.attributes.type)){
+            type.push({'value':i.attributes.type, 'name':i.attributes.link.data.attributes.link.type[i.attributes.type]})
         }
         if(!color.map(i=>i.value).includes(i.attributes.color)){
             color.push({'value':i.attributes.color, 'name':i.attributes.link.data.attributes.link.color[i.attributes.color]})
@@ -58,6 +61,7 @@
     filtersData=filtersData.filter(i=>(i.attributes.mortisediam>=range2[0]&&i.attributes.mortisediam<=range2[1]))
 
     if(e.detail&&e.detail[0]=='brand'){fBrand[0]=['brand'];fBrand[1]=Object.keys(e.detail[1])}
+    if(e.detail&&e.detail[0]=='type'){fType[0]=['type'];fType[1]=Object.keys(e.detail[1])}
     if(e.detail&&e.detail[0]=='color'){fColor[0]=['color'];fColor[1]=Object.keys(e.detail[1])}
     if(e.detail&&e.detail[0]=='flaskshape'){fFlaskshape[0]=['flaskshape'];fFlaskshape[1]=Object.keys(e.detail[1])}
     if(e.detail&&e.detail[0]=='lampholder'){fLampholder[0]=['lampholder'];fLampholder[1]=Object.keys(e.detail[1])}
@@ -67,6 +71,7 @@
     if(e.detail&&e.detail[0]=='ipclass'){fIpclass[0]=['ipclass'];fIpclass[1]=Object.keys(e.detail[1])}
 
     if(fBrand[1]&&fBrand[1].length>0){filtersData=filtersData.filter(i=>(fBrand[1].includes(i.attributes.brand)))}
+    if(fType[1]&&fType[1].length>0){filtersData=filtersData.filter(i=>(fType[1].includes(i.attributes.type)))}
     if(fColor[1]&&fColor[1].length>0){filtersData=filtersData.filter(i=>(fColor[1].includes(i.attributes.color)))}
     if(fFlaskshape[1]&&fFlaskshape[1].length>0){filtersData=filtersData.filter(i=>(fFlaskshape[1].includes(i.attributes.flaskshape)))}
     if(fLampholder[1]&&fLampholder[1].length>0){filtersData=filtersData.filter(i=>(fLampholder[1].includes(i.attributes.lampholder)))}
@@ -109,6 +114,11 @@
 <div class="slider slider3">
     <p>Бренд</p>
     <Multiselect id="brand" list ={brand} on:message={filtering}></Multiselect>
+</div>
+
+<div class="slider slider3">
+    <p>Тип светильника</p>
+    <Multiselect id="type" list ={type} on:message={filtering}></Multiselect>
 </div>
 
 <div class="slider slider3">
