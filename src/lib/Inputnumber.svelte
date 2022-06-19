@@ -1,5 +1,5 @@
 <script>
-    export let qty=1
+    export let qty=1,max,min=1
 </script>
 
 <div class="number">
@@ -9,7 +9,10 @@
             qty= +e.target.nextElementSibling.value
             }}>&ndash;
     </button>
-	<input type="number" min="0" value={qty} on:change={(e)=>   qty= +e.target.value}>
+	<input type="number" min={min} max={max} value={qty} on:change={(e)=>{
+        qty= +e.target.value
+        if(qty>max)qty=max; if(qty<min)qty=min;
+        }}>
 	<button class="number-plus" type="button"
           on:click={(e)=>{
             console.log( e.target.previousElementSibling.value)

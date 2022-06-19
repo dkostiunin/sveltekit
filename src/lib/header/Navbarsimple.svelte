@@ -11,8 +11,9 @@
   onMount(() => {
     const mediaListener = window.matchMedia("(max-width: 767px)");
     mediaListener.addListener(mediaQueryHandler);
-    let len=JSON.parse(localStorage.getItem('cart')).length
-    countBasket.set(len);
+    let len
+    
+    if(localStorage.getItem('cart')){len=JSON.parse(localStorage.getItem('cart')).length; countBasket.set(len)}
 
 console.log(len)
   });
