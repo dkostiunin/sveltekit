@@ -10,19 +10,88 @@
   import { browser } from '$app/env'
   import { countBasket } from '$lib/stores';
   import Inputnumber  from "$lib/Inputnumber.svelte"
+  import flash from '$lib/flash.js';
 
-  let cart
-  $:{console.log(cart);
-   
-     if(browser&&localStorage.getItem('cart'))localStorage.setItem('cart', JSON.stringify(cart))
+  let cart,name='',adress='',phone='',sum=0
+
+  const checkInt = (e) => {e.target.value=e.target.value.replace(/[^0-9+-]/gi,'')},
+        checkText=(e) =>{e.target.value=e.target.value.replace(/[^a-zа-яё0-9 +-.,:;]/gi, '')}
+
+  $:{
+     if(browser&&localStorage.getItem('cart')){
+        localStorage.setItem('cart', JSON.stringify(cart))
+        sum=0
+        cart.forEach(i=>sum=sum+i.qty*i.price)
+      }
+    
     }
 
   if (browser){
     cart=JSON.parse(localStorage.getItem('cart'))
-    console.log(cart)
+    if(cart){
+        cart.forEach((i,j)=>{
+          getItems(i.subcat,i.id,i.qty,j,i.instock)
+          sum=sum+i.qty*i.price
+        })
+      }
   }
  
+  async function getItems(subcat,id,qty,j,instock){
+    const QUERY =  `{
+                    ${subcat}(id:${id}){
+                        data{ attributes {name instock sold} }
+                    }
+              }`  
+		const options = { method: "post",headers: {"Content-Type": "application/json"},body: JSON.stringify({query: QUERY})};
+		const res= await fetch(import.meta.env.VITE_strapiURL, options)
+		const item = await res.json()
+    //console.log(cart[j],qty,item.data[subcat].data.attributes.instock)
+    if(instock!=item.data[subcat].data.attributes.instock){
+      console.log('wwwweerr')
+      cart[j].instock=item.data[subcat].data.attributes.instock
+    }
+    if(qty>item.data[subcat].data.attributes.instock){
+      console.log('rrrr')
+      cart[j].qty=item.data[subcat].data.attributes.instock
+    }
+    return item.data[subcat].data.attributes.sold
+	}
 
+/*   async function createOrder(u='""',a='""',p='""',t=0,d='""'){
+      let result = `"${JSON.stringify(d).replace(/"/g,'')}"`
+      const QUERY =  `mutation {
+          createOrder(data: { 
+            user:${u}, adress:${a}, phone:${p}, total:${t}, basket:${result}
+          }) {
+            data {id attributes {user adress phone total basket}}
+          }
+        }`
+      const options = { method: "post",headers: {"Content-Type": "application/json"},body: JSON.stringify({query: QUERY})};
+      const res= await fetch(import.meta.env.VITE_strapiURL, options)
+      const finres= await res.json()
+      console.log(finres)
+      
+      if(finres.errors){console.log(finres.errors[0].message);alert('Что то пошло не так:'+finres.errors[0].message)}
+      else{
+        alert('Успешно загружено')
+      }		
+	} */
+
+  async function UPDATE_INSTOCK_SOLD(subcat,i,d){
+		const QUERY =  `mutation{
+            ${subcat}(id:${i} data:${d})
+            {data{ id attributes{instock sold}}}
+          }`
+		const options = { method: "post",headers: {"Content-Type": "application/json"},body: JSON.stringify({query: QUERY})};
+		const res= await fetch(import.meta.env.VITE_strapiURL, options)
+		const finres= await res.json()
+		console.log(finres)
+		
+		if(finres.errors){console.log(finres.errors[0].message);alert('Что то пошло не так:'+finres.errors[0].message)}
+		else{
+			alert('Успешно загружено')
+		}
+	}
 </script>
 
 <svelte:head>
@@ -33,18 +102,24 @@
 <div class="main">
 
   <h1>Корзина</h1>
+
   <div class="list">
     {#if cart}
       {#each cart as el,i}
       <div class="child">
+        <a sveltekit:prefetch href={`/categories/${el.cat}/${el.subcat}/${el.id}`}>
         <div class="content">
-          <img src={el.image} alt={el.name}>
-          <div>
-            <p class="name">{el.name}</p>
-            <p class="price">{el.price} ₽</p>
-            <p class="name">В наличии: {el.instock}</p>
-          </div>
+          
+            <img src={el.image} alt={el.name}>
+            <div>
+              <p class="name">{el.name}</p>
+              <p class="price">{el.price} ₽</p>
+              <p class="name">В наличии: {el.instock}</p>
+            </div>
+          
         </div>
+      </a>
+
         <div class="control">
           <Inputnumber bind:qty={cart[i].qty} bind:max={cart[i].instock}/>
          
@@ -62,22 +137,54 @@
       {/each}
     {/if}
   </div>
+ 
   <div class="checkout">
-    список
+    <h2>Оформление</h2>
+    <input bind:value={name} placeholder="Имя(фамилия)" maxlength="25" on:input={checkText}/>
+	  <textarea bind:value={adress} placeholder="Адрес(если нужна доставка)" rows="3" on:input={checkText}/>
+    <input bind:value={phone} placeholder="Телефон(для согласования заказа)" maxlength="25" on:input={checkInt} type="text"/>
+    <h2>Сумма: {sum}</h2>
+    <button on:click={(e) =>{
+      flash(e)
+      console.log(name,adress,phone)
+      if(name==''||name.split('').filter(i=>i!=' ').length==0) alert('Для оформления заказа пожалуйста укажите имя (как к Вам обращаться)')
+      else if(phone==''||phone.split('').filter(i=>i!=' ').length==0) alert('Для оформления заказа пожалуйста укажите телефон (нужен для согласования заказа)')
+      else if(cart){
+        try{
+          for (let i=cart.length-1; i>= 0; i--){
+            getItems(cart[i].subcat,cart[i].id,cart[i].qty,i,cart[i].instock).
+              then((sold)=>{
+                  const newsubs = 'update'+cart[i].subcat[0].toUpperCase() + cart[i].subcat.slice(1)
+                  const data=`{sold:${sold+cart[i].qty},instock:${cart[i].instock-cart[i].qty}}`
+                  console.log(data,newsubs,cart[i].id)
+                  UPDATE_INSTOCK_SOLD(newsubs,cart[i].id,data)
+              }).
+              then(()=>{ if(i==0) {
+                console.log(666777)
+              }})
+          }
+
+        }
+        catch(err) {console.log(432,err)}
+      }
+    }}>Оформить</button>
   </div>
 
 </div>
 
 <style>
   .main{position: absolute;top:68px;display: flex;flex-wrap: wrap;width: 100%;flex-direction: column;}
-  h1{width: 100%;}
-
+  h1{width: 100%;font-size: x-large;color: #ed0202;}
+  
   .list{width: 100%;}
-  .checkout{width: 100%;}
+  .checkout{width: 100%;display: flex;flex-direction: column;padding: 0 2.5%;gap: 20px;}
+  .checkout input,textarea {border: none;padding: 10px; border-radius: 4px;}
+  textarea{font-size: large}
 
   .child{display: flex;border-bottom: 1px solid grey;flex-wrap: wrap;}
 
-  .content{width: 100%;display: flex;}
+  .content{display: flex;}
+  a{width: 100%;text-decoration: none;}
   .content img{width:40%;object-fit: contain;padding-left: 10px;}
   .content p{word-break: break-word; padding: 0 10px;}
   .price{color: #ed0202;font-size: x-large;}
@@ -89,24 +196,70 @@
   @media only screen and (min-width: 600px) {
     .main {flex-direction: row;}
     .child{height: 200px;margin-left: 30px;margin-bottom: 20px;padding: 20px 0}
-    .content{width: 80%;}
-    .content img{width: 22%;}
+    a {width: 80%;}
+    
+    .content img{height: 200px;width: 20%;}
     .control{width: 20%;flex-direction: column;}
     .list{width: 100%;}
-  .checkout{width: 100%;}
+    .checkout{width: 100%;}
   }
 
   @media only screen and (min-width: 960px) {
     .main {flex-direction: row;}
     .list{width: 65%;}
-    .checkout{width: 35%;}
+    .checkout{width: 30%;}
     .control svg{width:65px}
   }
 
   @media only screen and (min-width: 1200px) {
-    .main {width: 80%;margin-left: 10%;}
-   
+    .main {width: 80%;margin-left: 10%;}   
   }
-  
+
+  button{
+    display: -webkit-inline-box;
+    display: -webkit-inline-flex;
+    display: -ms-inline-flexbox;
+    display: inline-flex;
+    -webkit-align-items: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    -webkit-justify-content: center;
+    justify-content: center;
+    position: relative;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+    background-color: transparent;
+    outline: 0;
+    border: 0;
+    margin: 0;
+    border-radius: 0;
+    padding: 0;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    vertical-align: middle;
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    -webkit-text-decoration: none;
+    text-decoration: none;
+    color: inherit;
+    font-family: "Roboto","Helvetica","Arial",sans-serif;
+    font-weight: 500;
+    font-size: 0.8125rem;
+    line-height: 1.75;
+    letter-spacing: 0.02857em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 4px;
+    -webkit-transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,border-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+    transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,border-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+    color: #fff;
+    background-color: #556cd6;
+  }
 
 </style>

@@ -21,7 +21,8 @@
         return {props: {
                 product:fin.data[params.subslug].data.attributes,
                 catSubcat:[params.slug,params.subslug],
-                namesCats:[fin.data.categories.data[0].attributes.name,fin.data.subcats.data[0].attributes.name]
+                namesCats:[fin.data.categories.data[0].attributes.name,fin.data.subcats.data[0].attributes.name],
+                ID:fin.data[params.subslug].data.id
             }
         };
     }
@@ -33,11 +34,11 @@
     import Accordion from "$lib/Accordion.svelte"
     import flash from '$lib/flash.js';
     import addtocart from '$lib/addtocart';
-    export let product,catSubcat,namesCats
+    export let product,catSubcat,namesCats,ID
     let Mycomponent,qty
     const items=Object.values(product.listimage)
     const f = catSubcat[1][0].toUpperCase() + catSubcat[1].slice(1)
-    console.log(product,catSubcat[1],f)
+    console.log(ID)
     
     import(`../../../../products/${catSubcat[1]}/${f}.svelte`).then(res => Mycomponent = res.default)
     // import Lamp from '../../../../products/lamp/Lamp.svelte';
@@ -46,7 +47,7 @@
         flash(e)
         let cart=[]
         cart=JSON.parse(localStorage.getItem('cart'))
-        addtocart(cart,qty,product,catSubcat[0])
+        addtocart(cart,qty,product,catSubcat[0],catSubcat[1],ID)
     }
 
 </script>
@@ -79,7 +80,7 @@
             <Carousel items={items}/>
             {/if}
                 <div class="inputs">
-                <Inputnumber bind:qty/>
+                <Inputnumber bind:qty bind:max={product.instock}/>
                 <button on:click={inBasket}>В корзину</button>
                 </div>
         </div>
@@ -187,11 +188,12 @@
         transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,border-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
         color: #fff;
         background-color: #556cd6;
-        }
-        .buttons{display: flex; width: 90%;height: 8%;justify-content: space-between;align-items: center;}
-        .nowButton{background-color:#2e7d32}
+    }
+    
+    .buttons{display: flex; width: 90%;height: 8%;justify-content: space-between;align-items: center;}
+    .nowButton{background-color:#2e7d32}
 
-        @media (max-width: 960px) {
+    @media (max-width: 960px) {
         .main{position: absolute;top:68px;width: 100%;margin: 0;}
     }
 

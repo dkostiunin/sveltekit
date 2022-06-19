@@ -141,7 +141,7 @@ const fin= await res.json()
         flash(e)
         let cart=[]
         cart=JSON.parse(localStorage.getItem('cart'))
-        addtocart(cart,1,products[+e.target.id].attributes,catSubcat[1])
+        addtocart(cart,1,products[+e.target.id].attributes,catSubcat[0],catSubcat[1],products[+e.target.id].id)
     }
   
 </script>
@@ -229,12 +229,14 @@ const fin= await res.json()
     list-style: none;
     flex-direction: row;
     font-size: smaller;
-    }
+  }
 
   .main{
     overflow-y: scroll;height: 100vh;display: flex;flex-wrap: wrap;gap: 15px;justify-content: center;
   }  
- 
+  @media (min-width: 960px) {
+    .main{padding: 0 10%;}
+    }
   
   a {text-decoration: none;color: black;}
 
