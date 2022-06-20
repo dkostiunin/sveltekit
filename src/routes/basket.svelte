@@ -57,7 +57,7 @@
     return item.data[subcat].data.attributes.sold
 	}
 
-/*   async function createOrder(u='""',a='""',p='""',t=0,d='""'){
+  async function createOrder(u='""',a='""',p='""',t=0,d='""'){
       let result = `"${JSON.stringify(d).replace(/"/g,'')}"`
       const QUERY =  `mutation {
           createOrder(data: { 
@@ -69,13 +69,14 @@
       const options = { method: "post",headers: {"Content-Type": "application/json"},body: JSON.stringify({query: QUERY})};
       const res= await fetch(import.meta.env.VITE_strapiURL, options)
       const finres= await res.json()
-      console.log(finres)
+      console.log(finres.data.createOrder.data.id)
       
       if(finres.errors){console.log(finres.errors[0].message);alert('Что то пошло не так:'+finres.errors[0].message)}
       else{
-        alert('Успешно загружено')
-      }		
-	} */
+        cart=[];localStorage.removeItem('cart'),countBasket.set('')
+         alert(`Заказ успешно оформлен, запомните номер заказа - ${finres.data.createOrder.data.id}`)       
+        }
+	}
 
   async function UPDATE_INSTOCK_SOLD(subcat,i,d){
 		const QUERY =  `mutation{
@@ -88,9 +89,7 @@
 		console.log(finres)
 		
 		if(finres.errors){console.log(finres.errors[0].message);alert('Что то пошло не так:'+finres.errors[0].message)}
-		else{
-			alert('Успешно загружено')
-		}
+		else console.log('Успешно загружено')
 	}
 </script>
 
@@ -142,11 +141,11 @@
     <h2>Оформление</h2>
     <input bind:value={name} placeholder="Имя(фамилия)" maxlength="25" on:input={checkText}/>
 	  <textarea bind:value={adress} placeholder="Адрес(если нужна доставка)" rows="3" on:input={checkText}/>
-    <input bind:value={phone} placeholder="Телефон(для согласования заказа)" maxlength="25" on:input={checkInt} type="text"/>
+    <input bind:value={phone} placeholder="Телефон(для согласования заказа)" maxlength="25" on:input={checkInt} type="number"/>
     <h2>Сумма: {sum}</h2>
     <button on:click={(e) =>{
       flash(e)
-      console.log(name,adress,phone)
+      console.log(name,adress,phone,sum)
       if(name==''||name.split('').filter(i=>i!=' ').length==0) alert('Для оформления заказа пожалуйста укажите имя (как к Вам обращаться)')
       else if(phone==''||phone.split('').filter(i=>i!=' ').length==0) alert('Для оформления заказа пожалуйста укажите телефон (нужен для согласования заказа)')
       else if(cart){
@@ -161,6 +160,7 @@
               }).
               then(()=>{ if(i==0) {
                 console.log(666777)
+                createOrder(`"${name}"`,`"${adress}"`,`"${phone}"`,sum,cart).then
               }})
           }
 
