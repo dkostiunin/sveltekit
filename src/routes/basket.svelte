@@ -141,7 +141,7 @@
     <h2>Оформление</h2>
     <input bind:value={name} placeholder="Имя(фамилия)" maxlength="25" on:input={checkText}/>
 	  <textarea bind:value={adress} placeholder="Адрес(если нужна доставка)" rows="3" on:input={checkText}/>
-    <input bind:value={phone} placeholder="Телефон(для согласования заказа)" maxlength="25" on:input={checkInt} type="number"/>
+    <input bind:value={phone} placeholder="Телефон(для согласования заказа)" maxlength="25" on:input={checkInt} type="text"/>
     <h2>Сумма: {sum}</h2>
     <button on:click={(e) =>{
       flash(e)
