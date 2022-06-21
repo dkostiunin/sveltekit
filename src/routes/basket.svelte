@@ -175,7 +175,7 @@
 </div>
 
 <style>
-  .main{position: absolute;top:68px;display: flex;flex-wrap: wrap;width: 100%;flex-direction: column;}
+  .main{position: absolute;top:68px;display: flex;flex-wrap: wrap;width: 100%;flex-direction: column;overflow: hidden;}
   h1{width: 100%;font-size: x-large;color: #ed0202;}
   
   .list{width: 100%;}
