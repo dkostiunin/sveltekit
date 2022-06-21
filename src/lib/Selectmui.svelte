@@ -1,6 +1,7 @@
 <script>
+	 import Spinner from "$lib/Spinner.svelte"
 	export let namesCats
-	let namecat,idCat,Mycomponent,link, images
+	let namecat,idCat,Mycomponent,link, images,loading=false
 	console.log(namesCats)
 
 	async function getLinks(subcat){
@@ -22,12 +23,13 @@
 		const res= await fetch(import.meta.env.VITE_strapiURL, options)
 		const finres= await res.json()
 		console.log(finres)
-		
+		loading=false
 		if(finres.errors){console.log(finres.errors[0].message)
 			if(finres.errors[0].message=='Internal Server Error') alert('Что то пошло не так: возможно наименование или артикул не уникальны(уже существуют)')
 			else alert('Что то пошло не так:'+finres.errors[0].message)
 		}
 		else{
+		
 			Mycomponent=null;
 			changeCategory()
 			//
@@ -46,6 +48,7 @@
 		if(document.getElementById('article').value==''||document.getElementById('name').value==''){alert('Нужно заполнить название и артикул')}
 		else {
 			try{
+				loading=true
 				let media = [],key='a',listim='',imgNewURL=[]
 				
 				if(images) imgNewURL = Array.from(images).filter(img => !img.url)				
@@ -144,6 +147,8 @@
 
 	<button on:click={loadToStrapi}>Загрузить на сервер</button>
 {/if}
+
+<Spinner bind:loading></Spinner>
 
 <style>
 	#inputImg{position: unset;opacity: 1;}

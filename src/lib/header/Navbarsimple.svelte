@@ -39,7 +39,7 @@
       <div  class={`navbar-list${showMobileMenu ? ' mobile' : ''}`}>
         
         <div class="parent">
-          <a sveltekit:prefetch href="/basket">ГЛАВНАЯ</a>
+          <a sveltekit:prefetch href="/search">ГЛАВНАЯ</a>
           <a sveltekit:prefetch href="/categories">КАТАЛОГ</a>
         </div>   
       </div>

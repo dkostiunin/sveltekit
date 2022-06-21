@@ -16,28 +16,38 @@
 			</picture>
 		</div>
 
-		to your new<br />SvelteKit app
+		Если можно купить дешевле,<br/> зачем покупать дороже?
 	</h1>
 
 	<h2>
-		try editing <strong>src/routes/index.svelte</strong>
+		На <a sveltekit:prefetch href="/search">Главной</a> поиск по всему каталогу
 	</h2>
-
+	<h2>
+		В <a sveltekit:prefetch href="/categories">Каталоге</a> ищите по категориям
+	</h2>
 
 </section>
 
 <style>
+
 	section {
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
 		align-items: center;
 		flex: 1;
+		position: absolute;
+		top: 68px;
+		width: 90%;		
+    	padding: 0 5%;
+		text-align: center;
 	}
 
 	h1 {
 		width: 100%;
 	}
+
+	h1,h2{line-height: 2.4rem;}
 
 	.welcome {
 		position: relative;

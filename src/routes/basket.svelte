@@ -10,9 +10,10 @@
   import { browser } from '$app/env'
   import { countBasket } from '$lib/stores';
   import Inputnumber  from "$lib/Inputnumber.svelte"
+  import Spinner  from "$lib/Spinner.svelte"
   import flash from '$lib/flash.js';
 
-  let cart,name='',adress='',phone='',sum=0
+  let cart,name='',adress='',phone='',sum=0,loading=false
 
   const checkInt = (e) => {e.target.value=e.target.value.replace(/[^0-9+-]/gi,'')},
         checkText=(e) =>{e.target.value=e.target.value.replace(/[^a-zа-яё0-9 +-.,:;]/gi, '')}
@@ -73,7 +74,9 @@
       
       if(finres.errors){console.log(finres.errors[0].message);alert('Что то пошло не так:'+finres.errors[0].message)}
       else{
+        loading=false
         cart=[];localStorage.removeItem('cart'),countBasket.set('')
+       
          alert(`Заказ успешно оформлен, запомните номер заказа - ${finres.data.createOrder.data.id}`)       
         }
 	}
@@ -146,6 +149,7 @@
       <h2>Сумма: {sum}</h2>
       <button on:click={(e) =>{
         flash(e)
+        loading=true
         console.log(name,adress,phone,sum)
         if(name==''||name.split('').filter(i=>i!=' ').length==0) alert('Для оформления заказа пожалуйста укажите имя (как к Вам обращаться)')
         else if(phone==''||phone.split('').filter(i=>i!=' ').length==0) alert('Для оформления заказа пожалуйста укажите телефон (нужен для согласования заказа)')
@@ -171,6 +175,8 @@
       }}>Оформить</button>
     </div>
   </div>
+
+<Spinner bind:loading></Spinner>
 
 </div>
 
