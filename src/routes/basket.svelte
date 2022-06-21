@@ -142,32 +142,34 @@
     <input bind:value={name} placeholder="Имя(фамилия)" maxlength="25" on:input={checkText}/>
 	  <textarea bind:value={adress} placeholder="Адрес(если нужна доставка)" rows="3" on:input={checkText}/>
     <input bind:value={phone} placeholder="Телефон(для согласования заказа)" maxlength="25" on:input={checkInt} type="text"/>
-    <h2>Сумма: {sum}</h2>
-    <button on:click={(e) =>{
-      flash(e)
-      console.log(name,adress,phone,sum)
-      if(name==''||name.split('').filter(i=>i!=' ').length==0) alert('Для оформления заказа пожалуйста укажите имя (как к Вам обращаться)')
-      else if(phone==''||phone.split('').filter(i=>i!=' ').length==0) alert('Для оформления заказа пожалуйста укажите телефон (нужен для согласования заказа)')
-      else if(cart){
-        try{
-          for (let i=cart.length-1; i>= 0; i--){
-            getItems(cart[i].subcat,cart[i].id,cart[i].qty,i,cart[i].instock).
-              then((sold)=>{
-                  const newsubs = 'update'+cart[i].subcat[0].toUpperCase() + cart[i].subcat.slice(1)
-                  const data=`{sold:${sold+cart[i].qty},instock:${cart[i].instock-cart[i].qty}}`
-                  console.log(data,newsubs,cart[i].id)
-                  UPDATE_INSTOCK_SOLD(newsubs,cart[i].id,data)
-              }).
-              then(()=>{ if(i==0) {
-                console.log(666777)
-                createOrder(`"${name}"`,`"${adress}"`,`"${phone}"`,sum,cart).then
-              }})
-          }
+    <div class="bottom">
+      <h2>Сумма: {sum}</h2>
+      <button on:click={(e) =>{
+        flash(e)
+        console.log(name,adress,phone,sum)
+        if(name==''||name.split('').filter(i=>i!=' ').length==0) alert('Для оформления заказа пожалуйста укажите имя (как к Вам обращаться)')
+        else if(phone==''||phone.split('').filter(i=>i!=' ').length==0) alert('Для оформления заказа пожалуйста укажите телефон (нужен для согласования заказа)')
+        else if(cart){
+          try{
+            for (let i=cart.length-1; i>= 0; i--){
+              getItems(cart[i].subcat,cart[i].id,cart[i].qty,i,cart[i].instock).
+                then((sold)=>{
+                    const newsubs = 'update'+cart[i].subcat[0].toUpperCase() + cart[i].subcat.slice(1)
+                    const data=`{sold:${sold+cart[i].qty},instock:${cart[i].instock-cart[i].qty}}`
+                    console.log(data,newsubs,cart[i].id)
+                    UPDATE_INSTOCK_SOLD(newsubs,cart[i].id,data)
+                }).
+                then(()=>{ if(i==0) {
+                  console.log(666777)
+                  createOrder(`"${name}"`,`"${adress}"`,`"${phone}"`,sum,cart).then
+                }})
+            }
 
+          }
+          catch(err) {console.log(432,err)}
         }
-        catch(err) {console.log(432,err)}
-      }
-    }}>Оформить</button>
+      }}>Оформить</button>
+    </div>
   </div>
 
 </div>
@@ -215,6 +217,8 @@
     .main {width: 80%;margin-left: 10%;}   
   }
 
+  .bottom{display: flex;justify-content: space-around;margin-bottom: 20px;    align-items: center;}
+
   button{
     display: -webkit-inline-box;
     display: -webkit-inline-flex;
@@ -260,6 +264,7 @@
     transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,border-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
     color: #fff;
     background-color: #556cd6;
+    height: 44px;
   }
 
 </style>

@@ -3,48 +3,64 @@
   import {countBasket} from '$lib/stores.js';
   let showMobileMenu = false;
 
-  const handleMobileIconClick = () => (showMobileMenu = !showMobileMenu);
-
-  const closeMenu =()=> showMobileMenu = false
+  const handleMobileIconClick = (event) => {
+    showMobileMenu = !showMobileMenu;
+		event.stopPropagation();
+  }
 
   const mediaQueryHandler = (e) => { if (!e.matches) {showMobileMenu = false}}
   onMount(() => {
     const mediaListener = window.matchMedia("(max-width: 767px)");
     mediaListener.addListener(mediaQueryHandler);
-    let len
-    
+    let len    
     if(localStorage.getItem('cart')){len=JSON.parse(localStorage.getItem('cart')).length; countBasket.set(len)}
+  })
 
-console.log(len)
-  });
+  function clickOutside(element, callbackFunction) {
+		function onClick(event) {if (!element.contains(event.target)) {callbackFunction()}}
+		document.body.addEventListener('click', onClick);
+		return {
+			update(newCallbackFunction) {callbackFunction = newCallbackFunction},
+			destroy() {document.body.removeEventListener('click', onClick)}
+		}
+	}
 </script>
 <header>
   <nav>
     <div class="inner">
+
       <div on:click={handleMobileIconClick} class={`mobile-icon${showMobileMenu ? ' active' : ''}`}>
-        <div class="middle-line"></div>
+        <div class="middle-line" use:clickOutside={() => {showMobileMenu = false}}></div>
       </div>
+
       <div class="logo">
-        <h2><a sveltekit:prefetch href="/" on:click={closeMenu}>Darom.tk</a></h2>
+        <h2><a sveltekit:prefetch href="/">Darom.tk</a></h2>
       </div>
       <div  class={`navbar-list${showMobileMenu ? ' mobile' : ''}`}>
         
         <div class="parent">
-          <a sveltekit:prefetch href="/basket" on:click={closeMenu}>ГЛАВНАЯ</a>
-          <a sveltekit:prefetch href="/categories" on:click={closeMenu}>КАТАЛОГ</a>
+          <a sveltekit:prefetch href="/basket">ГЛАВНАЯ</a>
+          <a sveltekit:prefetch href="/categories">КАТАЛОГ</a>
         </div>   
       </div>
       <div class="basket">
-        <a sveltekit:prefetch href="/basket" on:click={closeMenu}>
+        <a sveltekit:prefetch href="/basket">
           <svg class="basket-svg" width="24"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"></path></svg>
           <span class="countBasket">{$countBasket}</span>
         </a>
       </div>
     </div>
   </nav>
+  
+
 </header>
 
 <style>
+.modal {
+		padding: 16px;
+		border: 1px solid black;
+	}
+
   nav {
     background-color: #556cd6; font-family: "Roboto","Helvetica","Arial",sans-serif;
     height: 68px; position: fixed;top: 0; left: 0; width: 100%;z-index: 5;
