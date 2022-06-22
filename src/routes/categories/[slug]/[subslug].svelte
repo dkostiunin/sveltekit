@@ -1,8 +1,8 @@
 <script context="module">
   import { fields } from '$lib/fields';
 
-  export async function load({ params, fetch }) {
-    console.log(params.subslug,params.slug)
+  export async function load({ params, fetch,url }) {
+    console.log(params,url)
     const f=fields(params.subslug).fields,s=params.subslug+'s'//,filt=fields(params.subslug).filters
 
     const QUERY =  `{
@@ -23,7 +23,13 @@
 const options = { method: "post",headers: {"Content-Type": "application/json"},body: JSON.stringify({query: QUERY})};
 const res= await fetch(import.meta.env.VITE_strapiURL, options)// http://localhost:1337/graphql
 const fin= await res.json()
-
+const color = url.searchParams.get('color')
+if(color)
+  {    console.log(color)///categories/${catSubcat[0]}/${catSubcat[1]}/?color=
+    /*   const response = await fetch(`/data.json?color=${color}`)
+      const data = await response.json();
+      console.log(data) */
+          }
  return {
       props: {
         products:fin.data[s].data,
@@ -177,6 +183,9 @@ const fin= await res.json()
       <li><p class="slash">/</p></li>
       <li><p  class="last">{namesCats[1]}</p></li>
     </ol>
+    <a href={`/categories/${catSubcat[0]}/${catSubcat[1]}/?color=Red`}>Red</a>
+    <a href='/?color=Blue'>Blue</a>
+    <a href='/?color=Green'>Green</a>
   </nav>
   <div class="nav2"></div>
   

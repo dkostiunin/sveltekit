@@ -1,55 +1,74 @@
-<!-- <script context="module">
+<script context="module">
   import { fields } from '$lib/fields';
 
-  export async function load({ params, fetch }) {
-    console.log(params.subslug,params.slug)
-    const f=fields(params.subslug).fields,s=params.subslug+'s'//,filt=fields(params.subslug).filters
+  export async function load({ fetch,url }) {
+    console.log(url)
+    let quer = url.searchParams.get('search')
+    if (!quer) quer=''
+    
+
+		console.log(quer)
+  //console.log(params.subslug,params.slug)
+  //  const f=fields(params.subslug).fields,s=params.subslug+'s'//,filt=fields(params.subslug).filters
 
     const QUERY =  `{
-      categories(filters: {slug: { contains:"${params.slug}"}}){data{attributes{name}}}
-      subcats(filters: {subslug: { contains:"${params.subslug}"}}){data{ attributes{name}}}
-      ${s}
-              {data{id attributes{ ${f} link{data {attributes{link}} }
-                    }}
-              }
-            }`
-  /*  {${s}(filters:${filt})
-              {data{id attributes{
-                        ${f} link{data{attributes{link}}}
-                    }}
-              }
-            } */
+          subcats{
+        data{attributes{subslug
+          category{data{attributes{slug}}}
+        }}
+    }}`
 
 const options = { method: "post",headers: {"Content-Type": "application/json"},body: JSON.stringify({query: QUERY})};
-const res= await fetch(import.meta.env.VITE_strapiURL, options)// http://localhost:1337/graphql
+const res= await fetch(import.meta.env.VITE_strapiURL, options)
 const fin= await res.json()
+
+const cats=fin.data.subcats.data,arr=[]
+ // console.log(cats)
+  for (let i=cats.length-1; i>= 0; i--) {
+      const s=cats[i].attributes.subslug,ss=s+'s',cat=cats[i].attributes.category.data.attributes.slug
+      console.log(s,ss,cat)
+      const QUERY2 =  `{ ${ss}(filters:{name:{contains:"${quer}"}})
+        {
+          data{id attributes{
+            createdAt name price shortdesc listimage instock
+                  }
+               }
+          }
+      }`
+      const opt = { method: "post",headers: {"Content-Type": "application/json"},body: JSON.stringify({query: QUERY2})};
+      const result= await fetch(import.meta.env.VITE_strapiURL, opt)
+      const prods= await result.json()
+      arr.push([prods.data[ss].data,s,cat])
+    }
 
  return {
       props: {
-        products:fin.data[s].data,
-        catSubcat:[params.slug,params.subslug],
-        namesCats:[fin.data.categories.data[0].attributes.name,fin.data.subcats.data[0].attributes.name],
+        products:arr
       },
-     /*  cache: {
-        "maxage": 120,
-        "private": false
-      } */
+   
     };
   }
-</script> -->
+</script>
  
 <script>
    import {  onDestroy } from "svelte";
-  import Sidebar from '$lib/Sidebar.svelte';
   let sidebar_show = false
   import Modal from '$lib/Modal.svelte';
   let modal_show = false,svgImage ,yes,New,AZ,Up,Down,Popular
   import addtocart from '$lib/addtocart';
   import flash from '$lib/flash.js';
   import { browser } from "$app/env";
-  export let products,catSubcat,namesCats
+  export let products
+
+  console.log(products)
+
+  products.forEach((el,j) => {el[0].map(i=>{i.c=products[j][2];i.s=products[j][1];})});
+
+  $:newarr=products.map(i=>i=i[0]).flat()
+
+  console.log(newarr)
   
-  let filtersData=products
+ // let filtersData=products
 
   let component, elementsVisible = [], page = 1,offset,idItem,idItem2,subcat,lastItem
   console.log(page)
@@ -143,7 +162,26 @@ const fin= await res.json()
         cart=JSON.parse(localStorage.getItem('cart'))
         addtocart(cart,1,products[+e.target.id].attributes,catSubcat[0],catSubcat[1],products[+e.target.id].id)
     }
+
+  import { goto } from '$app/navigation';   
+  let timerId
+  const checkList = (e) => {
+    console.log(e.target.value)
   
+   if(timerId)  clearInterval(timerId)
+   let t=0
+    timerId=setInterval(() => {
+      t++
+      if(t>5){
+        clearInterval(timerId)
+        goto(`/search?search=${e.target.value}`);
+      }
+      console.log(t)
+    }, 100);
+
+   
+  }
+
 </script>
 
 <svelte:head>
@@ -158,28 +196,16 @@ const fin= await res.json()
   <svg viewBox="0 0 24 24"><path  fill="white" d={svgImage}/></svg>
 </button>
 <Modal bind:show={modal_show} bind:svgImage bind:yes bind:New bind:AZ bind:Up bind:Down bind:Popular/>
+<input placeholder="Искать товар…" type="text" aria-label="search" class="" value=""  on:input={checkList}>
 
 <div bind:this={component} class="main" id="mainDiv"> 
-  <button class="sidebar">
-    <svg viewBox="0 0 24 24" on:click={() =>{
-       sidebar_show = !sidebar_show
-       idItem=undefined
-    }}>
-      <path fill="white" fill-rule="evenodd" d="M19,7.17070571 C20.1651924,7.58254212 21,8.69378117 21,10 C21,11.3062188 20.1651924,12.4174579 19,12.8292943 L19,19 C19,19.5522847 18.5522847,20 18,20 C17.4477153,20 17,19.5522847 17,19 L17,12.8292943 C15.8348076,12.4174579 15,11.3062188 15,10 C15,8.69378117 15.8348076,7.58254212 17,7.17070571 L17,5 C17,4.44771525 17.4477153,4 18,4 C18.5522847,4 19,4.44771525 19,5 L19,7.17070571 Z M15,15 C15,16.3062188 14.1651924,17.4174579 13,17.8292943 L13,19 C13,19.5522847 12.5522847,20 12,20 C11.4477153,20 11,19.5522847 11,19 L11,17.8292943 C9.83480763,17.4174579 9,16.3062188 9,15 C9,13.6937812 9.83480763,12.5825421 11,12.1707057 L11,5 C11,4.44771525 11.4477153,4 12,4 C12.5522847,4 13,4.44771525 13,5 L13,12.1707057 C14.1651924,12.5825421 15,13.6937812 15,15 Z M7,7.17070571 C8.16519237,7.58254212 9,8.69378117 9,10 C9,11.3062188 8.16519237,12.4174579 7,12.8292943 L7,19 C7,19.5522847 6.55228475,20 6,20 C5.44771525,20 5,19.5522847 5,19 L5,12.8292943 C3.83480763,12.4174579 3,11.3062188 3,10 C3,8.69378117 3.83480763,7.58254212 5,7.17070571 L5,5 C5,4.44771525 5.44771525,4 6,4 C6.55228475,4 7,4.44771525 7,5 L7,7.17070571 Z"/>
-    </svg>
-  </button> 
- <!--  <Sidebar bind:show={sidebar_show} bind:page bind:filtersData dataGoods={products} subcat={catSubcat[1]} instock={yes}/>   -->
+
   
-<!--   {#each elementsVisible as el,i}
+  {#each newarr as el,i}
     <div class="child">
 
       <div class="body">
-        <a sveltekit:prefetch href={`/categories/${catSubcat[0]}/${catSubcat[1]}/${el.id}`} on:click={(e) =>{
-          localStorage.setItem('myBook', JSON.stringify(filtersData ));
-          localStorage.setItem('myBook2', JSON.stringify(elementsVisible ));
-          localStorage.setItem('scrollEll',component.scrollTop);
-          localStorage.setItem('subcat', catSubcat[1]);
-        }}>
+        <a sveltekit:prefetch href="{`/categories/${el.c}/${el.s}/${el.id}`}">
           {#if !el.attributes.listimage}
           <img src="https://res.cloudinary.com/dxzefnveb/image/upload/v1653769068/%D1%80%D1%83%D1%81%D1%82%D0%B0%D0%BC_1_ijtxff.jpg" 
             alt={el.attributes.name}>
@@ -200,11 +226,19 @@ const fin= await res.json()
       </div>
 
     </div>
-  {/each} -->
+  {/each}
   
 </div>
 
 <style>
+
+  input{position: fixed; top: 75px; right: 24px;
+    border: none;border-radius: 4px; padding: 10px;
+    background-color: #556cd6; color: white;
+   }
+  input::placeholder {
+    color: #ffffffb3;font-style: italic;
+  }
 
   p{margin: 0 3px;color: grey;}
   .slash{font-size: medium;}

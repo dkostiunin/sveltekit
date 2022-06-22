@@ -4,7 +4,8 @@
     let Mycomponent
     const f = 'Filter' + subcat
     import(`../products/${subcat}/${f}.svelte`).then(res => Mycomponent = res.default)
-    //console.log(dataGoods,subcat,f)
+    /* import { goto } from '$app/navigation';
+    goto('/login', { state: { foo: 'bar' } }); */
 </script>
 
 {#if show}
