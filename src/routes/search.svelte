@@ -1,13 +1,10 @@
 <script context="module">
-  import { fields } from '$lib/fields';
+ // import { fields } from '$lib/fields';
 
   export async function load({ fetch,url }) {
-    console.log(url)
+  //  console.log(url)
     let quer = url.searchParams.get('search')
     if (!quer) quer=''
-    
-
-		console.log(quer)
   //console.log(params.subslug,params.slug)
   //  const f=fields(params.subslug).fields,s=params.subslug+'s'//,filt=fields(params.subslug).filters
 
@@ -26,8 +23,8 @@ const cats=fin.data.subcats.data,arr=[]
  // console.log(cats)
   for (let i=cats.length-1; i>= 0; i--) {
       const s=cats[i].attributes.subslug,ss=s+'s',cat=cats[i].attributes.category.data.attributes.slug
-      console.log(s,ss,cat)
-      const QUERY2 =  `{ ${ss}(filters:{name:{contains:"${quer}"}})
+    //  console.log(s,ss,cat)
+      const QUERY2 =  `{ ${ss}(filters:{name:{containsi:"${quer}"}})
         {
           data{id attributes{
             createdAt name price shortdesc listimage instock
@@ -51,7 +48,8 @@ const cats=fin.data.subcats.data,arr=[]
 </script>
  
 <script>
-   import {  onDestroy } from "svelte";
+  import {  onDestroy,onMount } from "svelte";
+  import { goto } from '$app/navigation';
   let sidebar_show = false
   import Modal from '$lib/Modal.svelte';
   let modal_show = false,svgImage ,yes,New,AZ,Up,Down,Popular
@@ -60,22 +58,28 @@ const cats=fin.data.subcats.data,arr=[]
   import { browser } from "$app/env";
   export let products
 
-  console.log(products)
+  onMount(() => {
+    let returning=localStorage.getItem('return')
+    if(!returning) goto(`/search`)
+    else localStorage.removeItem('return')  
+  })
 
-  products.forEach((el,j) => {el[0].map(i=>{i.c=products[j][2];i.s=products[j][1];})});
+//  console.log(products)
+
+$: products.forEach((el,j) => {el[0].map(i=>{i.c=products[j][2];i.s=products[j][1];})});
 
   $:newarr=products.map(i=>i=i[0]).flat()
 
-  console.log(newarr)
+ console.log(newarr)
   
  // let filtersData=products
 
   let component, elementsVisible = [], page = 1,offset,idItem,idItem2,subcat,lastItem
   console.log(page)
-/*   $:{
+  $:{
     if(component) component.addEventListener("scroll", onScroll)
    
-    if (browser&&localStorage.getItem('myBook')){
+   /*  if (browser&&localStorage.getItem('myBook')){
       idItem=localStorage.getItem('myBook')
       localStorage.removeItem('myBook')
       idItem2=localStorage.getItem('myBook2')
@@ -85,51 +89,51 @@ const cats=fin.data.subcats.data,arr=[]
       lastItem=localStorage.getItem('scrollEll');
       localStorage.removeItem('scrollEll')
      // console.log(subcat,catSubcat[1],idItem,idItem2)
-    }
-  } */
+    } */
+  }
  
   const onScroll = e => {offset =  e.target.scrollHeight - e.target.clientHeight - e.target.scrollTop}
   onDestroy(() => {if (component) {component.removeEventListener("scroll", null)}});
   
- /*  $:{
+  $:{
     if (Down){
-    filtersData.sort(function (a, b) {
+      newarr.sort(function (a, b) {
         if (a.attributes.price < b.attributes.price) {return 1}
         if (a.attributes.price > b.attributes.price) {return -1}
         return 0;
       })
     }
     else if (Up){
-      filtersData.sort(function (a, b) {
+      newarr.sort(function (a, b) {
         if (a.attributes.price > b.attributes.price) {return 1}
         if (a.attributes.price < b.attributes.price) {return -1}
         return 0;
       })
     }
     else if(AZ){
-      filtersData.sort(function (a, b) {
+      newarr.sort(function (a, b) {
         if (a.attributes.name.toLowerCase() > b.attributes.name.toLowerCase()) {return 1}
         if (a.attributes.name.toLowerCase() < b.attributes.name.toLowerCase()) {return -1}
         return 0;
       })
     }
     else if (Popular){
-      filtersData.sort(function (a, b) {
+      newarr.sort(function (a, b) {
         if (a.attributes.sold < b.attributes.sold) {return 1}
         if (a.attributes.sold > b.attributes.sold) {return -1}
         return 0;
       })
     }
     else{
-      filtersData.sort(function (a, b) {
+      newarr.sort(function (a, b) {
         if (+new Date(a.attributes.createdAt) < +new Date(b.attributes.createdAt)) {return 1}
         if (+new Date(a.attributes.createdAt) >+new Date(b.attributes.createdAt)) {return -1}
         return 0;
       })
     }
-    filtersData=filtersData
+    newarr=newarr
     page=1
-  } */
+  }
 
 /*   $:{if(idItem&&subcat==catSubcat[1]){
       filtersData=JSON.parse(idItem);elementsVisible=JSON.parse(idItem2);
@@ -140,34 +144,33 @@ const cats=fin.data.subcats.data,arr=[]
     else elementsVisible=filtersData.slice(0, 5)
   } */
 
- /*  $:elementsVisible=filtersData.slice(0, 5) */
+  $:elementsVisible=newarr.slice(0, 5)
 
-/*   $:{
-    if(offset<600&&page*5<filtersData.length){ 
-      if(elementsVisible.length+5<=filtersData.length){
-        elementsVisible = [...elementsVisible,...filtersData.slice(page*5,(page*5)+5)]
+  $:{
+    if(offset<600&&page*5<newarr.length){ 
+      if(elementsVisible.length+5<=newarr.length){
+        elementsVisible = [...elementsVisible,...newarr.slice(page*5,(page*5)+5)]
         page++
       }
-      else if(elementsVisible.length<filtersData.length&&elementsVisible.length+5>filtersData.length){
-        elementsVisible = [...elementsVisible,...filtersData.slice(page*5,(page*5)+(filtersData.length-elementsVisible.length))]
+      else if(elementsVisible.length<newarr.length&&elementsVisible.length+5>newarr.length){
+        elementsVisible = [...elementsVisible,...newarr.slice(page*5,(page*5)+(newarr.length-elementsVisible.length))]
         page++
       }
-      console.log(elementsVisible,filtersData,page)
+      console.log(elementsVisible,newarr,page)
     }
-  } */
+  }
 
   function inBasket(e){
         flash(e)
         let cart=[]
         cart=JSON.parse(localStorage.getItem('cart'))
-        addtocart(cart,1,products[+e.target.id].attributes,catSubcat[0],catSubcat[1],products[+e.target.id].id)
+        console.log(e.target.id,newarr[+e.target.id])
+        addtocart(cart,1,newarr[+e.target.id].attributes,newarr[+e.target.id].c,newarr[+e.target.id].s,newarr[+e.target.id].id)
     }
 
-  import { goto } from '$app/navigation';   
+ 
   let timerId
   const checkList = (e) => {
-    console.log(e.target.value)
-  
    if(timerId)  clearInterval(timerId)
    let t=0
     timerId=setInterval(() => {
@@ -176,10 +179,9 @@ const cats=fin.data.subcats.data,arr=[]
         clearInterval(timerId)
         goto(`/search?search=${e.target.value}`);
       }
-      console.log(t)
     }, 100);
 
-   
+      
   }
 
 </script>
@@ -200,12 +202,15 @@ const cats=fin.data.subcats.data,arr=[]
 
 <div bind:this={component} class="main" id="mainDiv"> 
 
+  <div class="nav2"></div>
   
-  {#each newarr as el,i}
+  {#each elementsVisible as el,i}
     <div class="child">
 
       <div class="body">
-        <a sveltekit:prefetch href="{`/categories/${el.c}/${el.s}/${el.id}`}">
+        <a sveltekit:prefetch href="{`/categories/${el.c}/${el.s}/${el.id}`}"  on:click={(e) =>{
+         localStorage.setItem('return','return');
+        }}>
           {#if !el.attributes.listimage}
           <img src="https://res.cloudinary.com/dxzefnveb/image/upload/v1653769068/%D1%80%D1%83%D1%81%D1%82%D0%B0%D0%BC_1_ijtxff.jpg" 
             alt={el.attributes.name}>
@@ -232,28 +237,18 @@ const cats=fin.data.subcats.data,arr=[]
 
 <style>
 
-  input{position: fixed; top: 75px; right: 24px;
+  input{position: fixed; top: 75px; left: calc(50% - 150px);width: 280px;
     border: none;border-radius: 4px; padding: 10px;
-    background-color: #556cd6; color: white;
+    background-color: #556cd6; color: white;z-index: 1;
    }
   input::placeholder {
     color: #ffffffb3;font-style: italic;
   }
-
-  p{margin: 0 3px;color: grey;}
-  .slash{font-size: medium;}
-  .last{color: black;}
-  .nav{display: none;}
-  .nav2{display: block;margin-top: 75px;width: 100%;}
-
-  ol{
-    display: -webkit-box;display: -webkit-flex;display: -ms-flexbox;display: flex;
-    -webkit-box-flex-wrap: wrap;-webkit-flex-wrap: wrap;-ms-flex-wrap: wrap;flex-wrap: wrap;
-    align-items: center;-webkit-align-items: center;-webkit-box-align: center;-ms-flex-align: center;
-    list-style: none;
-    flex-direction: row;
-    font-size: smaller;
-  }
+  input[type=text]:focus {
+  border: none;
+}
+  
+  .nav2{display: block;margin-top: 97px;width: 100%;}
 
   .main{
     overflow-y: scroll;height: 100vh;display: flex;flex-wrap: wrap;gap: 15px;justify-content: center;
@@ -337,14 +332,12 @@ const cats=fin.data.subcats.data,arr=[]
   }
   .buttons{display: flex; width: 90%;height: 8%;justify-content: space-between;align-items: center;}
   .nowButton{background-color:#2e7d32}
-  .sidebar{position: fixed;top: 75px;right: 0px;width: 48px;height: 36px;}
-  .sidebar2{position: fixed;top: 120px;right: 0px;width: 48px;height: 36px;}
+  .sidebar2{position: fixed;top: 120px;right: 0px;width: 48px;height: 36px;z-index: 1;}
   svg{width: 40px;}
 
   @media only screen and (min-width: 600px) {
-      .nav{display: block;margin-top: 65px;width: 100%;}
-      .nav2{display: none;}
-      .sidebar,.sidebar2{right: 24px;}
+      .sidebar2{right: 24px;}
+      input{right: 24px;left: unset;}
   }
 
 </style>

@@ -183,9 +183,6 @@ if(color)
       <li><p class="slash">/</p></li>
       <li><p  class="last">{namesCats[1]}</p></li>
     </ol>
-    <a href={`/categories/${catSubcat[0]}/${catSubcat[1]}/?color=Red`}>Red</a>
-    <a href='/?color=Blue'>Blue</a>
-    <a href='/?color=Green'>Green</a>
   </nav>
   <div class="nav2"></div>
   
@@ -322,8 +319,8 @@ if(color)
   }
   .buttons{display: flex; width: 90%;height: 8%;justify-content: space-between;align-items: center;}
   .nowButton{background-color:#2e7d32}
-  .sidebar{position: fixed;top: 75px;right: 0px;width: 48px;height: 36px;}
-  .sidebar2{position: fixed;top: 120px;right: 0px;width: 48px;height: 36px;}
+  .sidebar{position: fixed;top: 75px;right: 0px;width: 48px;height: 36px;z-index: 1;}
+  .sidebar2{position: fixed;top: 120px;right: 0px;width: 48px;height: 36px;z-index: 1;}
   svg{width: 40px;}
 
   @media only screen and (min-width: 600px) {

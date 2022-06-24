@@ -149,11 +149,14 @@
       <h2>Сумма: {sum}</h2>
       <button on:click={(e) =>{
         flash(e)
-        loading=true
+        
         console.log(name,adress,phone,sum)
-        if(name==''||name.split('').filter(i=>i!=' ').length==0) alert('Для оформления заказа пожалуйста укажите имя (как к Вам обращаться)')
-        else if(phone==''||phone.split('').filter(i=>i!=' ').length==0) alert('Для оформления заказа пожалуйста укажите телефон (нужен для согласования заказа)')
+        if(name==''||name.split('').filter(i=>i!=' ').length==0)
+          setTimeout(()=>{ alert('Для оформления заказа пожалуйста укажите имя (как к Вам обращаться)')},250)
+        else if(phone==''||phone.split('').filter(i=>i!=' ').length==0) 
+          setTimeout(()=>{ alert('Для оформления заказа пожалуйста укажите телефон (нужен для согласования заказа)')},250)
         else if(cart){
+          loading=true
           try{
             for (let i=cart.length-1; i>= 0; i--){
               getItems(cart[i].subcat,cart[i].id,cart[i].qty,i,cart[i].instock).

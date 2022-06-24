@@ -5,12 +5,12 @@
 
 <div>
     <span class="span1">Бренд</span>
-   <span class="span2">{name.brand}</span>
+   <span class="span3">{name.brand}</span>
 </div>
 
 <div>
    <span class="span1">Артикул</span>
-   <span class="span2">{name.article}</span>
+   <span class="span3">{name.article}</span>
 </div>
 
 <div>
@@ -82,4 +82,5 @@
     div{display: flex;padding: 0.5rem 0;color: #323232;border-bottom: 1px solid #b8b4b4;}
     .span1{width: 65%;}
     .span2{width: 35%;text-align: end;}
+    .span3{width: 65%;text-align: end;}
 </style>
