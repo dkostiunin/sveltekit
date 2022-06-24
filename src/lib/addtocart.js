@@ -1,7 +1,8 @@
 import { countBasket } from "./stores"
 
 export default function addtocart(cart,qty,product,cat,subcat,id){
-    console.log(cat,subcat,id)
+    console.log(cart,qty,cat,subcat,id)
+    console.log(product.article,product.instock,product.name,product.price,product.listimage.a)
     if(cart){
         for (let i=cart.length-1; i>= 0; i--) {
             if(cart[i].subcat==subcat&&cart[i].article==product.article){

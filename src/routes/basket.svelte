@@ -168,10 +168,9 @@
                 }).
                 then(()=>{ if(i==0) {
                   console.log(666777)
-                  createOrder(`"${name}"`,`"${adress}"`,`"${phone}"`,sum,cart).then
+                  createOrder(`"${name}"`,`"${adress}"`,`"${phone}"`,sum,cart)
                 }})
             }
-
           }
           catch(err) {console.log(432,err)}
         }

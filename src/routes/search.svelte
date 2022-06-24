@@ -27,7 +27,7 @@ const cats=fin.data.subcats.data,arr=[]
       const QUERY2 =  `{ ${ss}(filters:{name:{containsi:"${quer}"}})
         {
           data{id attributes{
-            createdAt name price shortdesc listimage instock
+            createdAt name price shortdesc listimage instock article
                   }
                }
           }
@@ -70,12 +70,12 @@ $: products.forEach((el,j) => {el[0].map(i=>{i.c=products[j][2];i.s=products[j][
 
   $:newarr=products.map(i=>i=i[0]).flat()
 
- console.log(newarr)
+// console.log(newarr)
   
  // let filtersData=products
 
   let component, elementsVisible = [], page = 1,offset,idItem,idItem2,subcat,lastItem
-  console.log(page)
+ // console.log(page)
   $:{
     if(component) component.addEventListener("scroll", onScroll)
    
