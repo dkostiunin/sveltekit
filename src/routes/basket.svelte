@@ -12,8 +12,15 @@
   import Inputnumber  from "$lib/Inputnumber.svelte"
   import Spinner  from "$lib/Spinner.svelte"
   import flash from '$lib/flash.js';
+  import { onMount } from "svelte";
 
   let cart,name='',adress='',phone='',sum=0,loading=false
+
+  onMount(() => { 
+    if(localStorage.getItem('nameUser')) name=localStorage.getItem('nameUser')
+    if(localStorage.getItem('adresssUser')) adress=localStorage.getItem('adresssUser')
+    if(localStorage.getItem('phoneUser')) phone=localStorage.getItem('phoneUser')  
+  })
 
   const checkInt = (e) => {e.target.value=e.target.value.replace(/[^0-9+-]/gi,'')},
         checkText=(e) =>{e.target.value=e.target.value.replace(/[^a-zа-яё0-9 +-.,:;]/gi, '')}
@@ -24,8 +31,8 @@
         sum=0
         cart.forEach(i=>sum=sum+i.qty*i.price)
       }
-    
     }
+    
 
   if (browser){
     cart=JSON.parse(localStorage.getItem('cart'))
@@ -149,13 +156,13 @@
       <h2>Сумма: {sum}</h2>
       <button on:click={(e) =>{
         flash(e)
-        
-        console.log(name,adress,phone,sum)
+        console.log(321,name,adress,phone,sum)
         if(name==''||name.split('').filter(i=>i!=' ').length==0)
           setTimeout(()=>{ alert('Для оформления заказа пожалуйста укажите имя (как к Вам обращаться)')},250)
         else if(phone==''||phone.split('').filter(i=>i!=' ').length==0) 
           setTimeout(()=>{ alert('Для оформления заказа пожалуйста укажите телефон (нужен для согласования заказа)')},250)
         else if(cart){
+          localStorage.setItem('nameUser',name); localStorage.setItem('adresssUser',adress); localStorage.setItem('phoneUser',phone)
           loading=true
           try{
             for (let i=cart.length-1; i>= 0; i--){
