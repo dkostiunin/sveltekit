@@ -68,4 +68,8 @@ export function fields(subcat,queries){
              // filters:['brand','color','lampholder','type','Voltage','function','flaskshape','Lifetime','luminous','price','Wattage','rating']
               })
     }
+    else if(subcat=='socket'){
+       return ({fields:'createdAt color brand type name price shortdesc longdesc listimage instock sold rating ratecount article EAN13 countryorigin warranty flaskshape height width length ipclass material kind feature base'
+               })
+     }
   }

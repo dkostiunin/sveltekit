@@ -3,8 +3,8 @@
 </script>
 
 <svelte:head>
-	<title>Home</title>
-	<meta name="description" content="Svelte demo app" />
+	<title>Все почти даром</title>
+	<meta name="description" content="Все почти даром" />
 </svelte:head>
 
 <section>
@@ -16,7 +16,7 @@
 			</picture>
 		</div>
 
-		Если можно купить дешевле,<br/> зачем покупать дороже?
+		Здесь можно купить дешевле
 	</h1>
 
 	<h2>
