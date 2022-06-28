@@ -12,14 +12,14 @@
 
 	const options = {  method: "post",headers: {"Content-Type": "application/json"},body: JSON.stringify({query: QUERY_PRODS()})};
  /*     onMount(async () => {//https://res.cloudinary.com/dxzefnveb/image/upload/v1653578851/jorql5rgzxlrilrlx0sy.svg
-		const res= await fetch(`https://teststrapikost.herokuapp.com/graphql`, options)//http://localhost:1337/graphql
+		const res= await fetch(`https://teststrapikost.herokuapp.com/graphql`, options)
       const fin= await res.json()
       finres=fin.data.categories.data
        console.log(finres)
 	}); */
 
   export async function load({ fetch }) {
-    const res= await fetch(import.meta.env.VITE_strapiURL, options)//http://localhost:1337/graphql
+    const res= await fetch(import.meta.env.VITE_strapiURL, options)
       const fin= await res.json()
       
     return {
@@ -42,7 +42,6 @@
   
   <div class="main">
 
-    <a sveltekit:prefetch href="/">Go back to the landing page</a>
     <div class="categories">
         {#each finres as el}
             <a sveltekit:prefetch href={`/categories/${el.attributes.slug}`}>
@@ -53,9 +52,6 @@
               </a>
         {/each}
     </div>
-            {#each finres as el}
-                <p>{el.attributes.desc}</p>
-            {/each}
   </div>
 
   <style>
