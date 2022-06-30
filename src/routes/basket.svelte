@@ -1,11 +1,3 @@
-<!-- <script context="module">
-  import { browser, dev } from '$app/env';
-	export const hydrate = dev;
-	export const router = browser;
-	export const prerender = true;
-
-</script> -->
-
 <script>
   import { browser } from '$app/env'
   import { countBasket } from '$lib/stores';
@@ -101,6 +93,16 @@
 		if(finres.errors){console.log(finres.errors[0].message);alert('Что то пошло не так:'+finres.errors[0].message)}
 		else console.log('Успешно загружено')
 	}
+
+  const postdata = async()=>{
+    let response = await fetch('/api/basket', {
+        method: 'POST',
+        body:JSON.stringify({name,adress,phone,sum,cart})
+      });
+      const d = await response.json()
+      console.log(d)
+  }
+
 </script>
 
 <svelte:head>
@@ -156,6 +158,7 @@
       <h2>Сумма: {sum}</h2>
       <button on:click={(e) =>{
         flash(e)
+        
         console.log(321,name,adress,phone,sum)
         if(name==''||name.split('').filter(i=>i!=' ').length==0)
           setTimeout(()=>{ alert('Для оформления заказа пожалуйста укажите имя (как к Вам обращаться)')},250)
@@ -176,6 +179,7 @@
                 then(()=>{ if(i==0) {
                   console.log(666777)
                   createOrder(`"${name}"`,`"${adress}"`,`"${phone}"`,sum,cart)
+                  postdata()
                 }})
             }
           }
