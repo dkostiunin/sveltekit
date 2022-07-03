@@ -1,5 +1,4 @@
 <script>
-    // Props
     export let items, scrollBy = 1;
     import { onMount } from "svelte";
     let size,srcImage
@@ -36,13 +35,12 @@
 
   <svelte:window on:resize={resize} />
 
-  <img id="fullImage" on:click={(e) => fullImage.style.display="none"} src={srcImage} alt="e"/> 
+  <img id="fullImage" on:click={(e) => fullImage.style.display="none"} src={srcImage} alt={items[0]}/> 
 
   <div bind:this={size} id="divimg">
     <div class="items" style="transform: translateX({offset}px);">
-      {#each items as item, i}
-     <!--  <div class="item" style="background-color: hsla({i * 25}deg, 75%, 55%);">{item}</div> -->
-     <img on:click={test} src={item} alt="eee">
+      {#each items as item}
+     <img on:click={test} src={item} alt={item}>
       {/each}
     </div>
     <button class="left B" disabled={atStart} on:click="{() => move(-1)}">

@@ -23,7 +23,6 @@ const res= await fetch(import.meta.env.VITE_strapiURL, options)//http://localhos
  
  <script>
       export let subcats;
-      console.log(subcats.attributes)
   </script>
 
 <svelte:head>

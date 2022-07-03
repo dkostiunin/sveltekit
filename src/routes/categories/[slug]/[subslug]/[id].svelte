@@ -190,8 +190,8 @@
         background-color: #556cd6;
     }
     
-    .buttons{display: flex; width: 90%;height: 8%;justify-content: space-between;align-items: center;}
-    .nowButton{background-color:#2e7d32}
+    /* .buttons{display: flex; width: 90%;height: 8%;justify-content: space-between;align-items: center;}
+    .nowButton{background-color:#2e7d32} */
 
     @media (max-width: 960px) {
         .main{position: absolute;top:68px;width: 100%;margin: 0;}
