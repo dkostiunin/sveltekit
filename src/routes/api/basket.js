@@ -5,13 +5,14 @@ import { SMTPClient } from 'emailjs';
 
 
 export async function post({ params, request }) {
-  const mailclient = new SMTPClient({
+ // await console.log(888, params, request)
+  const mailclient = await new SMTPClient({
     user: 'darom@darom.tk',
     password: 'roge816013',
     host: 'smtp.yandex.ru',
     ssl: true,
   });
-   const body = await request.json() // or request.json(), etc
+  // const body = await request.json() // or request.json(), etc
     //await do_something_with(params, body);
    /*  try {
       mail(body.phone)
@@ -32,7 +33,7 @@ export async function post({ params, request }) {
 			console.error(err);
 		}
    
-    console.log(4567895555,body)
+   // console.log(4567895555,body)
    
     return { status: 201 };
   }
