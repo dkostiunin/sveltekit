@@ -1,4 +1,4 @@
-//import {mail} from '$lib/nodemailer';
+import {mail} from '$lib/nodemailer';
 //import { SMTPClient } from 'emailjs';
 
 
@@ -12,13 +12,13 @@ export async function post({ params, request }) {
     host: 'smtp.yandex.ru',
     ssl: true,
   }); */
-  // const body = await request.json() // or request.json(), etc
+   const body = await request.json() // or request.json(), etc
     //await do_something_with(params, body);
-   /*  try {
+    try {
       mail(body.phone)
     } catch (error) {
       console.log(error)
-    } */
+    }
    
   /*   try {
 			const message =  mailclient.sendAsync({
