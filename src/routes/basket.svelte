@@ -159,7 +159,7 @@
         flash(e)
         postdata()
         
-        console.log(321,name,adress,phone,sum)
+       // console.log(321,name,adress,phone,sum)
         if(name==''||name.split('').filter(i=>i!=' ').length==0)
           setTimeout(()=>{ alert('Для оформления заказа пожалуйста укажите имя (как к Вам обращаться)')},250)
         else if(phone==''||phone.split('').filter(i=>i!=' ').length==0) 

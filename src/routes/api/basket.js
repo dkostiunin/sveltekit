@@ -6,12 +6,12 @@ import { SMTPClient } from 'emailjs';
 
 export async function post({ params, request }) {
  // await console.log(888, params, request)
-  const mailclient = await new SMTPClient({
+/*   const mailclient = new SMTPClient({
     user: 'darom@darom.tk',
     password: 'roge816013',
     host: 'smtp.yandex.ru',
     ssl: true,
-  });
+  }); */
   // const body = await request.json() // or request.json(), etc
     //await do_something_with(params, body);
    /*  try {
@@ -20,7 +20,7 @@ export async function post({ params, request }) {
       console.log(error)
     } */
    
-    try {
+  /*   try {
 			const message =  mailclient.sendAsync({
 				text: 'это письмо darom prod',
 				from: 'you <darom@darom.tk>',
@@ -31,7 +31,7 @@ export async function post({ params, request }) {
 			console.log(123456,message);
 		} catch (err) {
 			console.error(err);
-		}
+		} */
    
    // console.log(4567895555,body)
    
