@@ -6,7 +6,7 @@
   import flash from '$lib/flash.js';
   import { onMount } from "svelte";
 
-  let cart,name='',adress='',phone='',sum=0,loading=false 
+  let cart,name='',adress='',phone='',sum=0,loading=false,textCart
 
   onMount(() => { 
     if(localStorage.getItem('nameUser')) name=localStorage.getItem('nameUser')
@@ -21,7 +21,13 @@
      if(browser&&localStorage.getItem('cart')){
         localStorage.setItem('cart', JSON.stringify(cart))
         sum=0
-        cart.forEach(i=>sum=sum+i.qty*i.price)
+        textCart=''
+        cart.forEach(i=>{
+          sum=sum+i.qty*i.price,
+          textCart=textCart+'\n\n '+i.name+'\n '+i.qty+' шт. * '+i.price
+        })
+        textCart=textCart+'\n\n Сумма: '+sum+'\n\n Уточнить статус заказа можно по телефону +7-927-247-2888'
+        console.log(textCart)
       }
     }
 
@@ -93,14 +99,14 @@
 		else console.log('Успешно загружено')
 	}
 
-  const postdata = async()=>{
+/*   const postdata = async()=>{
     let response = await fetch('/api/basket', {
         method: 'POST',
         body:JSON.stringify({name,adress,phone,sum,cart})
       });
       const d = await response.json()
       console.log(103,d)
-  }
+  } */
 
 </script>
 
@@ -136,7 +142,7 @@
           <svg viewBox="0 0 24 24" on:click={() =>{
             cart=cart.filter((i)=>(i.name!=el.name))
             countBasket.set(cart.length);
-            cart.length==0?(localStorage.removeItem('cart'),countBasket.set('')):
+            cart.length==0?(localStorage.removeItem('cart'),countBasket.set(''),textCart=''):
               (localStorage.setItem('cart', JSON.stringify(cart)),countBasket.set(cart.length))
           }}>
             <path fill="#ed0202" d="M14.12 10.47 12 12.59l-2.13-2.12-1.41 1.41L10.59 14l-2.12 2.12 1.41 1.41L12 15.41l2.12 2.12 1.41-1.41L13.41 14l2.12-2.12zM15.5 4l-1-1h-5l-1 1H5v2h14V4zM6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9z"/>
@@ -157,7 +163,7 @@
       <h2>Сумма: {sum}</h2>
       <button on:click={(e) =>{
         flash(e)
-        postdata()
+       // postdata()
         
        // console.log(321,name,adress,phone,sum)
         if(name==''||name.split('').filter(i=>i!=' ').length==0)
@@ -179,7 +185,6 @@
                 then(()=>{ if(i==0) {
                   console.log(666777)
                   createOrder(`"${name}"`,`"${adress}"`,`"${phone}"`,sum,cart)
-                 // postdata()
                 }})
             }
           }
@@ -190,19 +195,45 @@
         <div class="form-group">
           <div class="form-row">
             <div class="col">
-              <input type="text" name="name" class="form-control" placeholder="Full Name" required>
+              <input type="text" name="Ваше имя" class="form-control" placeholder="Ваше имя" required>
             </div>
             <div class="col">
-              <input type="email" name="email" class="form-control" placeholder="Email Address" required>
-              <input type="hidden" name="_autoresponse" value="your custom message">
+              <input type="email" name="Ваша почта" class="form-control" placeholder="Эл.почта(если нужно уведомление)">
+              <input type="hidden" name="_autoresponse" value="www">
+              <input type="tel" name="Ваш телефон" class="form-control" placeholder="Телефон(для согласования заказа)">             
               <input type="hidden" name="_cc" value="1@melochevka.ru">
             </div>
           </div>
         </div>
-        <div class="form-group">
-          <textarea placeholder="Your Message" class="form-control" name="message" rows="10" required></textarea>
+        <div class="form-group displayNone">
+          <textarea placeholder="Your Message" class="form-control" name="Ваш заказ" rows="10"  bind:value={textCart} required></textarea>
         </div>
-        <button type="submit" class="btn btn-lg btn-dark btn-block">Submit Form</button>
+        <button type="submit" class="btn btn-lg btn-dark btn-block"
+          on:click={(e) =>{
+            flash(e)
+            if(cart){
+                localStorage.setItem('nameUser',name); localStorage.setItem('adresssUser',adress); localStorage.setItem('phoneUser',phone)
+                loading=true
+                try{
+                  for (let i=cart.length-1; i>= 0; i--){
+                    getItems(cart[i].subcat,cart[i].id,cart[i].qty,i,cart[i].instock).
+                      then((sold)=>{
+                          const newsubs = 'update'+cart[i].subcat[0].toUpperCase() + cart[i].subcat.slice(1)
+                          const data=`{sold:${sold+cart[i].qty},instock:${cart[i].instock-cart[i].qty}}`
+                          console.log(data,newsubs,cart[i].id)
+                          UPDATE_INSTOCK_SOLD(newsubs,cart[i].id,data)
+                      }).
+                      then(()=>{ if(i==0) {
+                        console.log(666777)
+                        createOrder(`"${name}"`,`"${adress}"`,`"${phone}"`,sum,cart)
+                      }})
+                  }
+                }
+                catch(err) {console.log(432,err)}
+              }
+          }}
+        
+        >Submit Form</button>
       </form>
     </div>
   </div>
@@ -212,6 +243,7 @@
 </div>
 
 <style>
+  .displayNone{display: none;}
   .main{position: absolute;top:68px;display: flex;flex-wrap: wrap;width: 100%;flex-direction: column;overflow: hidden;}
   h1{width: 100%;font-size: x-large;color: #ed0202;}
   

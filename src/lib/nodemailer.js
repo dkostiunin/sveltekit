@@ -8,7 +8,7 @@ export async function mail(body) {
 
     const mailclient = new SMTPClient({
       user: 'darom@darom.tk',
-      password: 'roge816013',
+      password: '***',
       host: 'smtp.yandex.ru',
       ssl: true,
     })
@@ -31,7 +31,7 @@ export async function mail(body) {
         auth: {
             user: 'darom@darom.tk',
           //  user: 'dimak00@internet.ru',
-            pass: 'roge816013'
+            pass: '***'
             //pass: 'WPKhp4fz4coWoPWGXK3u'
         },
       });

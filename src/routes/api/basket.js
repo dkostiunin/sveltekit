@@ -8,7 +8,7 @@ export async function post({ params, request }) {
  // await console.log(888, params, request)
 /*   const mailclient = new SMTPClient({
     user: 'darom@darom.tk',
-    password: 'roge816013',
+    password: '***',
     host: 'smtp.yandex.ru',
     ssl: true,
   }); */
