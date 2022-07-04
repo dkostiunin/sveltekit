@@ -1,11 +1,27 @@
 import nodemailer from 'nodemailer';
+import { SMTPClient } from 'emailjs'
 
 // async..await is not allowed in global scope, must use a wrapper
 export async function mail(body) {
     console.log(223344,body)
   try {
 
-      let testAccount = await nodemailer.createTestAccount();
+    const mailclient = new SMTPClient({
+      user: 'darom@darom.tk',
+      password: 'roge816013',
+      host: 'smtp.yandex.ru',
+      ssl: true,
+    })
+
+    const message =  mailclient.sendAsync({
+      text: 'это письмо darom prod',
+      from: 'you <darom@darom.tk>',
+      to: 'someone <1@melochevka.ru>, another <melochevka@melochevka.ru>',
+      cc: 'else <dollar123@mail.ru>',
+      subject: 'это письмо darom prod',
+        });
+
+      /* let testAccount = await nodemailer.createTestAccount();
       let transporter = nodemailer.createTransport({
         ///host: "smtp.ethereal.email",
     	host: "smtp.yandex.ru",
@@ -29,8 +45,9 @@ export async function mail(body) {
       });
 
       console.log("Message sent: %s", info.messageId);
-      console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
-  } catch (error) {
+      console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info)); */
+  }
+  catch (error) {
     console.log(error)
   }
 }
