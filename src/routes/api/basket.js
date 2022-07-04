@@ -1,15 +1,16 @@
 //import {mail} from '$lib/nodemailer';
 import { SMTPClient } from 'emailjs';
 
-const mailclient = new SMTPClient({
-	user: 'darom@darom.tk',
-	password: 'roge816013',
-	host: 'smtp.yandex.ru',
-	ssl: true,
-});
+
 
 
 export async function post({ params, request }) {
+  const mailclient = new SMTPClient({
+    user: 'darom@darom.tk',
+    password: 'roge816013',
+    host: 'smtp.yandex.ru',
+    ssl: true,
+  });
    const body = await request.json() // or request.json(), etc
     //await do_something_with(params, body);
    /*  try {

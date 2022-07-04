@@ -6,12 +6,12 @@
   import flash from '$lib/flash.js';
   import { onMount } from "svelte";
 
-  let cart,name='',adress='',phone='',sum=0,loading=false
+  let cart,name='',adress='',phone='',sum=0,loading=false 
 
   onMount(() => { 
     if(localStorage.getItem('nameUser')) name=localStorage.getItem('nameUser')
     if(localStorage.getItem('adresssUser')) adress=localStorage.getItem('adresssUser')
-    if(localStorage.getItem('phoneUser')) phone=localStorage.getItem('phoneUser')  
+    if(localStorage.getItem('phoneUser')) phone=localStorage.getItem('phoneUser')
   })
 
   const checkInt = (e) => {e.target.value=e.target.value.replace(/[^0-9+-]/gi,'')},
@@ -24,7 +24,6 @@
         cart.forEach(i=>sum=sum+i.qty*i.price)
       }
     }
-    
 
   if (browser){
     cart=JSON.parse(localStorage.getItem('cart'))
@@ -100,7 +99,7 @@
         body:JSON.stringify({name,adress,phone,sum,cart})
       });
       const d = await response.json()
-      console.log(d)
+      console.log(103,d)
   }
 
 </script>
@@ -158,6 +157,7 @@
       <h2>Сумма: {sum}</h2>
       <button on:click={(e) =>{
         flash(e)
+        postdata()
         
         console.log(321,name,adress,phone,sum)
         if(name==''||name.split('').filter(i=>i!=' ').length==0)
@@ -179,13 +179,31 @@
                 then(()=>{ if(i==0) {
                   console.log(666777)
                   createOrder(`"${name}"`,`"${adress}"`,`"${phone}"`,sum,cart)
-                  postdata()
+                 // postdata()
                 }})
             }
           }
           catch(err) {console.log(432,err)}
         }
       }}>Оформить</button>
+      <form target="_blank" action="https://formsubmit.co/darom@darom.tk" method="POST">
+        <div class="form-group">
+          <div class="form-row">
+            <div class="col">
+              <input type="text" name="name" class="form-control" placeholder="Full Name" required>
+            </div>
+            <div class="col">
+              <input type="email" name="email" class="form-control" placeholder="Email Address" required>
+              <input type="hidden" name="_autoresponse" value="your custom message">
+              <input type="hidden" name="_cc" value="1@melochevka.ru">
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <textarea placeholder="Your Message" class="form-control" name="message" rows="10" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-lg btn-dark btn-block">Submit Form</button>
+      </form>
     </div>
   </div>
 
