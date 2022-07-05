@@ -26,7 +26,7 @@
           sum=sum+i.qty*i.price,
           textCart=textCart+'\n\n '+i.name+'\n '+i.qty+' шт. * '+i.price
         })
-        textCart=textCart+'\n\n Сумма: '+sum+'\n\n Уточнить статус заказа можно по телефону +7-927-247-2888'
+        textCart=textCart+'\n\n Сумма: '+sum+'\n\n Пожалуйста, не отвечайте на это письмо,\n уточнить статус заказа можно по телефону +7-927-247-2888 или по почте darom@darom.tk'
         console.log(textCart)
       }
     }
@@ -198,15 +198,16 @@
               <input type="text" name="Ваше имя" class="form-control" placeholder="Ваше имя" required>
             </div>
             <div class="col">
-              <input type="email" name="Ваша почта" class="form-control" placeholder="Эл.почта(если нужно уведомление)">
-              <input type="hidden" name="_autoresponse" value="www">
-              <input type="tel" name="Ваш телефон" class="form-control" placeholder="Телефон(для согласования заказа)">             
-              <input type="hidden" name="_cc" value="1@melochevka.ru">
+              <input type="email" name="email" class="form-control" placeholder="Эл.почта(если нужно уведомление)">
+              <input type="hidden" name="_autoresponse" value="Ваш заказ в магазине https://darom.tk">
+             <!--  <input type="hidden" name="_subject" value="Вы сделали заказ в магазине darom.tk"> -->
+              <input type="tel" name="Ваш телефон" class="form-control" placeholder="Телефон(для согласования заказа)" required>
+            <!--   <input type="hidden" name="_cc" value="1@melochevka.ru"> -->
             </div>
           </div>
         </div>
         <div class="form-group displayNone">
-          <textarea placeholder="Your Message" class="form-control" name="Ваш заказ" rows="10"  bind:value={textCart} required></textarea>
+          <textarea placeholder="Your Message" class="form-control" name="Ваш заказ" rows="10"  bind:value={textCart}></textarea>
         </div>
         <button type="submit" class="btn btn-lg btn-dark btn-block"
           on:click={(e) =>{
