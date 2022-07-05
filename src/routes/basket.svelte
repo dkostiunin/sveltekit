@@ -28,7 +28,6 @@
           textCart=textCart+'\n\n '+i.name+'\n '+i.qty+' шт. * '+i.price
         })
         textCart=textCart+'\n\n Сумма: '+sum+'\n\n Пожалуйста, не отвечайте на это письмо,\n уточнить статус заказа можно по телефону +7-927-247-2888 или по почте darom@darom.tk'
-        console.log(textCart)
       }
     }
 
@@ -51,13 +50,10 @@
 		const options = { method: "post",headers: {"Content-Type": "application/json"},body: JSON.stringify({query: QUERY})};
 		const res= await fetch(import.meta.env.VITE_strapiURL, options)
 		const item = await res.json()
-    //console.log(cart[j],qty,item.data[subcat].data.attributes.instock)
     if(instock!=item.data[subcat].data.attributes.instock){
-      //console.log('wwwweerr')
       cart[j].instock=item.data[subcat].data.attributes.instock
     }
     if(qty>item.data[subcat].data.attributes.instock){
-     // console.log('rrrr')
       cart[j].qty=item.data[subcat].data.attributes.instock
     }
     return item.data[subcat].data.attributes.sold
@@ -75,15 +71,12 @@
       const options = { method: "post",headers: {"Content-Type": "application/json"},body: JSON.stringify({query: QUERY})};
       const res= await fetch(import.meta.env.VITE_strapiURL, options)
       const finres= await res.json()
-      //console.log(finres.data.createOrder.data.id)
-      
-      if(finres.errors){console.log(finres.errors[0].message);alert('Что то пошло не так:'+finres.errors[0].message)}
+      if(finres.errors){alert('Что то пошло не так:'+finres.errors[0].message)}
       else{
        // loading=false
         cart=[];localStorage.removeItem('cart'),countBasket.set('')
-       
-         alert(`Заказ успешно оформлен, запомните номер заказа - ${finres.data.createOrder.data.id}`)
-        }
+        alert(`Заказ успешно оформлен, запомните номер заказа - ${finres.data.createOrder.data.id}`)
+      }
 	}
 
   async function UPDATE_INSTOCK_SOLD(subcat,i,d){
@@ -94,8 +87,6 @@
 		const options = { method: "post",headers: {"Content-Type": "application/json"},body: JSON.stringify({query: QUERY})};
 		const res= await fetch(import.meta.env.VITE_strapiURL, options)
 		const finres= await res.json()
-		//console.log(finres)
-		
 		if(finres.errors){console.log(finres.errors[0].message);alert('Что то пошло не так:'+finres.errors[0].message)}
 		else console.log('Успешно загружено')
 	}
@@ -155,7 +146,7 @@
     {/if}
   </div>
  
-  {#if cart.length!=0}
+  {#if cart&&cart.length!=0}
     <div class="checkout">
       <h2>Оформление</h2>
       <form target="_blank" action="https://formsubmit.co/darom@darom.tk" method="POST">
@@ -189,7 +180,6 @@
                             UPDATE_INSTOCK_SOLD(newsubs,cart[i].id,data)
                         }).
                         then(()=>{ if(i==0) {
-                        //  console.log(666777)
                           createOrder(`"${name}"`,`"${adress}"`,`"${phone}"`,`"${eMail}"`,sum,cart)
                         }})
                     }
@@ -201,44 +191,6 @@
           >Оформить</button>
         </div>
       </form>
-    <!--  <input bind:value={name} placeholder="Имя(фамилия)" maxlength="25" on:input={checkText}/>
-      <textarea bind:value={adress} placeholder="Адрес(если нужна доставка)" rows="3" on:input={checkText}/>
-      <input bind:value={phone} placeholder="Телефон(для согласования заказа)" maxlength="25" on:input={checkInt} type="text"/> -->
-    <!--  <div class="bottom">
-        <h2>Сумма: {sum}</h2>
-        <button on:click={(e) =>{
-          flash(e)
-        // postdata()
-          
-        // console.log(321,name,adress,phone,sum)
-          if(name==''||name.split('').filter(i=>i!=' ').length==0)
-            setTimeout(()=>{ alert('Для оформления заказа пожалуйста укажите имя (как к Вам обращаться)')},250)
-          else if(phone==''||phone.split('').filter(i=>i!=' ').length==0) 
-            setTimeout(()=>{ alert('Для оформления заказа пожалуйста укажите телефон (нужен для согласования заказа)')},250)
-          else if(cart){
-            localStorage.setItem('nameUser',name); localStorage.setItem('adresssUser',adress); 
-            localStorage.setItem('phoneUser',phone); localStorage.setItem('mailUser',eMail)
-          // loading=true
-            try{
-              for (let i=cart.length-1; i>= 0; i--){
-                getItems(cart[i].subcat,cart[i].id,cart[i].qty,i,cart[i].instock).
-                  then((sold)=>{
-                      const newsubs = 'update'+cart[i].subcat[0].toUpperCase() + cart[i].subcat.slice(1)
-                      const data=`{sold:${sold+cart[i].qty},instock:${cart[i].instock-cart[i].qty}}`
-                      console.log(data,newsubs,cart[i].id)
-                      UPDATE_INSTOCK_SOLD(newsubs,cart[i].id,data)
-                  }).
-                  then(()=>{ if(i==0) {
-                    console.log(666777)
-                    createOrder(`"${name}"`,`"${adress}"`,`"${phone}"`,`"${eMail}"`,sum,cart)
-                  }})
-              }
-            }
-            catch(err) {console.log(432,err)}
-          }
-        }}>Оформить</button>
-
-      </div> -->
     </div>
   {/if}
 

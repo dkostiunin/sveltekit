@@ -1,6 +1,5 @@
 <script>
-    export let name;
-    console.log(name)
+    export let name
 </script>
 
 <div>

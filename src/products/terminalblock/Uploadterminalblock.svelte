@@ -8,6 +8,11 @@
 			e.target.rows=Math.ceil(e.target.value.length/e.target.cols)
 		},
         around = (e) => {if(e.target.value!='') e.target.value=(+e.target.value).toFixed(2)},
+		around2 = (e) => {
+			if(e.target.value!='') e.target.value=(+e.target.value).toFixed(1);
+			console.log(e.target.value.length,e.target.value.slice(0, -2))
+			if(e.target.value.length>=3&&e.target.value[e.target.value.length-1]==0) e.target.value=(+e.target.value.slice(0, -2))
+		},
 		checkList = (e) => {
 			let v= Array.from(e.target.list.options).map(i=>i.value)
 			if(!v.includes(e.target.value))e.target.value=''
@@ -15,19 +20,10 @@
 </script>
 
 <div id="listValues">
-	<input placeholder="Бренд" list="br" id="brand" on:blur={checkList}/>
-	<datalist id="br">
-		{#each Object.entries(l.brand) as i}<option value={i[0]}>
-		{/each}
-	</datalist>
-	<input placeholder="Тип(Врез/Накл)" list="ty" id="type" on:blur={checkList}/>
+	
+	<input placeholder="Тип соединения" list="ty" id="conntype" on:blur={checkList}/>
 	<datalist id="ty">
-		{#each Object.entries(l.type) as i}<option value={i[0]}>
-		{/each}
-	</datalist>
-    <input placeholder="LED подсветка" list="le" id="ledbacklight" on:blur={checkList}/>
-	<datalist id="le">
-		{#each Object.entries(l.ledbacklight) as i}<option value={i[0]}>
+		{#each Object.entries(l.conntype) as i}<option value={i[0]}>
 		{/each}
 	</datalist>
 	<input placeholder="Материал корпуса" list="ma" id="material" on:blur={checkList}/>
@@ -40,42 +36,25 @@
 		{#each Object.entries(l.color) as i}<option value={i[0]}>
 		{/each}
 	</datalist>
-	<input placeholder="Цоколь" list="la" id="lampholder" on:blur={checkList}/>
-	<datalist id="la">
-		{#each Object.entries(l.lampholder) as i}<option value={i[0]}>
-		{/each}
-	</datalist>
-	<input placeholder="Форма корпуса" list="fl" id="flaskshape" on:blur={checkList}/>
-	<datalist id="fl">
-		{#each Object.entries(l.flaskshape) as i}<option value={i[0]}>
-		{/each}
-	</datalist>
-	<input placeholder="Класс IP" list="ip" id="ipclass" on:blur={checkList}/>
-	<datalist id="ip">
-		{#each Object.entries(l.ipclass) as i}<option value={i[0]}>
-		{/each}
-	</datalist>
-	<input placeholder="Назначение" list="fu" id="function" on:blur={checkList}/>
-	<datalist id="fu">
-		{#each Object.entries(l.function) as i}<option value={i[0]}>
-		{/each}
-	</datalist>
 
 	<textarea rows="1" cols="39" id="name" placeholder="Название"   on:input={checkText}/>
+	<textarea rows="1" cols="39" id="brand" placeholder="Бренд"   on:input={checkText}/>
 	<textarea id="article" placeholder="Артикул"  rows="1" cols="25" on:input={checkText}/>
 	<textarea id="countryorigin" placeholder="Страна происхождения"  rows="1" cols="25" on:input={checkText}/>
-	<textarea id="warranty" placeholder="Гарантия"  rows="1" cols="25" on:input={checkText}/>
 	<textarea id="shortdesc" placeholder="Краткое описание" rows="1" cols="25" on:input={checkText}/>
 	<textarea id="longdesc" placeholder="Полное описание" rows="1" cols="25" on:input={checkText}/>
 
 	<input id="price" placeholder="Цена" on:blur={around} type="number" step="0.01" min="0"/>
 	<input id="instock" placeholder="Количество" inputmode="numeric" on:input={checkInt} type="number"/>
-	<input id="EAN13" placeholder="Штрихкод"   on:input={checkInt} type="number"/>
-	<input id="height" placeholder="Высота(мм)"   on:input={checkInt} type="number"/>
-	<input id="width" placeholder="Толщина(мм)"   on:input={checkInt} type="number"/>
-	<input id="length" placeholder="Длина(мм)"   on:input={checkInt} type="number"/>
-    <input id="mortisediam" placeholder="Врезн.Отв(мм)"   on:input={checkInt} type="number"/>
-	<input id="weight" placeholder="Вес(кг)"   on:blur={around} type="number" step="0.01" min="0"/>
+	<input id="amperage" placeholder="Макс Ток" on:input={checkInt} type="number"/>
+	<input id="qtycontacts" placeholder="Кол-во контактов" on:input={checkInt} type="number"/>
+	<input id="wirethickmin" placeholder="Мин сечение провода (мм)" on:blur={around} type="number" step="0.1" min="0"/>
+	<input id="wirethickmax" placeholder="Макс сечение провода (мм)" on:blur={around} type="number" step="0.1" min="0"/>
+	<input id="EAN13" placeholder="Штрихкод" on:input={checkInt} type="number"/>
+	<input id="height" placeholder="Высота(мм)" on:input={checkInt} type="number"/>
+	<input id="width" placeholder="Толщина(мм)" on:input={checkInt} type="number"/>
+	<input id="length" placeholder="Длина(мм)" on:input={checkInt} type="number"/>
+	<input id="weight" placeholder="Вес(кг)" on:blur={around} type="number" step="0.01" min="0"/>
 
 </div>
 

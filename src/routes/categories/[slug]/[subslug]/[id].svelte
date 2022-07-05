@@ -38,7 +38,7 @@
     let Mycomponent,qty
     const items=Object.values(product.listimage)
     const f = catSubcat[1][0].toUpperCase() + catSubcat[1].slice(1)
-    console.log(ID)
+    console.log(product)
     
     import(`../../../../products/${catSubcat[1]}/${f}.svelte`).then(res => Mycomponent = res.default)
     // import Lamp from '../../../../products/lamp/Lamp.svelte';
