@@ -2,16 +2,17 @@
   import { browser } from '$app/env'
   import { countBasket } from '$lib/stores';
   import Inputnumber  from "$lib/Inputnumber.svelte"
-  import Spinner  from "$lib/Spinner.svelte"
+ // import Spinner  from "$lib/Spinner.svelte"
   import flash from '$lib/flash.js';
   import { onMount } from "svelte";
 
-  let cart,name='',adress='',phone='',sum=0,loading=false,textCart
+  let cart,name='',adress='',phone='',eMail='',sum=0,textCart//,loading=false
 
   onMount(() => { 
     if(localStorage.getItem('nameUser')) name=localStorage.getItem('nameUser')
     if(localStorage.getItem('adresssUser')) adress=localStorage.getItem('adresssUser')
     if(localStorage.getItem('phoneUser')) phone=localStorage.getItem('phoneUser')
+    if(localStorage.getItem('mailUser')) eMail=localStorage.getItem('mailUser')
   })
 
   const checkInt = (e) => {e.target.value=e.target.value.replace(/[^0-9+-]/gi,'')},
@@ -52,36 +53,36 @@
 		const item = await res.json()
     //console.log(cart[j],qty,item.data[subcat].data.attributes.instock)
     if(instock!=item.data[subcat].data.attributes.instock){
-      console.log('wwwweerr')
+      //console.log('wwwweerr')
       cart[j].instock=item.data[subcat].data.attributes.instock
     }
     if(qty>item.data[subcat].data.attributes.instock){
-      console.log('rrrr')
+     // console.log('rrrr')
       cart[j].qty=item.data[subcat].data.attributes.instock
     }
     return item.data[subcat].data.attributes.sold
 	}
 
-  async function createOrder(u='""',a='""',p='""',t=0,d='""'){
+  async function createOrder(u='""',a='""',p='""',e='""',t=0,d='""'){
       let result = `"${JSON.stringify(d).replace(/"/g,'')}"`
       const QUERY =  `mutation {
           createOrder(data: { 
-            user:${u}, adress:${a}, phone:${p}, total:${t}, basket:${result}
+            user:${u}, adress:${a}, phone:${p}, email:${e}, total:${t}, basket:${result}
           }) {
-            data {id attributes {user adress phone total basket}}
+            data {id attributes {user adress phone email total basket}}
           }
         }`
       const options = { method: "post",headers: {"Content-Type": "application/json"},body: JSON.stringify({query: QUERY})};
       const res= await fetch(import.meta.env.VITE_strapiURL, options)
       const finres= await res.json()
-      console.log(finres.data.createOrder.data.id)
+      //console.log(finres.data.createOrder.data.id)
       
       if(finres.errors){console.log(finres.errors[0].message);alert('Что то пошло не так:'+finres.errors[0].message)}
       else{
-        loading=false
+       // loading=false
         cart=[];localStorage.removeItem('cart'),countBasket.set('')
        
-         alert(`Заказ успешно оформлен, запомните номер заказа - ${finres.data.createOrder.data.id}`)       
+         alert(`Заказ успешно оформлен, запомните номер заказа - ${finres.data.createOrder.data.id}`)
         }
 	}
 
@@ -93,7 +94,7 @@
 		const options = { method: "post",headers: {"Content-Type": "application/json"},body: JSON.stringify({query: QUERY})};
 		const res= await fetch(import.meta.env.VITE_strapiURL, options)
 		const finres= await res.json()
-		console.log(finres)
+		//console.log(finres)
 		
 		if(finres.errors){console.log(finres.errors[0].message);alert('Что то пошло не так:'+finres.errors[0].message)}
 		else console.log('Успешно загружено')
@@ -154,92 +155,94 @@
     {/if}
   </div>
  
-  <div class="checkout">
-    <h2>Оформление</h2>
-    <input bind:value={name} placeholder="Имя(фамилия)" maxlength="25" on:input={checkText}/>
-	  <textarea bind:value={adress} placeholder="Адрес(если нужна доставка)" rows="3" on:input={checkText}/>
-    <input bind:value={phone} placeholder="Телефон(для согласования заказа)" maxlength="25" on:input={checkInt} type="text"/>
-    <div class="bottom">
-      <h2>Сумма: {sum}</h2>
-      <button on:click={(e) =>{
-        flash(e)
-       // postdata()
-        
-       // console.log(321,name,adress,phone,sum)
-        if(name==''||name.split('').filter(i=>i!=' ').length==0)
-          setTimeout(()=>{ alert('Для оформления заказа пожалуйста укажите имя (как к Вам обращаться)')},250)
-        else if(phone==''||phone.split('').filter(i=>i!=' ').length==0) 
-          setTimeout(()=>{ alert('Для оформления заказа пожалуйста укажите телефон (нужен для согласования заказа)')},250)
-        else if(cart){
-          localStorage.setItem('nameUser',name); localStorage.setItem('adresssUser',adress); localStorage.setItem('phoneUser',phone)
-          loading=true
-          try{
-            for (let i=cart.length-1; i>= 0; i--){
-              getItems(cart[i].subcat,cart[i].id,cart[i].qty,i,cart[i].instock).
-                then((sold)=>{
-                    const newsubs = 'update'+cart[i].subcat[0].toUpperCase() + cart[i].subcat.slice(1)
-                    const data=`{sold:${sold+cart[i].qty},instock:${cart[i].instock-cart[i].qty}}`
-                    console.log(data,newsubs,cart[i].id)
-                    UPDATE_INSTOCK_SOLD(newsubs,cart[i].id,data)
-                }).
-                then(()=>{ if(i==0) {
-                  console.log(666777)
-                  createOrder(`"${name}"`,`"${adress}"`,`"${phone}"`,sum,cart)
-                }})
-            }
-          }
-          catch(err) {console.log(432,err)}
-        }
-      }}>Оформить</button>
+  {#if cart.length!=0}
+    <div class="checkout">
+      <h2>Оформление</h2>
       <form target="_blank" action="https://formsubmit.co/darom@darom.tk" method="POST">
-        <div class="form-group">
-          <div class="form-row">
-            <div class="col">
-              <input type="text" name="Ваше имя" class="form-control" placeholder="Ваше имя" required>
-            </div>
-            <div class="col">
-              <input type="email" name="email" class="form-control" placeholder="Эл.почта(если нужно уведомление)">
-              <input type="hidden" name="_autoresponse" value="Ваш заказ в магазине https://darom.tk">
-             <!--  <input type="hidden" name="_subject" value="Вы сделали заказ в магазине darom.tk"> -->
-              <input type="tel" name="Ваш телефон" class="form-control" placeholder="Телефон(для согласования заказа)" required>
-            <!--   <input type="hidden" name="_cc" value="1@melochevka.ru"> -->
-            </div>
-          </div>
+        <div class="top">
+            <input type="text" name="Ваше имя" class="" placeholder="Ваше имя" bind:value={name} on:input={checkText} required>
+            <input type="email" name="email" class="" placeholder="Эл.почта(для уведомления о заказе)" bind:value={eMail}>
+            <input type="hidden" name="_autoresponse" value="Ваш заказ в магазине https://darom.tk">
+            <!--  <input type="hidden" name="_subject" value="Вы сделали заказ в магазине darom.tk"> -->
+            <input type="tel" name="Ваш телефон" class="" placeholder="Телефон(для согласования заказа)"  bind:value={phone} required>
+            <textarea name="Ваш адрес для доставки" bind:value={adress} placeholder="Адрес(для доставки)" rows="3" on:input={checkText}/>
+          <!--   <input type="hidden" name="_cc" value="1@melochevka.ru"> -->
+          <textarea class="displayNone" placeholder="Your Message" name="Ваш заказ" rows="10"  bind:value={textCart}></textarea>
         </div>
-        <div class="form-group displayNone">
-          <textarea placeholder="Your Message" class="form-control" name="Ваш заказ" rows="10"  bind:value={textCart}></textarea>
-        </div>
-        <button type="submit" class="btn btn-lg btn-dark btn-block"
-          on:click={(e) =>{
-            flash(e)
-            if(cart){
-                localStorage.setItem('nameUser',name); localStorage.setItem('adresssUser',adress); localStorage.setItem('phoneUser',phone)
-                loading=true
-                try{
-                  for (let i=cart.length-1; i>= 0; i--){
-                    getItems(cart[i].subcat,cart[i].id,cart[i].qty,i,cart[i].instock).
-                      then((sold)=>{
-                          const newsubs = 'update'+cart[i].subcat[0].toUpperCase() + cart[i].subcat.slice(1)
-                          const data=`{sold:${sold+cart[i].qty},instock:${cart[i].instock-cart[i].qty}}`
-                          console.log(data,newsubs,cart[i].id)
-                          UPDATE_INSTOCK_SOLD(newsubs,cart[i].id,data)
-                      }).
-                      then(()=>{ if(i==0) {
-                        console.log(666777)
-                        createOrder(`"${name}"`,`"${adress}"`,`"${phone}"`,sum,cart)
-                      }})
-                  }
-                }
-                catch(err) {console.log(432,err)}
-              }
-          }}
         
-        >Submit Form</button>
+        <div class="bottom">
+          <h2>Сумма: {sum}</h2>
+          <button type="submit" class=""
+            on:click={(e) =>{
+              flash(e)
+              if(cart&&(name!=''||name.split('').filter(i=>i!=' ').length!=0)&&(phone!=''||phone.split('').filter(i=>i!=' ').length!=0)){
+              
+                  localStorage.setItem('nameUser',name); localStorage.setItem('adresssUser',adress); 
+                  localStorage.setItem('phoneUser',phone); localStorage.setItem('mailUser',eMail)
+                // loading=true
+                  try{
+                    for (let i=cart.length-1; i>= 0; i--){
+                      getItems(cart[i].subcat,cart[i].id,cart[i].qty,i,cart[i].instock).
+                        then((sold)=>{
+                            const newsubs = 'update'+cart[i].subcat[0].toUpperCase() + cart[i].subcat.slice(1)
+                            const data=`{sold:${sold+cart[i].qty},instock:${cart[i].instock-cart[i].qty}}`
+                            UPDATE_INSTOCK_SOLD(newsubs,cart[i].id,data)
+                        }).
+                        then(()=>{ if(i==0) {
+                        //  console.log(666777)
+                          createOrder(`"${name}"`,`"${adress}"`,`"${phone}"`,`"${eMail}"`,sum,cart)
+                        }})
+                    }
+                   // cart=cart
+                  }
+                  catch(err) {console.log(432,err)}
+                }
+            }}
+          >Оформить</button>
+        </div>
       </form>
-    </div>
-  </div>
+    <!--  <input bind:value={name} placeholder="Имя(фамилия)" maxlength="25" on:input={checkText}/>
+      <textarea bind:value={adress} placeholder="Адрес(если нужна доставка)" rows="3" on:input={checkText}/>
+      <input bind:value={phone} placeholder="Телефон(для согласования заказа)" maxlength="25" on:input={checkInt} type="text"/> -->
+    <!--  <div class="bottom">
+        <h2>Сумма: {sum}</h2>
+        <button on:click={(e) =>{
+          flash(e)
+        // postdata()
+          
+        // console.log(321,name,adress,phone,sum)
+          if(name==''||name.split('').filter(i=>i!=' ').length==0)
+            setTimeout(()=>{ alert('Для оформления заказа пожалуйста укажите имя (как к Вам обращаться)')},250)
+          else if(phone==''||phone.split('').filter(i=>i!=' ').length==0) 
+            setTimeout(()=>{ alert('Для оформления заказа пожалуйста укажите телефон (нужен для согласования заказа)')},250)
+          else if(cart){
+            localStorage.setItem('nameUser',name); localStorage.setItem('adresssUser',adress); 
+            localStorage.setItem('phoneUser',phone); localStorage.setItem('mailUser',eMail)
+          // loading=true
+            try{
+              for (let i=cart.length-1; i>= 0; i--){
+                getItems(cart[i].subcat,cart[i].id,cart[i].qty,i,cart[i].instock).
+                  then((sold)=>{
+                      const newsubs = 'update'+cart[i].subcat[0].toUpperCase() + cart[i].subcat.slice(1)
+                      const data=`{sold:${sold+cart[i].qty},instock:${cart[i].instock-cart[i].qty}}`
+                      console.log(data,newsubs,cart[i].id)
+                      UPDATE_INSTOCK_SOLD(newsubs,cart[i].id,data)
+                  }).
+                  then(()=>{ if(i==0) {
+                    console.log(666777)
+                    createOrder(`"${name}"`,`"${adress}"`,`"${phone}"`,`"${eMail}"`,sum,cart)
+                  }})
+              }
+            }
+            catch(err) {console.log(432,err)}
+          }
+        }}>Оформить</button>
 
-<Spinner bind:loading></Spinner>
+      </div> -->
+    </div>
+  {/if}
+
+<!-- <Spinner bind:loading></Spinner> -->
 
 </div>
 
@@ -250,7 +253,8 @@
   
   .list{width: 100%;}
   .checkout{width: 100%;display: flex;flex-direction: column;padding: 0 2.5%;gap: 20px;}
-  .checkout input,textarea {border: none;padding: 10px; border-radius: 4px;}
+  .top{display: flex;flex-direction: column;row-gap: 10px;}
+  .top input,textarea {border: none;padding: 10px; border-radius: 4px;}
   textarea{font-size: large}
 
   .child{display: flex;border-bottom: 1px solid grey;flex-wrap: wrap;}
