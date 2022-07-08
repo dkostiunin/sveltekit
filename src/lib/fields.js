@@ -72,4 +72,12 @@ export function fields(subcat,queries){
        return ({fields:'createdAt color brand type name price shortdesc longdesc listimage instock sold rating ratecount article EAN13 countryorigin warranty flaskshape height width length ipclass material kind feature base'
                })
      }
+     else if(subcat=='elshell'){
+      return ({fields:'createdAt color brand type name price shortdesc longdesc listimage instock sold rating ratecount article EAN13 countryorigin height width length ipclass colautomat setting lock window material'
+              })
+    }
+    else if(subcat=='carholder'){
+      return ({fields:'createdAt color brand type name price shortdesc longdesc listimage instock sold rating ratecount article EAN13 countryorigin place typebind height width length rotation material extension charger'
+              })
+    }
   }
