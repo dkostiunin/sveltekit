@@ -71,8 +71,8 @@
 	<input id="price" placeholder="Цена" on:blur={around} type="number" step="0.01" min="0"/>
 	<input id="instock" placeholder="Количество" inputmode="numeric" on:input={checkInt} type="number"/>
 	<input id="EAN13" placeholder="Штрихкод"   on:input={checkInt} type="number"/>
-	<input id="height" placeholder="Высота(мм)"   on:input={checkInt} type="number"/>
-	<input id="width" placeholder="Толщина(мм)"   on:input={checkInt} type="number"/>
+	<input id="height" placeholder="Толщина(мм)"   on:input={checkInt} type="number"/>
+	<input id="width" placeholder="Ширина(мм)"   on:input={checkInt} type="number"/>
 	<input id="length" placeholder="Длина(мм)"   on:input={checkInt} type="number"/>
 	<input id="weight" placeholder="Вес(кг)"   on:blur={around} type="number" step="0.01" min="0"/>
 

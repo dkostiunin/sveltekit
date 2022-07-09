@@ -20,14 +20,14 @@
 		{#each Object.entries(l.brand) as i}<option value={i[0]}>
 		{/each}
 	</datalist>
-	<input placeholder="Учетн/распр" list="ty" id="type" on:blur={checkList}/>
+	<input placeholder="Тип" list="ty" id="type" on:blur={checkList}/>
 	<datalist id="ty">
 		{#each Object.entries(l.type) as i}<option value={i[0]}>
 		{/each}
 	</datalist>
-    <input placeholder="Тип монтажа" list="se" id="setting" on:blur={checkList}/>
-	<datalist id="se">
-		{#each Object.entries(l.setting) as i}<option value={i[0]}>
+    <input placeholder="Место установки" list="pl" id="place" on:blur={checkList}/>
+	<datalist id="pl">
+		{#each Object.entries(l.place) as i}<option value={i[0]}>
 		{/each}
 	</datalist>
 	<input placeholder="Материал корпуса" list="ma" id="material" on:blur={checkList}/>
@@ -35,24 +35,29 @@
 		{#each Object.entries(l.material) as i}<option value={i[0]}>
 		{/each}
 	</datalist>
-	<input placeholder="Цвет корпуса" list="co" id="color" on:blur={checkList}/>
+	<input placeholder="Цвет" list="co" id="color" on:blur={checkList}/>
 	<datalist id="co">
 		{#each Object.entries(l.color) as i}<option value={i[0]}>
 		{/each}
 	</datalist>
-	<input placeholder="Замок" list="lo" id="lock" on:blur={checkList}/>
+	<input placeholder="Крепление" list="lo" id="typebind" on:blur={checkList}/>
 	<datalist id="lo">
-		{#each Object.entries(l.lock) as i}<option value={i[0]}>
+		{#each Object.entries(l.typebind) as i}<option value={i[0]}>
 		{/each}
 	</datalist>
-	<input placeholder="Окно" list="wi" id="window" on:blur={checkList}/>
-	<datalist id="wi">
-		{#each Object.entries(l.window) as i}<option value={i[0]}>
+	<input placeholder="Поворот" list="ro" id="rotation" on:blur={checkList}/>
+	<datalist id="ro">
+		{#each Object.entries(l.rotation) as i}<option value={i[0]}>
 		{/each}
 	</datalist>
-	<input placeholder="Класс IP" list="ip" id="ipclass" on:blur={checkList}/>
-	<datalist id="ip">
-		{#each Object.entries(l.ipclass) as i}<option value={i[0]}>
+	<input placeholder="Удлинитель" list="ex" id="extension" on:blur={checkList}/>
+	<datalist id="ex">
+		{#each Object.entries(l.extension) as i}<option value={i[0]}>
+		{/each}
+	</datalist>
+	<input placeholder="Зарядка" list="ch" id="charger" on:blur={checkList}/>
+	<datalist id="ch">
+		{#each Object.entries(l.charger) as i}<option value={i[0]}>
 		{/each}
 	</datalist>
 
@@ -65,7 +70,6 @@
 	<input id="price" placeholder="Цена" on:blur={around} type="number" step="0.01" min="0"/>
 	<input id="instock" placeholder="Количество" inputmode="numeric" on:input={checkInt} type="number"/>
 	<input id="EAN13" placeholder="Штрихкод"   on:input={checkInt} type="number"/>
-	<input id="colautomat" placeholder="Кол-во ячеек под автоматы"   on:input={checkInt} type="number"/>
 	<input id="height" placeholder="Высота(мм)"   on:input={checkInt} type="number"/>
 	<input id="width" placeholder="Толщина(мм)"   on:input={checkInt} type="number"/>
 	<input id="length" placeholder="Длина(мм)"   on:input={checkInt} type="number"/>
