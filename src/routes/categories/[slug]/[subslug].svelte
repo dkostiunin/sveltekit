@@ -6,8 +6,8 @@
     const f=fields(params.subslug).fields,s=params.subslug+'s'//,filt=fields(params.subslug).filters
 
     const QUERY =  `{
-      categories(filters: {slug: { contains:"${params.slug}"}}){data{attributes{name}}}
-      subcats(filters: {subslug: { contains:"${params.subslug}"}}){data{ attributes{name}}}
+      categories(filters: {slug: { eq:"${params.slug}"}}){data{attributes{name}}}
+      subcats(filters: {subslug: { eq:"${params.subslug}"}}){data{ attributes{name}}}
       ${s}
               {data{id attributes{ ${f} link{data {attributes{link}} }
                     }}
@@ -19,7 +19,7 @@
                     }}
               }
             } */
-
+console.log(QUERY)
 const options = { method: "post",headers: {"Content-Type": "application/json"},body: JSON.stringify({query: QUERY})};
 const res= await fetch(import.meta.env.VITE_strapiURL, options)// http://localhost:1337/graphql
 const fin= await res.json()

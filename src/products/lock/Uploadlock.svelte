@@ -1,6 +1,7 @@
 <script>
 	export let links
 	let l=links.data.links.data[0].attributes.link
+	console.log(l)
 	 const checkInt = (e) => {e.target.value=e.target.value.replace(/[^0-9]/gi,'')},
         //checkDec = (e) => {e.target.value=e.target.value.replace(/[^0-9,]/gi,'')},
         checkText=(e) =>{
@@ -20,14 +21,14 @@
 		{#each Object.entries(l.brand) as i}<option value={i[0]}>
 		{/each}
 	</datalist>
-	<input placeholder="Учетн/распр" list="ty" id="type" on:blur={checkList}/>
+	<input placeholder="Вид замка" list="ty" id="type" on:blur={checkList}/>
 	<datalist id="ty">
 		{#each Object.entries(l.type) as i}<option value={i[0]}>
 		{/each}
 	</datalist>
-    <input placeholder="Тип монтажа" list="se" id="setting" on:blur={checkList}/>
-	<datalist id="se">
-		{#each Object.entries(l.setting) as i}<option value={i[0]}>
+    <input placeholder="механизм/ключ" list="me" id="mechtype" on:blur={checkList}/>
+	<datalist id="me">
+		{#each Object.entries(l.mechtype) as i}<option value={i[0]}>
 		{/each}
 	</datalist>
 	<input placeholder="Материал корпуса" list="ma" id="material" on:blur={checkList}/>
@@ -40,19 +41,9 @@
 		{#each Object.entries(l.color) as i}<option value={i[0]}>
 		{/each}
 	</datalist>
-	<input placeholder="Замок" list="lo" id="lock" on:blur={checkList}/>
+	<input placeholder="АвтоЛок" list="lo" id="auto" on:blur={checkList}/>
 	<datalist id="lo">
-		{#each Object.entries(l.lock) as i}<option value={i[0]}>
-		{/each}
-	</datalist>
-	<input placeholder="Окно" list="wi" id="window" on:blur={checkList}/>
-	<datalist id="wi">
-		{#each Object.entries(l.window) as i}<option value={i[0]}>
-		{/each}
-	</datalist>
-	<input placeholder="Класс IP" list="ip" id="ipclass" on:blur={checkList}/>
-	<datalist id="ip">
-		{#each Object.entries(l.ipclass) as i}<option value={i[0]}>
+		{#each Object.entries(l.auto) as i}<option value={i[0]}>
 		{/each}
 	</datalist>
 
@@ -64,12 +55,13 @@
 
 	<input id="price" placeholder="Цена" on:blur={around} type="number" step="0.01" min="0"/>
 	<input id="instock" placeholder="Количество" inputmode="numeric" on:input={checkInt} type="number"/>
-	<input id="EAN13" placeholder="Штрихкод"   on:input={checkInt} type="number"/>
-	<input id="colautomat" placeholder="Кол-во ячеек под автоматы"   on:input={checkInt} type="number"/>
-	<input id="height" placeholder="Высота(мм)"   on:input={checkInt} type="number"/>
-	<input id="width" placeholder="Толщина(мм)"   on:input={checkInt} type="number"/>
-	<input id="length" placeholder="Длина(мм)"   on:input={checkInt} type="number"/>
-	<input id="weight" placeholder="Вес(кг)"   on:blur={around} type="number" step="0.01" min="0"/>
+	<input id="EAN13" placeholder="Штрихкод" on:input={checkInt} type="number"/>
+	<input id="CrossbarL" placeholder="L проема дужки/ригеля(мм)" on:input={checkInt} type="number"/>
+	<input id="dCrossbar" placeholder="D дужки/ригеля(мм)" on:input={checkInt} type="number"/>
+	<input id="height" placeholder="Высота(мм)" on:input={checkInt} type="number"/>
+	<input id="width" placeholder="Толщина(мм)" on:input={checkInt} type="number"/>
+	<input id="length" placeholder="Длина(мм)" on:input={checkInt} type="number"/>
+	<input id="weight" placeholder="Вес(кг)" on:blur={around} type="number" step="0.01" min="0"/>
 
 </div>
 

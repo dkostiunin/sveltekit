@@ -6,8 +6,8 @@
 
 	async function getLinks(subcat){
 		const QUERY =  `{
-			links(filters:{name:{contains:"${subcat}"}}){ data{id attributes{link}} }
-			subcats(filters:{subslug:{contains:"${subcat}"}}){ data{id}}
+			links(filters:{name:{eq:"${subcat}"}}){ data{id attributes{link}} }
+			subcats(filters:{subslug:{eq:"${subcat}"}}){ data{id}}
 	  }`  
 		const options = { method: "post",headers: {"Content-Type": "application/json"},body: JSON.stringify({query: QUERY})};
 		const res= await fetch(import.meta.env.VITE_strapiURL, options)
@@ -51,7 +51,7 @@
 				loading=true
 				let media = [],key='a',listim='',imgNewURL=[]
 				
-				if(images) imgNewURL = Array.from(images).filter(img => !img.url)				
+				if(images) imgNewURL = Array.from(images).filter(img => !img.url)
 				if(imgNewURL.length > 0) media = await imageUpload(imgNewURL)
 				if(media.length>0){
 					for (let i=media.length-1; i>= 0; i--) {
