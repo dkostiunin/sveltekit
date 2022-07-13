@@ -18,6 +18,11 @@
 </div>
 
 <div>
+   <span class="span1">Цвет корпуса</span>
+   <span class="span2">{name.link.data.attributes.link.color[name.color]}</span>
+</div>
+
+<div>
    <span class="span1">Тип ящика</span>
    <span class="span2">{name.link.data.attributes.link.type[name.type]}</span>
 </div>

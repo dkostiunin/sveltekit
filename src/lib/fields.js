@@ -80,4 +80,8 @@ export function fields(subcat,queries){
       return ({fields:'createdAt color brand type name price shortdesc longdesc listimage instock sold rating ratecount article EAN13 countryorigin place typebind height width length rotation material extension charger'
               })
     }
+    else if(subcat=='lock'){
+      return ({fields:'createdAt color brand type name price shortdesc longdesc listimage instock sold rating ratecount article EAN13 countryorigin dCrossbar CrossbarL height width length weight mechtype material auto'
+              })
+    }
   }

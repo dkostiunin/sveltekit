@@ -23,7 +23,7 @@
 const options = { method: "post",headers: {"Content-Type": "application/json"},body: JSON.stringify({query: QUERY})};
 const res= await fetch(import.meta.env.VITE_strapiURL, options)// http://localhost:1337/graphql
 const fin= await res.json()
-console.log('')
+console.log(fin)
  return {
       props: {
         products:fin.data[s].data,
@@ -133,7 +133,7 @@ console.log('')
         elementsVisible = [...elementsVisible,...filtersData.slice(page*5,(page*5)+(filtersData.length-elementsVisible.length))]
         page++
       }
-      console.log(elementsVisible,filtersData,page)
+      //console.log(elementsVisible,filtersData,page)
     }
   }
 
