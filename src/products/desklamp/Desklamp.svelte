@@ -4,7 +4,7 @@
 
 <div>
     <span class="span1">Бренд</span>
-   <span class="span3">{name.brand}</span>
+   <span class="span3">{name.link.data.attributes.link.brand[name.brand]}</span>
 </div>
 
 <div>
@@ -13,13 +13,13 @@
 </div>
 
 <div>
-   <span class="span1">Тип</span>
+   <span class="span1">Тип светильника</span>
    <span class="span2">{name.link.data.attributes.link.type[name.type]}</span>
 </div>
 
 <div>
-   <span class="span1">Форма корпуса</span>
-   <span class="span2">{name.link.data.attributes.link.flaskshape[name.flaskshape]}</span>
+   <span class="span1">Установка (крепление)</span>
+   <span class="span2">{name.link.data.attributes.link.mechtype[name.mechtype]}</span>
 </div>
 
 <div>
@@ -33,28 +33,23 @@
 </div>
 
 <div>
-   <span class="span1">Внутреннее основание</span>
-   <span class="span2">{name.link.data.attributes.link.base[name.base]}</span>
-</div>
-
-<div>
-   <span class="span1">Размеры (ширина х длина или диаметр) (мм)</span>
-   <span class="span2">{name.length}х{name.width}</span>
-</div>
-
-<div>
-   <span class="span1">Толщина (высота) (мм)</span>
+   <span class="span1">Высота макс.(см)</span>
    <span class="span2">{name.height}</span>
 </div>
 
 <div>
-   <span class="span1">Класс защиты от влаги и пыли</span>
-   <span class="span2">{name.ipclass}</span>
+   <span class="span1">Сенсорное включение</span>
+   <span class="span2">{name.link.data.attributes.link.sensor[name.sensor]}</span>
 </div>
 
 <div>
-   <span class="span1">Гарантия</span>
-   <span class="span2">{name.warranty}</span>
+   <span class="span1">Регулировка яркости</span>
+   <span class="span2">{name.link.data.attributes.link.dimmer[name.dimmer]}</span>
+</div>
+
+<div>
+   <span class="span1">Гибкая ножка</span>
+   <span class="span2">{name.link.data.attributes.link.flex[name.flex]}</span>
 </div>
 
 <div>

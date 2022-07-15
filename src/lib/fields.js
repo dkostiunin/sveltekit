@@ -84,4 +84,8 @@ export function fields(subcat,queries){
       return ({fields:'createdAt color brand type name price shortdesc longdesc listimage instock sold rating ratecount article EAN13 countryorigin dCrossbar CrossbarL height width length weight mechtype material auto'
               })
     }
+    else if(subcat=='desklamp'){
+      return ({fields:'createdAt color brand type name price shortdesc longdesc listimage instock sold rating ratecount article EAN13 countryorigin sensor dimmer height width length weight mechtype material flex'
+              })
+    }
   }
