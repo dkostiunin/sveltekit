@@ -5,8 +5,8 @@
       const f=fields(params.subslug).fields
   
       const QUERY =  `{
-                    categories(filters: {slug: { contains:"${params.slug}"}}){data{attributes{name}}}
-                    subcats(filters: {subslug: { contains:"${params.subslug}"}}){data{ attributes{name}}}
+                    categories(filters: {slug: { eq:"${params.slug}"}}){data{attributes{name}}}
+                    subcats(filters: {subslug: { eq:"${params.subslug}"}}){data{ attributes{name}}}
                     ${params.subslug}(id:${params.id}){
                         data{id attributes{${f}
                         link{data{attributes{link}}}

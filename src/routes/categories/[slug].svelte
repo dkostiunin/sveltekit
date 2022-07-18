@@ -2,7 +2,7 @@
 
   export async function load({ params, fetch}) {
     console.log(params.slug)
-    const QUERY = `{categories(filters: {slug: { contains:"${params.slug}"} }){
+    const QUERY = `{categories(filters: {slug: { eq:"${params.slug}"} }){
         data{id attributes{name urlimage desc slug
          subcats{data{id attributes{name urlimage desc subslug}}}
        }}

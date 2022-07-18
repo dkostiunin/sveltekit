@@ -88,4 +88,8 @@ export function fields(subcat,queries){
       return ({fields:'createdAt color brand type name price shortdesc longdesc listimage instock sold rating ratecount article EAN13 countryorigin sensor dimmer height width length weight mechtype material flex'
               })
     }
+    else if(subcat=='streetlight'){
+      return ({fields:'createdAt color brand type name price shortdesc longdesc listimage instock sold rating ratecount article EAN13 countryorigin sensor dimmer height width length weight mechtype material watt ipclass diff'
+              })
+    }
   }
