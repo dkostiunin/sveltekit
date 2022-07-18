@@ -85,11 +85,15 @@ export function fields(subcat,queries){
               })
     }
     else if(subcat=='desklamp'){
-      return ({fields:'createdAt color brand type name price shortdesc longdesc listimage instock sold rating ratecount article EAN13 countryorigin sensor dimmer height width length weight mechtype material flex'
+      return ({fields:'createdAt color brand type name price shortdesc longdesc listimage instock sold rating ratecount article EAN13 countryorigin warranty sensor dimmer height width length weight mechtype material flex'
               })
     }
     else if(subcat=='streetlight'){
-      return ({fields:'createdAt color brand type name price shortdesc longdesc listimage instock sold rating ratecount article EAN13 countryorigin sensor dimmer height width length weight mechtype material watt ipclass diff'
+      return ({fields:'createdAt color brand type name price shortdesc longdesc listimage instock sold rating ratecount article EAN13 countryorigin warranty sensor dimmer height width length weight mechtype material watt ipclass diff'
+              })
+    }
+    else if(subcat=='acdcext'){
+      return ({fields:'createdAt color brand type name price shortdesc longdesc listimage instock sold rating ratecount article EAN13 countryorigin warranty wirelength wirethick wiretype height width length weight mechtype material watt amper ipclass qtysock usb curtains switch ground'
               })
     }
   }

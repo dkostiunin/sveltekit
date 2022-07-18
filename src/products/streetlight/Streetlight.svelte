@@ -63,6 +63,11 @@
 </div>
 
 <div>
+   <span class="span1">Гарантия</span>
+   <span class="span2">{name.warranty}</span>
+</div>
+
+<div>
    <span class="span1">Страна производитель</span>
    <span class="span2">{name.countryorigin}</span>
 </div>

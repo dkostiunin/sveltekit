@@ -60,6 +60,7 @@
 	<textarea rows="1" cols="39" id="name" placeholder="Название"   on:input={checkText}/>
 	<textarea id="article" placeholder="Артикул"  rows="1" cols="25" on:input={checkText}/>
 	<textarea id="countryorigin" placeholder="Страна происхождения"  rows="1" cols="25" on:input={checkText}/>
+	<textarea id="warranty" placeholder="Гарантия"  rows="1" cols="25" on:input={checkText}/>
 	<textarea id="shortdesc" placeholder="Краткое описание" rows="1" cols="25" on:input={checkText}/>
 	<textarea id="longdesc" placeholder="Полное описание" rows="1" cols="25" on:input={checkText}/>
 
