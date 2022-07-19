@@ -87,9 +87,9 @@
 	<input id="price" placeholder="Цена" on:blur={around} type="number" step="0.01" min="0"/>
 	<input id="instock" placeholder="Количество" inputmode="numeric" on:input={checkInt} type="number"/>
 	<input id="amper" placeholder="Макс ток" on:input={checkInt} type="number"/>
-	<input id="watt" placeholder="Макс мощность (Вт)" on:blur={around} type="number" step="0.1" min="0"/>
+	<input id="watt" placeholder="Макс мощность (Вт)" on:input={checkInt} type="number"/>
 	<input id="qtysock" placeholder="Кол-во гнезд" on:input={checkInt} type="number"/>
-	<input id="wirelength" placeholder="Длина провода(м)" on:input={checkInt} type="number"/>
+	<input id="wirelength" placeholder="Длина провода(м)" on:blur={around} type="number" step="0.1" min="0"/>
 	<input id="wirethick" placeholder="Сечение провода (мм)" on:blur={around} type="number" step="0.1" min="0"/>
 	<input id="EAN13" placeholder="Штрихкод" on:input={checkInt} type="number"/>
 	<input id="height" placeholder="Высота(мм)" on:input={checkInt} type="number"/>
