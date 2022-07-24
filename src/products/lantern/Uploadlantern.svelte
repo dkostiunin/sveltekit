@@ -21,14 +21,19 @@
 		{#each Object.entries(l.brand) as i}<option value={i[0]}>
 		{/each}
 	</datalist>
-	<input placeholder="Вид лампы" list="ty" id="type" on:blur={checkList}/>
-	<datalist id="ty">
-		{#each Object.entries(l.type) as i}<option value={i[0]}>
+	<input placeholder="Вид светильн" list="di" id="diff" on:blur={checkList}/>
+	<datalist id="di">
+		{#each Object.entries(l.diff) as i}<option value={i[0]}>
 		{/each}
 	</datalist>
     <input placeholder="тип установки" list="me" id="mechtype" on:blur={checkList}/>
 	<datalist id="me">
 		{#each Object.entries(l.mechtype) as i}<option value={i[0]}>
+		{/each}
+	</datalist>
+	<input placeholder="тип освещения" list="ty" id="type" on:blur={checkList}/>
+	<datalist id="ty">
+		{#each Object.entries(l.type) as i}<option value={i[0]}>
 		{/each}
 	</datalist>
 	<input placeholder="Материал корпуса" list="ma" id="material" on:blur={checkList}/>
@@ -46,14 +51,14 @@
 		{#each Object.entries(l.sensor) as i}<option value={i[0]}>
 		{/each}
 	</datalist>
-	<input placeholder="Рег.ярк" list="di" id="dimmer" on:blur={checkList}/>
-	<datalist id="di">
+	<input placeholder="Рег.ярк" list="dim" id="dimmer" on:blur={checkList}/>
+	<datalist id="dim">
 		{#each Object.entries(l.dimmer) as i}<option value={i[0]}>
 		{/each}
 	</datalist>
-	<input placeholder="Гибкая ножка" list="fl" id="flex" on:blur={checkList}/>
-	<datalist id="fl">
-		{#each Object.entries(l.flex) as i}<option value={i[0]}>
+	<input placeholder="IP" list="ip" id="ipclass" on:blur={checkList}/>
+	<datalist id="ip">
+		{#each Object.entries(l.ipclass) as i}<option value={i[0]}>
 		{/each}
 	</datalist>
 
@@ -67,9 +72,10 @@
 	<input id="price" placeholder="Цена" on:blur={around} type="number" step="0.01" min="0"/>
 	<input id="instock" placeholder="Количество" inputmode="numeric" on:input={checkInt} type="number"/>
 	<input id="EAN13" placeholder="Штрихкод" on:input={checkInt} type="number"/>
-	<input id="height" placeholder="Высота(cm)" on:input={checkInt} type="number"/>
-	<input id="width" placeholder="Ширина(cm)" on:input={checkInt} type="number"/>
-	<input id="length" placeholder="Длина(cm)" on:input={checkInt} type="number"/>
+	<input id="height" placeholder="Высота(мм)" on:input={checkInt} type="number"/>
+	<input id="width" placeholder="Ширина(мм)" on:input={checkInt} type="number"/>
+	<input id="length" placeholder="Длина(мм)" on:input={checkInt} type="number"/>
+	<input id="watt" placeholder="Мощность(Вт)" on:blur={around} type="number" step="0.01" min="0"/>
 	<input id="weight" placeholder="Вес(кг)" on:blur={around} type="number" step="0.01" min="0"/>
 
 </div>

@@ -96,4 +96,8 @@ export function fields(subcat,queries){
       return ({fields:'createdAt color brand type name price shortdesc longdesc listimage instock sold rating ratecount article EAN13 countryorigin warranty wirelength wirethick wiretype height width length weight mechtype material watt amper ipclass qtysock usb curtains switch ground'
               })
     }
+    else if(subcat=='lantern'){
+      return ({fields:'createdAt color brand type name price shortdesc longdesc listimage instock sold rating ratecount article EAN13 countryorigin warranty wirelength height width length weight mechtype material ipclass luminous switch ground'
+              })
+    }
   }

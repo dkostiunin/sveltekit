@@ -41,7 +41,6 @@
     console.log(product)
     
     import(`../../../../products/${catSubcat[1]}/${f}.svelte`).then(res => Mycomponent = res.default)
-    // import Lamp from '../../../../products/lamp/Lamp.svelte';
 
     function inBasket(e){
         flash(e)
@@ -53,8 +52,8 @@
 </script>
 
 <svelte:head>
-	<title>Описание товара</title>
-	<meta name="description" content="Описание товара"/>
+	<title>{product.name}</title>
+	<meta name="description" content=${product.name}/>
 </svelte:head>
 
 <div class="main">
