@@ -100,4 +100,8 @@ export function fields(subcat,queries){
       return ({fields:'createdAt color brand type name price shortdesc longdesc listimage instock sold rating ratecount article EAN13 countryorigin warranty wirelength height width length weight mechtype material ipclass luminous switch ground'
               })
     }
+    else if(subcat=='yardstick'){
+      return ({fields:'createdAt color brand type name price shortdesc longdesc listimage instock sold rating ratecount article EAN13 countryorigin warranty wirethickmin wirethickmax height width length weight mechtype material'
+              })
+    }
   }
