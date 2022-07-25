@@ -21,17 +21,12 @@
 		{#each Object.entries(l.brand) as i}<option value={i[0]}>
 		{/each}
 	</datalist>
-	<input placeholder="Вид светильн" list="di" id="diff" on:blur={checkList}/>
-	<datalist id="di">
-		{#each Object.entries(l.diff) as i}<option value={i[0]}>
-		{/each}
-	</datalist>
-    <input placeholder="тип установки" list="me" id="mechtype" on:blur={checkList}/>
+    <input placeholder="тип питания" list="me" id="mechtype" on:blur={checkList}/>
 	<datalist id="me">
 		{#each Object.entries(l.mechtype) as i}<option value={i[0]}>
 		{/each}
 	</datalist>
-	<input placeholder="тип освещения" list="ty" id="type" on:blur={checkList}/>
+	<input placeholder="Вид фонаря" list="ty" id="type" on:blur={checkList}/>
 	<datalist id="ty">
 		{#each Object.entries(l.type) as i}<option value={i[0]}>
 		{/each}
@@ -46,14 +41,14 @@
 		{#each Object.entries(l.color) as i}<option value={i[0]}>
 		{/each}
 	</datalist>
-	<input placeholder="Сенсор" list="se" id="sensor" on:blur={checkList}/>
-	<datalist id="se">
-		{#each Object.entries(l.sensor) as i}<option value={i[0]}>
+	<input placeholder="Фокус луча" list="gr" id="ground" on:blur={checkList}/>
+	<datalist id="gr">
+		{#each Object.entries(l.ground) as i}<option value={i[0]}>
 		{/each}
 	</datalist>
-	<input placeholder="Рег.ярк" list="dim" id="dimmer" on:blur={checkList}/>
-	<datalist id="dim">
-		{#each Object.entries(l.dimmer) as i}<option value={i[0]}>
+	<input placeholder="Рег.ярк" list="sw" id="switch" on:blur={checkList}/>
+	<datalist id="sw">
+		{#each Object.entries(l.switch) as i}<option value={i[0]}>
 		{/each}
 	</datalist>
 	<input placeholder="IP" list="ip" id="ipclass" on:blur={checkList}/>
@@ -75,7 +70,8 @@
 	<input id="height" placeholder="Высота(мм)" on:input={checkInt} type="number"/>
 	<input id="width" placeholder="Ширина(мм)" on:input={checkInt} type="number"/>
 	<input id="length" placeholder="Длина(мм)" on:input={checkInt} type="number"/>
-	<input id="watt" placeholder="Мощность(Вт)" on:blur={around} type="number" step="0.01" min="0"/>
+	<input id="luminous" placeholder="Яркость" on:input={checkInt} type="number"/>
+	<input id="wirelength" placeholder="Дальность(м)" on:blur={around} type="number" step="0.1" min="0"/>
 	<input id="weight" placeholder="Вес(кг)" on:blur={around} type="number" step="0.01" min="0"/>
 
 </div>

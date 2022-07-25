@@ -23,8 +23,8 @@
 </div>
 
 <div>
-   <span>Световой поток (Lm)</span>
-   <span>{name.luminous}</span>
+   <span class="span1">Световой поток (Lm)</span>
+   <span class="span2">{name.luminous}</span>
 </div>
 
 <div>
