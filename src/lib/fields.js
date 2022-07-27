@@ -104,4 +104,8 @@ export function fields(subcat,queries){
       return ({fields:'createdAt color brand type name price shortdesc longdesc listimage instock sold rating ratecount article EAN13 countryorigin warranty wirethickmin wirethickmax height width length weight mechtype material'
               })
     }
+    else if(subcat=='hammer'){
+      return ({fields:'createdAt brand type name price shortdesc longdesc listimage instock sold rating ratecount article EAN13 countryorigin height width length weight mechtype material ground flaskshape'
+              })
+    }
   }
