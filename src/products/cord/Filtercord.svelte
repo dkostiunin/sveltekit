@@ -19,6 +19,8 @@
           if (a < b) {return -1}
           return 0;
         })
+        width[0]=+width[0].toFixed(1);width[width.length-1]=+width[width.length-1].toFixed(1)
+        length[0]=+length[0].toFixed(1);length[length.length-1]=+length[length.length-1].toFixed(1)
 
     let range1 = [price[0], price[price.length-1]], 
         range4=[width[0],width[width.length-1]],range5 = [length[0], length[length.length-1]],
@@ -26,6 +28,7 @@
         brand=[],type=[],mechtype=[],color=[],material=[],base=[],ground=[],typebind=[],rotation=[],ledbacklight=[],
         fBrand=[],fType=[],fMechtype=[],fColor=[],fMaterial=[],fBase=[],fgGround=[],fTypebind=[],fRotation=[],fLedbacklight=[]
 
+       console.log(range5) 
     prods.forEach(i => {
         if(!brand.map(i=>i.value).includes(i.attributes.brand)){
             brand.push({'value':i.attributes.brand, 'name':i.attributes.link.data.attributes.link.brand[i.attributes.brand]})
@@ -90,10 +93,13 @@
 
     if(yes) filtersData=filtersData.filter(i=>(i.attributes.instock>0))
     page=1
-     console.log(filtersData)
+    //console.log(range5)
    }
 
-    function test(e){
+    function test(e){console.log(range5,length)
+        if(((e.detail[0]||e.detail[0]==0)&&e.detail[1])&&(!Number.isInteger(e.detail[0])||!Number.isInteger(e.detail[1]))){
+            e.detail[0]=+e.detail[0].toFixed(1);e.detail[1]=+e.detail[1].toFixed(1)
+        }
         if(e.target&&e.target.parentElement.id=='price'){
             if(range1[0]<price[0]||range1[0]>=range1[1]){range1[0]=price[0]}
             if(range1[1]> price[price.length-1]||range1[1]<=range1[0]){range1[1]= price[price.length-1]}
@@ -107,7 +113,7 @@
             if(range5[1]> length[length.length-1]||range5[1]<=range5[0]){range5[1]= length[length.length-1]}
         }
     }
-
+   
 </script>
 
 <div class="slider slider3">

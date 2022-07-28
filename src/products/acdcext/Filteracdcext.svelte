@@ -76,7 +76,6 @@
     $: if(yes||!yes)filtering()
 
    function filtering(e={detail:[]}){test(e)
-    console.log(price,range1)
     filtersData=prods.filter(i=>(i.attributes.price>=range1[0]&&i.attributes.price<=range1[1]))
     filtersData=filtersData.filter(i=>(i.attributes.amper>=range2[0]&&i.attributes.amper<=range2[1]))
     filtersData=filtersData.filter(i=>(i.attributes.qtysock>=range3[0]&&i.attributes.qtysock<=range3[1]))
@@ -109,10 +108,14 @@
 
     if(yes) filtersData=filtersData.filter(i=>(i.attributes.instock>0))
     page=1
-     console.log(filtersData)
+    // console.log(filtersData)
    }
 
     function test(e){
+        if(((e.detail[0]||e.detail[0]==0)&&e.detail[1])&&(!Number.isInteger(e.detail[0])||!Number.isInteger(e.detail[1]))){
+console.log(e.detail,range4)
+            e.detail[0]=+e.detail[0].toFixed(2);e.detail[1]=+e.detail[1].toFixed(2)
+        }
         if(e.target&&e.target.parentElement.id=='price'){
             if(range1[0]<price[0]||range1[0]>=range1[1]){range1[0]=price[0]}
             if(range1[1]> price[price.length-1]||range1[1]<=range1[0]){range1[1]= price[price.length-1]}
@@ -177,14 +180,14 @@
 <div id="wirelength" class="slider">
     <p>Длина провода</p>
     <input type="number" bind:value={range4[0]} on:change={filtering}/>
-    <Doublerange min={wirelength[0]} max={wirelength[wirelength.length-1]} step="0.1" bind:value={range4} range order on:input={filtering}/>
+    <Doublerange min={wirelength[0]} max={wirelength[wirelength.length-1]} step="0.01" bind:value={range4} range order on:input={filtering}/>
     <input type="number" bind:value={range4[1]} on:change={filtering}/>
 </div>
 
 <div id="wirethick" class="slider">
     <p>Сечение провода</p>
     <input type="number" bind:value={range5[0]} on:change={filtering}/>
-    <Doublerange min={wirethick[0]} max={wirethick[wirethick.length-1]} step="0.1" bind:value={range5} range order on:input={filtering}/>
+    <Doublerange min={wirethick[0]} max={wirethick[wirethick.length-1]} step="0.01" bind:value={range5} range order on:input={filtering}/>
     <input type="number" bind:value={range5[1]} on:change={filtering}/>
 </div>
 

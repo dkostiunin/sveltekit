@@ -7,7 +7,8 @@
 			e.target.value=e.target.value.replace(/[^a-zа-яё0-9 +-.,:;]/gi, '');
 			e.target.rows=Math.ceil(e.target.value.length/e.target.cols)
 		},
-        around = (e) => {if(e.target.value!='') e.target.value=(+e.target.value).toFixed(2)},
+		around = (e) => {if(e.target.value!='') e.target.value=(+e.target.value).toFixed(2)},
+        around2 = (e) => {if(e.target.value!='') e.target.value=(+e.target.value).toFixed(1)},
 		checkList = (e) => {
 			let v= Array.from(e.target.list.options).map(i=>i.value)
 			if(!v.includes(e.target.value))e.target.value=''
@@ -40,8 +41,8 @@
 		{#each Object.entries(l.color) as i}<option value={i[0]}>
 		{/each}
 	</datalist>
-	<input placeholder="Материал проводника" list="le" id="base" on:blur={checkList}/>
-	<datalist id="le">
+	<input placeholder="Материал проводника" list="ba" id="base" on:blur={checkList}/>
+	<datalist id="ba">
 		{#each Object.entries(l.base) as i}<option value={i[0]}>
 		{/each}
 	</datalist>
@@ -76,8 +77,8 @@
 	<input id="instock" placeholder="Количество" inputmode="numeric" on:input={checkInt} type="number"/>
 	<input id="EAN13" placeholder="Штрихкод" on:input={checkInt} type="number"/>
 	<input id="height" placeholder="Высота(мм)" on:input={checkInt} type="number"/>
-	<input id="width" placeholder="Толщина шнура(мм)" on:blur={around} type="number" step="0.1" min="0"/>
-	<input id="length" placeholder="Длина шнура(м)" on:blur={around} type="number" step="0.1" min="0"/>
+	<input id="width" placeholder="Толщина шнура(мм)" on:blur={around2} type="number" step="0.1" min="0"/>
+	<input id="length" placeholder="Длина шнура(м)" on:blur={around2} type="number" step="0.1" min="0"/>
 	<input id="weight" placeholder="Вес(кг)" on:blur={around} type="number" step="0.01" min="0"/>
 
 </div>

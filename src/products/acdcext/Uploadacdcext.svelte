@@ -8,11 +8,10 @@
 			e.target.rows=Math.ceil(e.target.value.length/e.target.cols)
 		},
         around = (e) => {if(e.target.value!='') e.target.value=(+e.target.value).toFixed(2)},
-		around2 = (e) => {
+	/* 	around2 = (e) => {
 			if(e.target.value!='') e.target.value=(+e.target.value).toFixed(1);
-			console.log(e.target.value.length,e.target.value.slice(0, -2))
 			if(e.target.value.length>=3&&e.target.value[e.target.value.length-1]==0) e.target.value=(+e.target.value.slice(0, -2))
-		},
+		}, */
 		checkList = (e) => {
 			let v= Array.from(e.target.list.options).map(i=>i.value)
 			if(!v.includes(e.target.value))e.target.value=''
@@ -89,8 +88,8 @@
 	<input id="amper" placeholder="Макс ток" on:input={checkInt} type="number"/>
 	<input id="watt" placeholder="Макс мощность (Вт)" on:input={checkInt} type="number"/>
 	<input id="qtysock" placeholder="Кол-во гнезд" on:input={checkInt} type="number"/>
-	<input id="wirelength" placeholder="Длина провода(м)" on:blur={around} type="number" step="0.1" min="0"/>
-	<input id="wirethick" placeholder="Сечение провода (мм)" on:blur={around} type="number" step="0.1" min="0"/>
+	<input id="wirelength" placeholder="Длина провода(м)" on:blur={around} type="number" step="0.01" min="0"/>
+	<input id="wirethick" placeholder="Сечение провода (мм)" on:blur={around} type="number" step="0.01" min="0"/>
 	<input id="EAN13" placeholder="Штрихкод" on:input={checkInt} type="number"/>
 	<input id="height" placeholder="Высота(мм)" on:input={checkInt} type="number"/>
 	<input id="width" placeholder="Толщина(мм)" on:input={checkInt} type="number"/>

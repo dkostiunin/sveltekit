@@ -73,6 +73,9 @@
    }
 
     function test(e){
+        if(((e.detail[0]||e.detail[0]==0)&&e.detail[1])&&(!Number.isInteger(e.detail[0])||!Number.isInteger(e.detail[1]))){
+            e.detail[0]=+e.detail[0].toFixed(1);e.detail[1]=+e.detail[1].toFixed(1)
+        }
         if(e.target&&e.target.parentElement.id=='price'){
             if(range1[0]<price[0]||range1[0]>=range1[1]){range1[0]=price[0]}
             if(range1[1]> price[price.length-1]||range1[1]<=range1[0]){range1[1]= price[price.length-1]}

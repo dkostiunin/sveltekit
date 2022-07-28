@@ -35,6 +35,11 @@
 		{#each Object.entries(l.material) as i}<option value={i[0]}>
 		{/each}
 	</datalist>
+	<input placeholder="Форма бойка" list="fl" id="flaskshape" on:blur={checkList}/>
+	<datalist id="fl">
+		{#each Object.entries(l.flaskshape) as i}<option value={i[0]}>
+		{/each}
+	</datalist>
 	<input placeholder="Гвоздодер" list="gr" id="ground" on:blur={checkList}/>
 	<datalist id="gr">
 		{#each Object.entries(l.ground) as i}<option value={i[0]}>
