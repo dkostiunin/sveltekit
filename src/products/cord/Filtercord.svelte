@@ -3,6 +3,7 @@
     console.log(prods)
     import Doublerange from "$lib/doublerange/Doublerange.svelte";
     import Multiselect from "$lib/Multiselect.svelte";
+    import { onMount } from 'svelte'
     
     let price=prods.map(i=>i.attributes.price).sort(function (a, b) {
           if (a > b) {return 1}
@@ -19,16 +20,20 @@
           if (a < b) {return -1}
           return 0;
         })
-        width[0]=+width[0].toFixed(1);width[width.length-1]=+width[width.length-1].toFixed(1)
-        length[0]=+length[0].toFixed(1);length[length.length-1]=+length[length.length-1].toFixed(1)
 
-    let range1 = [price[0], price[price.length-1]], 
+    /* width[0]=+width[0].toFixed(1);width[width.length-1]=+width[width.length-1].toFixed(1)
+    length[0]=+length[0].toFixed(1);length[length.length-1]=+length[length.length-1].toFixed(1) */
+
+    let range1 = [price[0], price[price.length-1]],
         range4=[width[0],width[width.length-1]],range5 = [length[0], length[length.length-1]],
 
         brand=[],type=[],mechtype=[],color=[],material=[],base=[],ground=[],typebind=[],rotation=[],ledbacklight=[],
         fBrand=[],fType=[],fMechtype=[],fColor=[],fMaterial=[],fBase=[],fgGround=[],fTypebind=[],fRotation=[],fLedbacklight=[]
 
-       console.log(range5) 
+    onMount(() => {
+        range4=[width[0],width[width.length-1]];range5 = [length[0], length[length.length-1]]
+    })
+    
     prods.forEach(i => {
         if(!brand.map(i=>i.value).includes(i.attributes.brand)){
             brand.push({'value':i.attributes.brand, 'name':i.attributes.link.data.attributes.link.brand[i.attributes.brand]})
@@ -113,6 +118,7 @@
             if(range5[1]> length[length.length-1]||range5[1]<=range5[0]){range5[1]= length[length.length-1]}
         }
     }
+
    
 </script>
 

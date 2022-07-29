@@ -3,6 +3,7 @@
     console.log(prods)
     import Doublerange from "$lib/doublerange/Doublerange.svelte";
     import Multiselect from "$lib/Multiselect.svelte";
+    import { onMount } from 'svelte'
     
     let price=prods.map(i=>i.attributes.price).sort(function (a, b) {
           if (a > b) {return 1}
@@ -25,6 +26,10 @@
 
         brand=[],type=[],mechtype=[],color=[],material=[],
         fBrand=[],fType=[],fMechtype=[],fColor=[],fMaterial=[]
+
+    onMount(() => { 
+        range4=[wirethickmin[0],wirethickmin[wirethickmin.length-1]];range5 = [wirethickmax[0], wirethickmax[wirethickmax.length-1]]
+    })
 
     prods.forEach(i => {
         if(!brand.map(i=>i.value).includes(i.attributes.brand)){
