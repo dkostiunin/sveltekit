@@ -22,12 +22,12 @@ const res= await fetch(import.meta.env.VITE_strapiURL, options)//http://localhos
 </script>
  
  <script>
-      export let subcats;
+      export let subcats
   </script>
 
 <svelte:head>
-	<title>Каталог</title>
-	<meta name="description" content="Каталог"/>
+	<title>{subcats.attributes.name}</title>
+	<meta name="description" content=${subcats.attributes.desc}/>
 </svelte:head>
   
   <div class="main">

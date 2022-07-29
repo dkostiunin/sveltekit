@@ -112,4 +112,8 @@ export function fields(subcat,queries){
       return ({fields:'createdAt color brand type name price shortdesc longdesc listimage instock sold rating ratecount article EAN13 countryorigin height width length weight mechtype base material ground rotation typebind ledbacklight'
               })
     }
+    else if(subcat=='homelight'){
+      return ({fields:'createdAt color brand type name price shortdesc longdesc listimage instock sold rating ratecount article EAN13 countryorigin warranty sensor dimmer height width length weight mechtype material watt diff qtysock'
+              })
+    }
   }

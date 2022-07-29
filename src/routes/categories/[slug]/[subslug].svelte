@@ -147,8 +147,8 @@ console.log(fin)
 </script>
 
 <svelte:head>
-	<title>Каталог</title>
-	<meta name="description" content="Каталог"/>
+	<title>{namesCats[1]}</title>
+	<meta name="description" content=${namesCats[1]}/>
 </svelte:head>
 
 <button class="sidebar2" on:click={() =>{ 
